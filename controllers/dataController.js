@@ -31,8 +31,9 @@ const getBars = asyncHandler(async (req, res) => {
     influx.query(query)
     .then( rows => { 
       var output = new Array();       
-      rows.forEach(row => {        
-          output.push([parseInt(row.time.getNanoTime())/1000,row.open,row.high,row.low,row.close,row.vol]);
+      rows.forEach(row => {    
+          let ts = parseInt(row.time.getNanoTime()) /1000;    
+          output.push([ts/1000,row.open,row.high,row.low,row.close,row.vol]);
         })
         res.status(200).json(output.reverse()) 
       } 
