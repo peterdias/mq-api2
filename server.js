@@ -19,8 +19,7 @@ app.use(cors({
   origin: '*'
 }));
 
-//app.use('/api/goals', require('./routes/goalRoutes'))
-app.use('/api/users', require('./routes/userRoutes'))
+app.use('/api/user', require('./routes/userRoutes'))
 app.use('/api/data', require('./routes/dataRoutes'))
 
 // Serve frontend
