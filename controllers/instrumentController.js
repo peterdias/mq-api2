@@ -2,11 +2,15 @@ const asyncHandler = require('express-async-handler')
 const Instrument = require('../models/instrument')
  
 const getInstruments = asyncHandler(async (req, res) => {
-  const { exchange, segment } = req.body
+  const { exchange, segment,search } = req.body
      
-    let filter  = {}
+    var filter  = {}
     if(exchange && exchange !='') filter.exchange = exchange
-    if(segment && segment != '') filter.segment = exchange
+    if(segment && segment != '') filter.segment = segment
+    if(search && search != '') {
+      filter = { tradingsymbol: { $regex: search, $options: "i" } }
+    }
+
     console.log(filter)
     const instruments = await Instrument.find(filter)
 
