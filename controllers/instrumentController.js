@@ -14,7 +14,7 @@ const getInstruments = asyncHandler(async (req, res) => {
 
     console.log(filter)
     const instruments = await Instrument.find({tradingsymbol: 'SILVERMIC22AUGFUT'})
-
+    console.log(instruments.length)
     if (instruments) {
       res.status(201).json(instruments)
     } else {
