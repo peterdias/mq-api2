@@ -12,7 +12,7 @@ const getInstruments = asyncHandler(async (req, res) => {
     }
 
     console.log(filter)
-    const instruments = await Instrument.find(filter)
+    const instruments = await Instrument.find(fil)
 
     if (instruments) {
       res.status(201).json(instruments)
