@@ -4,6 +4,7 @@ const {
     getInstruments 
 } = require('../controllers/instrumentController')
 
+console.log("in instrument routes ")
 router.post('/', getInstruments)
 
 

@@ -17,6 +17,7 @@ app.use(cors({
   origin: '*'
 }));
 
+console.log("in server ")
 app.use('/api/user', require('./routes/userRoutes'))
 app.use('/api/data', require('./routes/dataRoutes'))
 app.use('/api/watchlist', require('./routes/watchlistRoutes'))
