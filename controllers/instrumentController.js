@@ -12,7 +12,7 @@ const getInstruments = asyncHandler(async (req, res) => {
     }
 
     console.log(filter)
-    const instruments = await Instrument.find(filter)
+    const instruments = await Instrument.find({tradingsymbol: {'$regex': '^gold', '$options': 'i'}})
 
     if (instruments) {
       res.status(201).json(instruments)
