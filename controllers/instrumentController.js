@@ -8,7 +8,7 @@ const getInstruments = asyncHandler(async (req, res) => {
     if(exchange && exchange !='') filter.exchange = exchange
     if(segment && segment != '') filter.segment = segment
     if(search && search != '') {
-      filter = { tradingsymbol: new RegExp("^"+search, "i") }
+      filter = { tradingsymbol: {$regex: new RegExp("^"+search, "i")} }
     }
 
     console.log(filter)
