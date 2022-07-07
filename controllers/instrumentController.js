@@ -8,11 +8,11 @@ const getInstruments = asyncHandler(async (req, res) => {
     if(exchange && exchange !='') filter.exchange = exchange
     if(segment && segment != '') filter.segment = segment
     if(search && search != '') {
-      filter = { tradingsymbol: { $regex: "^"+search , $options: "i" } }
+      filter = { tradingsymbol: "^"+search  }
     }
 
     console.log(filter)
-    const instruments = await Instrument.find({tradingsymbol: 'GOLD22AUGFUT'})
+    const instruments = await Instrument.find(filter)
 
     if (instruments) {
       res.status(201).json(instruments)
