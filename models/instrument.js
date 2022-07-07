@@ -14,7 +14,7 @@ const instrumentSchema = mongoose.Schema(
     instrument_token: {
         type: Number      
     },
-    trading_symbol: {
+    tradingsymbol: {
         type: String      
     },
     name: {
