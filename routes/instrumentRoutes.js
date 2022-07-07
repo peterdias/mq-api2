@@ -5,7 +5,7 @@ const {
 } = require('../controllers/instrumentController')
 
 console.log("in instrument routes ")
-router.post('/', getInstruments)
+router.post('/all', getInstruments)
 
 
 module.exports = router
