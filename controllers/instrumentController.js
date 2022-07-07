@@ -3,11 +3,11 @@ const Instrument = require('../models/instrument')
  
 const getInstruments = asyncHandler(async (req, res) => {
   const { exchange, segment } = req.body
-    console.log("inside getInstrumentsController")
+     
     let filter  = {}
-    if(exchange) filter.exchange = exchange
-    if(segment) filter.segment = exchange
-    
+    if(exchange && exchange !='') filter.exchange = exchange
+    if(segment && segment != '') filter.segment = exchange
+    console.log(filter)
     const instruments = await Instrument.find(filter)
 
     if (instruments) {

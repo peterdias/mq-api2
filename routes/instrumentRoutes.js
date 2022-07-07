@@ -4,8 +4,8 @@ const {
     getInstruments 
 } = require('../controllers/instrumentController')
 
-console.log("in instrument routes ")
-router.post('/all', getInstruments)
+ 
+router.get('/', getInstruments)
 
 
 module.exports = router
