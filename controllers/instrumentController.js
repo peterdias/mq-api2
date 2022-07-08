@@ -18,7 +18,7 @@ const getInstruments = asyncHandler(async (req, res) => {
     {
       filter = {instrument_token: {$in : [256265,21048578,59549447,59658503,60589575,61415175]}}
     }
-    console.log(filter)
+    console.log(filter) 
     const instruments = await Instrument.find(filter)
      
     if (instruments) {
