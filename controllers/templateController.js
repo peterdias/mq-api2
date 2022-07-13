@@ -33,7 +33,7 @@ const saveTemplate = asyncHandler(async (req, res) => {
         })
         
         if (template) {
-            res.status(201)
+            res.status(201).json({ id: template._id })
         } else {
             res.status(400)
             throw new Error('Template coundnt be saved.')
