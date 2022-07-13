@@ -3,7 +3,8 @@ const router = express.Router()
 const { protect } = require('../middleware/authMiddleware')
 
 const {
-    getAll   
+    getTemplate, 
+    saveTemplate  
   } = require('../controllers/templateController')
 
   
