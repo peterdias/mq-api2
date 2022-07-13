@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const { isObjectIdOrHexString } = require('mongoose')
+const mongoose = require('mongoose')
 const Template = require('../models/template')
 
 const getTemplate = asyncHandler(async (req, res) => {
@@ -28,7 +29,7 @@ const saveTemplate = asyncHandler(async (req, res) => {
             name: name,
             onchart: onchart,
             offchart: offchart,
-            uid: uid
+            uid: mongoose.Types.ObjectId.fromString(uid)
         })
         
         if (template) {
