@@ -29,7 +29,7 @@ const saveTemplate = asyncHandler(async (req, res) => {
             name: name,
             onchart: onchart,
             offchart: offchart,
-            uid: mongoose.Types.ObjectId.fromString(uid)
+            uid: mongoose.Types.ObjectId(uid)
         })
         
         if (template) {
