@@ -22,6 +22,7 @@ app.use('/api/user', require('./routes/userRoutes'))
 app.use('/api/data', require('./routes/dataRoutes'))
 app.use('/api/watchlist', require('./routes/watchlistRoutes'))
 app.use('/api/instruments', require('./routes/instrumentRoutes'))
+app.use('/api/templates', require('./routes/templateRoutes'))
 // Serve frontend
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/build')))
