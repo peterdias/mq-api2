@@ -19,6 +19,22 @@ const getTemplate = asyncHandler(async (req, res) => {
     
 })
 
+const getTemplates = asyncHandler(async (req, res) => {
+    const { uid } = req.body
+    
+    const templates = Template.find({"uid": mongoose.Types.ObjectId(uid)})
+
+    if (template) {
+        res.status(201).json(templates)
+    }
+    else 
+    {
+        res.status(400)
+        throw new Error('Templates not found for user')
+    }
+    
+})
+
 const saveTemplate = asyncHandler(async (req, res) => {
     const { id, name, onchart, offchart,uid} = req.body
      
@@ -58,5 +74,6 @@ const saveTemplate = asyncHandler(async (req, res) => {
 
 module.exports = {
     getTemplate,
+    getTemplates,
     saveTemplate
 }
