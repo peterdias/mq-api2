@@ -6,7 +6,7 @@ const Template = require('../models/template')
 const getTemplate = asyncHandler(async (req, res) => {
     const { id } = req.body
     
-    const template = Template.findOne({"_id": id})
+    const template = await Template.findOne({"_id": id})
 
     if (template) {
         res.status(201).json(template)
@@ -21,8 +21,8 @@ const getTemplate = asyncHandler(async (req, res) => {
 
 const getTemplates = asyncHandler(async (req, res) => {
     const { uid } = req.body
-    //{"uid": mongoose.Types.ObjectId(uid)}
-    const templates = Template.find()
+    //
+    const templates = await Template.find({"uid": mongoose.Types.ObjectId(uid)})
     console.log(templates)
     if (templates) {
         res.status(201).json(templates)
