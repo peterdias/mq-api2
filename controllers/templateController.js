@@ -23,7 +23,7 @@ const getTemplates = asyncHandler(async (req, res) => {
     const { uid } = req.body
     //
     const templates = await Template.find({"uid": mongoose.Types.ObjectId(uid)})
-    console.log(templates)
+    //console.log(templates)
     if (templates) {
         res.status(201).json(templates)
     }
