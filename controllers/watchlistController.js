@@ -6,10 +6,16 @@ const WatchListItem = require('../models/watchlistitem')
 const getList = asyncHandler(async (req, res) => {
     const { uid } = req.body
 
-    let list = await WatchList.find({"uid": mongoose.Types.ObjectId(uid)}).populate('watchlistitems')
+    let list = await WatchList.find({"uid": mongoose.Types.ObjectId(uid)})
      
     if (list) {
-        if(list.length > 0) res.status(201).json(list)
+        if(list.length > 0) {
+            list.forEach(l => {
+                let items = await WatchListItem.find({"lid": mongoose.Types.ObjectId(l._id)})
+                l.items = items;
+            })
+            res.status(201).json(list)
+        }
         else 
         {
             const watchlist = await WatchList.create({
