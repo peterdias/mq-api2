@@ -8,10 +8,11 @@ const getList = asyncHandler(async (req, res) => {
 
     let list = await WatchList.find({"uid": mongoose.Types.ObjectId(uid)})
     
-    list.forEach(l => {
+    for(const l of list)
+    {
         let items = await WatchListItem.find({"lid": mongoose.Types.ObjectId(l._id)})
         l.items = items;
-    })
+    }
 
     if (list) {
         if(list.length > 0) {
