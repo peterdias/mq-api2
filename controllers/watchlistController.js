@@ -14,7 +14,7 @@ const getList = asyncHandler(async (req, res) => {
                 let items = await WatchListItem.find({"lid": mongoose.Types.ObjectId(l._id)})
                 l.items = items;
             })
-            res.status(201).json(list)
+            res.status(201).json(list) 
         }
         else 
         {
