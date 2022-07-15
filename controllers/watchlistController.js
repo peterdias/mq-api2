@@ -9,7 +9,20 @@ const getList = asyncHandler(async (req, res) => {
     let list = await WatchList.find({"uid": mongoose.Types.ObjectId(uid)}).populate('watchlistitems')
      
     if (list) {
-        res.status(201).json(list)
+        if(list.length > 0) res.status(201).json(list)
+        else 
+        {
+            const watchlist = await WatchList.create({
+                name: 'Default',           
+                uid: mongoose.Types.ObjectId(uid)
+            })
+
+            if(watchlist)
+            {
+                list.push(watchlist)
+                res.status(201).json(list)
+            }
+        }
     }
     else 
     {
