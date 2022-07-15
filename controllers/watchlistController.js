@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler')
+const mongoose = require('mongoose')
 const WatchList = require('../models/watchlist')
 const WatchListItem = require('../models/watchlistitem')
 
