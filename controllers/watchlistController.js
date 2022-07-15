@@ -7,13 +7,18 @@ const getList = asyncHandler(async (req, res) => {
     const { uid } = req.body
 
     let list = await WatchList.find({"uid": mongoose.Types.ObjectId(uid)})
-     
+    
+    list.forEach(l => {
+        let items = await WatchListItem.find({"lid": mongoose.Types.ObjectId(l._id)})
+        l.items = items;
+    })
+
     if (list) {
         if(list.length > 0) {
-            list.forEach(l => {
-                let items = await WatchListItem.find({"lid": mongoose.Types.ObjectId(l._id)})
-                l.items = items;
-            })
+            // list.forEach(l => {
+            //     let items = await WatchListItem.find({"lid": mongoose.Types.ObjectId(l._id)})
+            //     l.items = items;
+            // })
             res.status(201).json(list) 
         }
         else 
