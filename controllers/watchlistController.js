@@ -1,8 +1,11 @@
 const asyncHandler = require('express-async-handler')
 const WatchList = require('../models/watchlist')
+const WatchListItem = require('../models/watchlistitem')
 
-const getAll = asyncHandler(async (req, res) => {
-    const list = await WatchList.find()
+const getList = asyncHandler(async (req, res) => {
+    const { uid } = req.body
+
+    let list = await WatchList.find({"uid": mongoose.Types.ObjectId(uid)}).populate('watchlistitems')
      
     if (list) {
         res.status(201).json(list)
@@ -16,6 +19,60 @@ const getAll = asyncHandler(async (req, res) => {
     return list
 })
 
+const saveList = asyncHandler(async (req, res) => {
+    const { lid,name,uid} = req.body
+
+    if(lid == -1)
+    {
+        const watchlist = await WatchList.create({
+            name: name,           
+            uid: mongoose.Types.ObjectId(uid)
+        })
+        
+        if (watchlist) {
+            res.status(201).json({ id: watchlist._id })
+        } else {
+            res.status(400)
+            throw new Error('Watchlist coundnt be created.')
+        }
+    }
+    else 
+    {         
+        WatchList.findByIdAndUpdate(lid,{
+            name: name
+        },function(err, docs){
+            if (err){
+                res.status(400)
+                throw new Error('Watchlist not Found')
+            }
+            else{
+                res.status(201).json({status: 'watch list updated'})
+            }
+        })
+    }
+    
+    return 
+})
+
+const getItems = asyncHandler(async (req, res) => {
+    const { lid } = req.body
+
+    const items = await WatchListItem.find({"lid": mongoose.Types.ObjectId(lid)})
+     
+    if (items) {
+        res.status(201).json(items)
+    }
+    else 
+    {
+        res.status(400)
+        throw new Error('No data')
+    }
+
+    return items
+})
+
 module.exports = {
-    getAll
+    getList,
+    saveList,
+    getItems
 }

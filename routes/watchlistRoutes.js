@@ -3,10 +3,14 @@ const router = express.Router()
 const { protect } = require('../middleware/authMiddleware')
 
 const {
-    getAll   
+    getList,
+    saveList,
+    getItems   
   } = require('../controllers/watchlistController')
 
   
-router.get('/all',protect,getAll)
+router.post('/list',protect,getList)
+router.post('/items',protect,getItems)
+router.post('/savelist',protect,saveList)
 
 module.exports = router

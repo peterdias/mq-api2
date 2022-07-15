@@ -3,23 +3,15 @@ const mongoose = require('mongoose')
 
 const WatchList = mongoose.Schema(
     {
-        symid: {
-            type: Number      
-        },
-        last: {
-            type: Number      
-        },
-        change: {
-            type: Number      
-        },
-        changep: {
-            type: Number      
-        },
-        uid: { type: mongoose.Schema.ObjectId, ref: 'user' }
+        name: {
+            type: String,
+            required: [true, 'Please set name'],      
+        },        
+        uid: { type: mongoose.Schema.ObjectId, ref: 'users' }
     },
     {
       timestamps: true,
     }
 )
 
-module.exports = mongoose.model('watchlist', WatchList)
+module.exports = mongoose.model('watchlists', WatchList)
