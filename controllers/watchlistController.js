@@ -15,11 +15,7 @@ const getList = asyncHandler(async (req, res) => {
     }
 
     if (list) {
-        if(list.length > 0) {
-            // list.forEach(l => {
-            //     let items = await WatchListItem.find({"lid": mongoose.Types.ObjectId(l._id)})
-            //     l.items = items;
-            // })
+        if(list.length > 0) {            
             res.status(201).json(list) 
         }
         else 
@@ -59,7 +55,7 @@ const saveList = asyncHandler(async (req, res) => {
             res.status(201).json({ id: watchlist._id })
         } else {
             res.status(400)
-            throw new Error('Watchlist coundnt be created.')
+            throw new Error('Watchlist coundnt be created')
         }
     }
     else 
@@ -78,6 +74,58 @@ const saveList = asyncHandler(async (req, res) => {
     }
     
     return 
+})
+
+const addItem = asyncHandler(async (req, res) => {
+    const { lid, exchange, tradingsymbol } = req.body
+
+    const watchlist = await WatchList.find({"lid": mongoose.Types.ObjectId(lid)})
+     
+    if (watchlist) {
+        const item = await WatchListItem.create({
+            exchange:exchange,
+            tradingsymbol: tradingsymbol,
+            last: 0,
+            change: 0,
+            changep:0,
+            lid: mongoose.Types.ObjectId(lid)
+        })
+
+        res.status(201).json(item)
+    }
+    else 
+    {
+        res.status(400)
+        throw new Error('Watchlist not found')
+    }
+
+    return items
+})
+
+const removeItem = asyncHandler(async (req, res) => {
+    const { lid, itemid } = req.body
+
+    const watchlist = await WatchList.find({"lid": mongoose.Types.ObjectId(lid)})
+     
+    if (watchlist) {
+        //const item = await WatchListItem.find({"_id": mongoose.Types.ObjectId(itemid)})
+        WatchListItem.findByIdAndRemove(itemid,function (err, docs) {
+            if (err){
+                res.status(400)
+                throw new Error('Item could not Found')
+            }
+            else{
+                res.status(201).json({status: 'Item Removed'})
+            }
+        });        
+    }
+    else 
+    {
+        res.status(400)
+        throw new Error('Watchlist not found')
+    }
+
+    return items
 })
 
 const getItems = asyncHandler(async (req, res) => {
@@ -100,5 +148,7 @@ const getItems = asyncHandler(async (req, res) => {
 module.exports = {
     getList,
     saveList,
-    getItems
+    getItems,
+    addItem,
+    removeItem
 }

@@ -5,12 +5,16 @@ const { protect } = require('../middleware/authMiddleware')
 const {
     getList,
     saveList,
-    getItems   
+    getItems ,
+    addItem,
+    removeItem
   } = require('../controllers/watchlistController')
 
   
 router.post('/list',protect,getList)
 router.post('/items',protect,getItems)
 router.post('/savelist',protect,saveList)
+router.post('/addItem',protect,addItem)
+router.post('/removeItem',protect,removeItem)
 
 module.exports = router
