@@ -9,16 +9,16 @@ const getList = asyncHandler(async (req, res) => {
     let list = await WatchList.find({"uid": mongoose.Types.ObjectId(uid)})
     
     const promises = list.map(async l => {
-        let items = await WatchListItem.find({"lid": mongoose.Types.ObjectId(l._id)})
-        let newprops = {items: items};
-        l.items = items
-        return Object.assign(l, newprops);
+        let items = await WatchListItem.find({"lid": mongoose.Types.ObjectId(l._id)})        
+        return {...l, items: items}
     })
 
     const n = await Promise.all(promises)
-    console.log("N: ", n)
-
+    console.log(n)
+    console.log("********")
     console.log(promises)
+    console.log("********")
+    console.log(list)
     // for(let l of list)
     // {
     //     let items = await WatchListItem.find({"lid": mongoose.Types.ObjectId(l._id)})
