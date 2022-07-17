@@ -12,6 +12,7 @@ const getList = asyncHandler(async (req, res) => {
     {
         let items = await WatchListItem.find({"lid": mongoose.Types.ObjectId(l._id)})
         l.items = items;
+        console.log(items)
     }
 
     if (list) {
