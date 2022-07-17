@@ -14,7 +14,12 @@ const getList = asyncHandler(async (req, res) => {
     })
 
     const nlist = await Promise.all(promises)
-    console.log(nlist)
+
+    let output = []
+
+    nlist.forEach(data=>{
+        console.log(data.items)
+    })
     
     // for(let l of list)
     // {
