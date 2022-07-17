@@ -18,7 +18,7 @@ const getList = asyncHandler(async (req, res) => {
     const n = await Promise.all(promises)
     console.log("N: ", n)
 
-    console.log(list)
+    console.log(promises)
     // for(let l of list)
     // {
     //     let items = await WatchListItem.find({"lid": mongoose.Types.ObjectId(l._id)})
