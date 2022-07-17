@@ -10,8 +10,8 @@ const getList = asyncHandler(async (req, res) => {
     
     const promises = list.map(async l => {
         let items = await WatchListItem.find({"lid": mongoose.Types.ObjectId(l._id)})
-        l.items = items;
-        console.log(l.items)
+        let newprops = {items: items};
+        return Object.assign(l, newprops);
     })
 
     const n = await Promise.all(promises)
