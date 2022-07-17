@@ -18,16 +18,10 @@ const getList = asyncHandler(async (req, res) => {
     let output = []
 
     nlist.forEach(data=>{
-        console.log(data.items)
+        let row ={_id: data._doc._id, name: data._doc.name, items: data.items}
+        console.log(row)
     })
     
-    // for(let l of list)
-    // {
-    //     let items = await WatchListItem.find({"lid": mongoose.Types.ObjectId(l._id)})
-    //     l.items = items;
-    //     console.log(items)
-    // }
-
     if (list) {
         if(list.length > 0) {            
             res.status(201).json(list) 
