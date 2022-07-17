@@ -19,12 +19,12 @@ const getList = asyncHandler(async (req, res) => {
 
     nlist.forEach(data=>{
         let row ={_id: data._doc._id, name: data._doc.name, items: data.items}
-        console.log(row)
+        output.push(row)
     })
     
-    if (list) {
-        if(list.length > 0) {            
-            res.status(201).json(list) 
+    if (output) {
+        if(output.length > 0) {            
+            res.status(201).json(output) 
         }
         else 
         {
@@ -35,8 +35,8 @@ const getList = asyncHandler(async (req, res) => {
 
             if(watchlist)
             {
-                list.push(watchlist)
-                res.status(201).json(list)
+                output.push(watchlist)
+                res.status(201).json(output)
             }
         }
     }
@@ -46,7 +46,7 @@ const getList = asyncHandler(async (req, res) => {
         throw new Error('No data')
     }
 
-    return list
+    return output
 })
 
 const saveList = asyncHandler(async (req, res) => {
