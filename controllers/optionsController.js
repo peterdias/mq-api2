@@ -1,25 +1,26 @@
 const asyncHandler = require('express-async-handler')
 var KiteConnect = require("kiteconnect").KiteConnect;
 
+let spot_exchange = "NSE"
+let spot_symbol = "NIFTY BANK"
+let expiry = "8/25/2022"
+let exchange = "NFO"
+let option_name = "BANKNIFTY"    
+
+let instruments = []
+let api_key = "br1rb0jwdbfik1ll"
+let access_token = "a9Vex3kGvu3NWItH0RTejrmQn5Y0nXiz"
+
+let kiteConnect = null; 
+var spot_price = 0;
+let diff = 0; 
+let min_strike = 0
+let max_strike = 0
+let output = []
+
 const getChain = asyncHandler(async (req, res) => {
     const {ex, symbol} = req.body 
-    let spot_exchange = "NSE"
-    let spot_symbol = "NIFTY BANK"
-    let expiry = "8/25/2022"
-    let exchange = "NFO"
-    let option_name = "BANKNIFTY"    
-
-    let instruments = []
-    let api_key = "br1rb0jwdbfik1ll"
-    let access_token = "a9Vex3kGvu3NWItH0RTejrmQn5Y0nXiz"
-
-    let kiteConnect = null; 
-    var spot_price = 0;
-    let diff = 0; 
-    let min_strike = 0
-    let max_strike = 0
-    let output = []
-
+    
     kiteConnect = new KiteConnect({api_key: api_key, debug: false});
     kiteConnect.setAccessToken(access_token)
 
