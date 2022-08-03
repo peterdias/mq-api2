@@ -61,12 +61,8 @@ async function loadInstruments()
                     console.log(`Instruments Loaded= ${fdata.length}`);            
                     resolve('done')   
                 }).catch(err => {
-                    console.error(`Failed to load instruments.`, err);
-                throw {
-                    error: 'Failed to load instruments data from Zerodha',
-                    details: err
-                };
-            });  
+                    console.error(`Failed to load instruments.`, err);                 
+                });  
         }catch(ex)
         {
 
