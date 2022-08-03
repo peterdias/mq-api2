@@ -19,8 +19,10 @@ let max_strike = 0
 let output = []
 
 const getChain = asyncHandler(async (req, res) => {
-    const {ex, symbol} = req.body 
-    
+    const {symbol,exp} = req.body 
+
+    spot_symbol = symbol
+    expiry = exp
     kiteConnect = new KiteConnect({api_key: api_key, debug: false});
     kiteConnect.setAccessToken(access_token)
 
@@ -29,7 +31,7 @@ const getChain = asyncHandler(async (req, res) => {
     await calculateChain() 
 
     if (output) {
-        res.status(201).json(output)
+        res.status(201).json({spot_price: spot_price, data: output})
     }
     else 
     {
