@@ -19,6 +19,7 @@
     "express-async-handler": "^1.2.0",
     "influx": "^5.9.3",
     "jsonwebtoken": "^8.5.1",
+    "kiteconnect": "^4.0.1",
     "mongoose": "^6.3.4"
   },
   "devDependencies": {
