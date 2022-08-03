@@ -80,7 +80,9 @@ async function getSpotPrices()
                 Object.keys(data).forEach(function(key) { 
                     spot_price = data[key].last_price 
                 });
-                 
+                
+                console.log(spot_symbol+" SPOT Price: ", spot_price)
+                
                 resolve()
             }).catch(err => {
                 console.error(`Failed to get Spot prices `,err)
@@ -93,7 +95,7 @@ async function getSpotPrices()
 
 async function calculateChain()
 {
-    console.log(spot_symbol+" SPOT Price: ", spot_price)
+    
     getDiff()
     console.log("Diff: ", diff )
     let mp = spot_price - (spot_price % diff)
