@@ -20,12 +20,13 @@ let output = []
 
 const getChain = asyncHandler(async (req, res) => {
     const {symbol,exp} = req.body 
-    console.log("Symbol:", symbol, " Exp: ", exp )
+   
     spot_symbol = symbol
     expiry = exp
     kiteConnect = new KiteConnect({api_key: api_key, debug: false});
     kiteConnect.setAccessToken(access_token)
 
+    output = []
     await loadInstruments() 
     await getSpotPrices()
     await calculateChain() 
@@ -44,8 +45,7 @@ async function loadInstruments()
 {            
     let promise = new Promise((resolve,reject)=>{        
         try 
-        {
-            console.log("SpotSymbol:", spot_symbol, " Expiry: ", expiry )
+        {             
             kiteConnect.getInstruments('NFO').then(data => {         
                     var fdata = data.filter(function(itm){
                         if(!itm['expiry']) return false;      
