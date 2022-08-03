@@ -80,10 +80,9 @@ async function loadInstruments()
 async function getSpotPrices()
 {    
     let promise = new Promise((resolve,reject)=>{ 
-        let k =  spot_exchange+":"+spot_symbol
-        k = k.trim()
-        console.log("Key:", k)   
-        kiteConnect.getQuote([k]).then(data => { 
+        let sym = []
+        sym.push(spot_exchange+":"+spot_symbol)           
+        kiteConnect.getQuote(sym).then(data => { 
                 console.log(data)
                 Object.keys(data).forEach(function(key) { 
                     spot_price = data[key].last_price 
