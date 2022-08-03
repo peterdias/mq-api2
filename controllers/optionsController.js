@@ -103,7 +103,6 @@ async function getSpotPrices()
 
 async function calculateChain()
 {
-    
     getDiff()
     console.log("Diff: ", diff )
     let mp = spot_price - (spot_price % diff)
@@ -114,26 +113,29 @@ async function calculateChain()
     console.log("Min Strike: ", min_strike)
     console.log("Max Strike: ", max_strike)   
 
-    const tinstruments = instruments  // instruments.filter(el => el.exchange == exchange && el.name == option_name)
-
     let symbols = []
-
+   
     for(let i= min_strike; i <= max_strike; i+=diff)
     {
-        const call = tinstruments.filter(el => el.strike == i && el.instrument_type == 'CE') 
-        const put = tinstruments.filter(el => el.strike == i && el.instrument_type == 'PE') 
-
-        symbols.push(call[0].exchange+":"+call[0].tradingsymbol)
-        symbols.push(put[0].exchange+":"+put[0].tradingsymbol)
+        const call = instruments.filter(el => el.strike == i && el.instrument_type == 'CE') 
+        const put = instruments.filter(el => el.strike == i && el.instrument_type == 'PE') 
+        
+        if(call.length > 0) symbols.push(call[0].exchange+":"+call[0].tradingsymbol)
+        if(put.length > 0) symbols.push(put[0].exchange+":"+put[0].tradingsymbol)
     }
+    
+    if(symbols.length == 0) return; 
 
     const quotes = await getQuotes(symbols)
      
     for(let i= min_strike; i <= max_strike; i+=diff)
     {
-        const call = tinstruments.filter(el => el.strike == i && el.instrument_type == 'CE') 
-        const put = tinstruments.filter(el => el.strike == i && el.instrument_type == 'PE') 
+        const call = instruments.filter(el => el.strike == i && el.instrument_type == 'CE') 
+        const put = instruments.filter(el => el.strike == i && el.instrument_type == 'PE') 
 
+        if(call.length == 0) continue;
+        if(put.length == 0) continue;
+        
         let c = Object.values(quotes).find(el => el.instrument_token == call[0].instrument_token);
         let p = Object.values(quotes).find(el => el.instrument_token == put[0].instrument_token);
                   
