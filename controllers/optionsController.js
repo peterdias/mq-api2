@@ -80,7 +80,8 @@ async function loadInstruments()
 async function getSpotPrices()
 {    
     let promise = new Promise((resolve,reject)=>{ 
-        let k =  trim(spot_exchange+":"+spot_symbol)
+        let k =  spot_exchange+":"+spot_symbol
+        k = k.trim()
         console.log("Key:", k)   
         kiteConnect.getQuote([k]).then(data => { 
                 console.log(data)
