@@ -25,7 +25,7 @@ const getChain = asyncHandler(async (req, res) => {
 
     await loadInstruments() 
     await getSpotPrices()
-    await getChain() 
+    await calculateChain() 
 
     if (output) {
         res.status(201).json(output)
@@ -81,7 +81,7 @@ async function getSpotPrices()
     return;
 }  
 
-async function getChain()
+async function calculateChain()
 {
     console.log("SPOT Price: ", spot_price)
     getDiff()
