@@ -20,7 +20,7 @@ let output = []
 
 const getChain = asyncHandler(async (req, res) => {
     const {symbol,exp} = req.body 
-
+    console.log("Symbol:", symbol, " Exp: ", exp )
     spot_symbol = symbol
     expiry = exp
     kiteConnect = new KiteConnect({api_key: api_key, debug: false});
@@ -43,23 +43,30 @@ const getChain = asyncHandler(async (req, res) => {
 async function loadInstruments() 
 {            
     let promise = new Promise((resolve,reject)=>{        
-       kiteConnect.getInstruments('NFO').then(data => {         
-            var fdata = data.filter(function(itm){
-                if(!itm['expiry']) return false;      
-                let dt = new Date(expiry) 
-                return itm.segment == 'NFO-OPT' && dt.getDate() == itm.expiry.getDate()            
-            });
-             
-            instruments = fdata
-            console.log(`Instruments Loaded= ${fdata.length}`);            
-            resolve('done')   
-            }).catch(err => {
-            console.error(`Zerodha: failed to load instruments.`, err);
-            throw {
-                error: 'Failed to load instruments data from Zerodha',
-                details: err
-            };
-        });  
+        try 
+        {
+            console.log("SpotSymbol:", spot_symbol, " Expiry: ", expiry )
+            kiteConnect.getInstruments('NFO').then(data => {         
+                    var fdata = data.filter(function(itm){
+                        if(!itm['expiry']) return false;      
+                        let dt = new Date(expiry) 
+                        return itm.segment == 'NFO-OPT' && dt.getDate() == itm.expiry.getDate()            
+                    });
+                    
+                    instruments = fdata
+                    console.log(`Instruments Loaded= ${fdata.length}`);            
+                    resolve('done')   
+                }).catch(err => {
+                    console.error(`Failed to load instruments.`, err);
+                throw {
+                    error: 'Failed to load instruments data from Zerodha',
+                    details: err
+                };
+            });  
+        }catch(ex)
+        {
+
+        }
    
     })
 
