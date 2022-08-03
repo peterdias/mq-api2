@@ -23,6 +23,10 @@ const getChain = asyncHandler(async (req, res) => {
    
     spot_symbol = symbol
     expiry = exp
+    
+    if(spot_symbol == 'NITFY 50') option_name = 'NIFTY'
+    else if(spot_symbol == 'NITFY BANK') option_name = 'BANKNIFTY'
+    
     kiteConnect = new KiteConnect({api_key: api_key, debug: false});
     kiteConnect.setAccessToken(access_token)
 
@@ -50,7 +54,7 @@ async function loadInstruments()
                     var fdata = data.filter(function(itm){
                         if(!itm['expiry']) return false;      
                         let dt = new Date(expiry) 
-                        return itm.segment == 'NFO-OPT' && dt.getDate() == itm.expiry.getDate()            
+                        return itm.segment == 'NFO-OPT' && dt.getDate() == itm.expiry.getDate()  && itm.name == option_name            
                     });
                     
                     instruments = fdata
@@ -82,7 +86,7 @@ async function getSpotPrices()
                 });
                 
                 console.log(spot_symbol+" SPOT Price: ", spot_price)
-                
+
                 resolve()
             }).catch(err => {
                 console.error(`Failed to get Spot prices `,err)
@@ -106,7 +110,7 @@ async function calculateChain()
     console.log("Min Strike: ", min_strike)
     console.log("Max Strike: ", max_strike)   
 
-    const tinstruments = instruments.filter(el => el.exchange == exchange && el.name == option_name)
+    const tinstruments = instruments  // instruments.filter(el => el.exchange == exchange && el.name == option_name)
 
     let symbols = []
 
