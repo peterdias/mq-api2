@@ -74,14 +74,15 @@ async function loadInstruments()
    
     })
 
-    let rest = await promise   
+    await promise   
 }
 
 async function getSpotPrices()
 {    
     let promise = new Promise((resolve,reject)=>{ 
         let sym = []
-        sym.push(spot_exchange+":"+spot_symbol)           
+        sym.push(spot_exchange+":"+spot_symbol)  
+        console.log(sym)         
         kiteConnect.getQuote(sym).then(data => { 
                 console.log(data)
                 Object.keys(data).forEach(function(key) { 
@@ -170,8 +171,7 @@ async function getQuotes(symbols)
         })
     })
 
-    let result = await promise    
-    //console.log("Quotes Fetched") 
+    let result = await promise 
     return result 
 }
  
