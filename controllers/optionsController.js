@@ -3,10 +3,10 @@ const dotenv = require('dotenv').config()
 var KiteConnect = require("kiteconnect").KiteConnect;
 
 let spot_exchange = "NSE"
-let spot_symbol = "NIFTY BANK"
-let expiry = "8/25/2022"
-let exchange = "NFO"
-let option_name = "BANKNIFTY"    
+var spot_symbol = "NIFTY BANK"
+var expiry = "8/25/2022"
+var exchange = "NFO"
+var option_name = "BANKNIFTY"    
 
 let instruments = []
 let api_key = "br1rb0jwdbfik1ll"
@@ -20,12 +20,10 @@ let output = []
 
 const getChain = asyncHandler(async (req, res) => {
     const {symbol,exp} = req.body 
-   
-
     spot_symbol = symbol
     expiry = exp
     
-    if(spot_symbol == 'NIFTY') option_name = 'NIFTY'
+    if(spot_symbol == 'NIFTY 50') option_name = 'NIFTY'
     else if(spot_symbol == 'NIFTY BANK') option_name = 'BANKNIFTY'
     
     kiteConnect = new KiteConnect({api_key: api_key, debug: false});
@@ -79,15 +77,14 @@ async function getSpotPrices()
     let promise = new Promise((resolve,reject)=>{ 
         let sym = []
         sym.push(spot_exchange+":"+spot_symbol)  
-        console.log(sym)         
+        //console.log(sym)         
         kiteConnect.getQuote(sym).then(data => { 
-                console.log(data)
+                //console.log(data)
                 Object.keys(data).forEach(function(key) { 
                     spot_price = data[key].last_price 
                 });
                 
                 console.log(spot_symbol+" SPOT Price: ", spot_price)
-
                 resolve()
             }).catch(err => {
                 console.error(`Failed to get Spot prices `,err)
@@ -190,7 +187,59 @@ function getDiff()
     } 
 }
 
+const getExpiryDates = asyncHandler(async (req, res) => {
+    const {symbol} = req.body
+    kiteConnect = new KiteConnect({api_key: api_key, debug: false});
+    kiteConnect.setAccessToken(access_token)
+     
+    if(spot_symbol === 'NIFTY 50') option_name = 'NIFTY'
+    else if(spot_symbol === 'NITFY BANK') option_name = 'BANKNIFTY'
+    
+    let result = []
+
+    let promise = new Promise((resolve,reject)=>{        
+       kiteConnect.getInstruments('NFO').then(data => {    
+            
+            var fdata = data.filter(function(itm){                                
+                return itm.segment == 'NFO-OPT' && itm.name == option_name           
+            });
+            
+            let toutput = []
+            fdata.filter(function(item){
+                var i = toutput.findIndex(x => (x.expiry.toISOString().slice(0, 10) == item.expiry.toISOString().slice(0, 10)));                
+                if(i <= -1){
+                      toutput.push({expiry: item.expiry});
+                }
+                return null;
+            });
+
+            toutput.sort(function(a,b){                
+                return b - a ;
+            });
+
+            toutput.forEach(d =>{
+                result.push(d.expiry.toISOString().slice(0, 10))
+            })            
+            resolve('done')   
+            }).catch(err => {
+                console.error(`Zerodha: failed to load instruments.`, err);
+            });  
+   
+    })
+
+    await promise  
+
+    if (result) {
+        res.status(201).json(result)
+    }
+    else 
+    {
+        res.status(400)
+        throw new Error('Expiry Dates not found')
+    }    
+})
 
 module.exports = {
-    getChain
+    getChain,
+    getExpiryDates
   }
