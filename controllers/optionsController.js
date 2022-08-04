@@ -25,8 +25,8 @@ const getChain = asyncHandler(async (req, res) => {
     spot_symbol = symbol
     expiry = exp
     
-    if(spot_symbol == 'NITFY') option_name = 'NIFTY'
-    else if(spot_symbol == 'NITFY BANK') option_name = 'BANKNIFTY'
+    if(spot_symbol == 'NIFTY') option_name = 'NIFTY'
+    else if(spot_symbol == 'NIFTY BANK') option_name = 'BANKNIFTY'
     
     kiteConnect = new KiteConnect({api_key: api_key, debug: false});
     kiteConnect.setAccessToken(process.env.ACCESS_TOKEN)
