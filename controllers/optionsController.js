@@ -190,7 +190,7 @@ function getDiff()
 const getExpiryDates = asyncHandler(async (req, res) => {
     const {symbol} = req.body
     kiteConnect = new KiteConnect({api_key: api_key, debug: false});
-    kiteConnect.setAccessToken(access_token)
+    kiteConnect.setAccessToken(process.env.ACCESS_TOKEN)
      
     if(spot_symbol === 'NIFTY 50') option_name = 'NIFTY'
     else if(spot_symbol === 'NITFY BANK') option_name = 'BANKNIFTY'
