@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler')
+const dotenv = require('dotenv').config()
 var KiteConnect = require("kiteconnect").KiteConnect;
 
 let spot_exchange = "NSE"
@@ -9,7 +10,6 @@ let option_name = "BANKNIFTY"
 
 let instruments = []
 let api_key = "br1rb0jwdbfik1ll"
-let access_token = "a9Vex3kGvu3NWItH0RTejrmQn5Y0nXiz"
 
 let kiteConnect = null; 
 var spot_price = 0;
@@ -21,6 +21,7 @@ let output = []
 const getChain = asyncHandler(async (req, res) => {
     const {symbol,exp} = req.body 
    
+
     spot_symbol = symbol
     expiry = exp
     
@@ -28,7 +29,7 @@ const getChain = asyncHandler(async (req, res) => {
     else if(spot_symbol == 'NITFY BANK') option_name = 'BANKNIFTY'
     
     kiteConnect = new KiteConnect({api_key: api_key, debug: false});
-    kiteConnect.setAccessToken(access_token)
+    kiteConnect.setAccessToken(process.env.ACCESS_TOKEN)
 
     output = []
     await loadInstruments() 
