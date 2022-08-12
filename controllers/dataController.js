@@ -34,11 +34,17 @@ const getBars = asyncHandler(async (req, res) => {
 
     influx.query(query)
     .then( rows => { 
-      var output = new Array();       
-      rows.forEach(row => {    
-          console.log(row)
-          let ts = parseInt(row.time.getNanoTime()) /1000; 
-          output.push([ts/1000,row.open,row.high,row.low,row.close,row.vol]);
+      let data = rows.reverse()
+      var output = new Array();  
+      let c = 1     
+      data.forEach(row => {    
+          if(c <= limit)
+          {
+            console.log(row)
+            let ts = parseInt(row.time.getNanoTime()) /1000; 
+            output.push([ts/1000,row.open,row.high,row.low,row.close,row.vol]);
+          }
+          c++
         })
         res.status(200).json(output.reverse()) 
       } 
