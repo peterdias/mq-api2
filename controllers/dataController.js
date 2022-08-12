@@ -25,8 +25,8 @@ const getBars = asyncHandler(async (req, res) => {
       query  = `select * from (select first(time) as time,first(open) as open,max(high) as high,min(low) as low,last(close) as close,sum(vol) as vol from bars 
       where exchange='${exchange}' and tradingsymbol='${symbol}' group by time(${tf}),*) order by time desc limit ${limit}`;
 
-      query  = `select time,first(open) as open,max(high) as high,min(low) as low,last(close) as close,sum(vol) as vol from bars 
-      where exchange='${exchange}' and tradingsymbol='${symbol}' group by time(${tf}),*`;
+      //query  = `select time,first(open) as open,max(high) as high,min(low) as low,last(close) as close,sum(vol) as vol from bars 
+      //where exchange='${exchange}' and tradingsymbol='${symbol}' group by time(${tf}),*`;
 
     }
     
@@ -40,9 +40,17 @@ const getBars = asyncHandler(async (req, res) => {
       data.forEach(row => {    
           if(c <= limit)
           {
-            console.log(row)
-            let ts = parseInt(row.time.getNanoTime()) /1000; 
-            output.push([ts/1000,row.open,row.high,row.low,row.close,row.vol]);
+            let ts = 0
+            if(tf == '1m')
+            {
+                ts =parseInt(row.time.getNanoTime()) /1000; 
+                ts = ts / 1000
+            } 
+            else 
+            {
+                ts = new Date(row.ts).getTime();           
+            }
+            output.push([ts,row.open,row.high,row.low,row.close,row.vol]);
           }
           c++
         })
