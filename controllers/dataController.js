@@ -33,6 +33,7 @@ const getBars = asyncHandler(async (req, res) => {
       var output = new Array();       
       rows.forEach(row => {    
           let ts = parseInt(row.time.getNanoTime()) /1000;    
+          console.log(row)
           output.push([ts/1000,row.open,row.high,row.low,row.close,row.vol]);
         })
         res.status(200).json(output.reverse()) 
