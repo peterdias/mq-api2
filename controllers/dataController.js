@@ -22,24 +22,18 @@ const getBars = asyncHandler(async (req, res) => {
     }
     else 
     {
-      query  = `select * from (select first(time) as time,first(open) as open,max(high) as high,min(low) as low,last(close) as close,sum(vol) as vol from bars 
+      query  = `select time as ts, * from (select time,first(open) as open,max(high) as high,min(low) as low,last(close) as close,sum(vol) as vol from bars 
       where exchange='${exchange}' and tradingsymbol='${symbol}' group by time(${tf}),*) order by time desc limit ${limit}`;
-
-      //query  = `select time,first(open) as open,max(high) as high,min(low) as low,last(close) as close,sum(vol) as vol from bars 
-      //where exchange='${exchange}' and tradingsymbol='${symbol}' group by time(${tf}),*`;
-
     }
     
     //console.log(query)
 
     influx.query(query)
     .then( rows => { 
-      let data = rows.reverse()
       var output = new Array();  
-      let c = 1     
-      data.forEach(row => {    
-          if(c <= limit)
-          {
+   
+      rows.forEach(row => { 
+            //console.log(row)
             let ts = 0
             if(tf == '1m')
             {
@@ -50,9 +44,7 @@ const getBars = asyncHandler(async (req, res) => {
             {
                 ts = new Date(row.ts).getTime();           
             }
-            output.push([ts,row.open,row.high,row.low,row.close,row.vol]);
-          }
-          c++
+            output.push([ts,row.open,row.high,row.low,row.close,row.vol]);      
         })
         res.status(200).json(output.reverse()) 
       } 
