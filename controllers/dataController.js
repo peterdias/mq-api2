@@ -22,8 +22,8 @@ const getBars = asyncHandler(async (req, res) => {
     }
     else 
     {
-      query  = `select time,first(open) as open,max(high) as high,min(low) as low,last(close) as close,sum(vol) as vol from bars 
-      where exchange='${exchange}' and tradingsymbol='${symbol}' group by time(${tf}),* order by time desc limit ${limit}`;
+      query  = `select * from (select time,first(open) as open,max(high) as high,min(low) as low,last(close) as close,sum(vol) as vol from bars 
+      where exchange='${exchange}' and tradingsymbol='${symbol}' group by time(${tf}),*) order by time desc limit ${limit}`;
     }
     
     //console.log(query)
