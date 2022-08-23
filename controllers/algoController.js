@@ -6,12 +6,12 @@ const BotModel = require('../models/bot')
 
 const saveStrategy = asyncHandler(async (req, res) => {
     const { data,uid } = req.body
-
-    if(data.title.substring(0,2) == 'n-') //New Strategy
+    let st = JSON.parse(data)    
+    if(st.title.substring(0,2) == 'n-') //New Strategy
     {
         const strategy = await StrategyModel.create({
-            title: data.title,    
-            description: data.description,       
+            title: st.title,    
+            description: st.description,       
             uid: mongoose.Types.ObjectId(uid)
         })
 
