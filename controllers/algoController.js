@@ -7,7 +7,7 @@ const BotModel = require('../models/bot')
 const saveStrategy = asyncHandler(async (req, res) => {
     const { data,uid } = req.body
     let st = JSON.parse(data)  
-    console.log("111")  
+    console.log(st)  
     if(st.title.substring(0,2) == 'n-') //New Strategy
     {   console.log("222")  
         const strategy = await StrategyModel.create({
