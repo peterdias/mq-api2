@@ -6,9 +6,10 @@ const BotModel = require('../models/bot')
 
 const saveStrategy = asyncHandler(async (req, res) => {
     const { data,uid } = req.body
-    let st = JSON.parse(data)    
+    let st = JSON.parse(data)  
+    console.log("111")  
     if(st.title.substring(0,2) == 'n-') //New Strategy
-    {
+    {   console.log("222")  
         const strategy = await StrategyModel.create({
             title: st.title,    
             description: st.description,       
@@ -16,7 +17,8 @@ const saveStrategy = asyncHandler(async (req, res) => {
         })
 
         if (strategy) {
-            res.status(201).json({ id: st._id })
+            console.log("333")  
+            res.status(201).json({ id: strategy._id })
         } else {
             res.status(400)
             throw new Error('Strategy coundnt be created')
@@ -24,7 +26,9 @@ const saveStrategy = asyncHandler(async (req, res) => {
     }
     else //Update Existing Strategy
     {
-
+        console.log("444")  
+        res.status(400)
+        throw new Error('Strategy coundnt be updated')
     }
 })
 
