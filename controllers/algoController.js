@@ -110,8 +110,28 @@ const getStrategies = asyncHandler(async (req, res) => {
     }
 })
 
+const getStrategy = asyncHandler(async (req, res) => {
+    const { sid,uid } = req.body
+
+    let strategy = await StrategyModel.findOne({"_id":mongoose.Types.ObjectId(sid),"uid": mongoose.Types.ObjectId(uid)})
+
+    if(strategy)
+    {
+        let bots = []
+        bots = await BotModel.find({"_id": mongoose.Types.ObjectId(strategy._id)})
+
+        strategy.bots = bots
+        res.status(201).json(strategy)
+    }
+    else 
+    {
+        res.status(201).json({status:'error',message:'Strategy Not Found'})         
+    }
+})
+
 module.exports = {
     saveStrategy,
     deleteBot,
-    getStrategies
+    getStrategies,
+    getStrategy
 }
