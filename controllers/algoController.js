@@ -84,11 +84,10 @@ const deleteBot = asyncHandler(async (req, res) => {
     {
         BotModel.findByIdAndRemove({'_id': mongoose.Types.ObjectId(botid)},function (err, docs) {
             if (err){
-                res.status(400)
-                throw new Error('Bot not Found')
+                res.status(201).json({status:'error',message:'Bot Not found'})                
             }
             else{
-                res.status(201).json({status: 'Bot Removed'})
+                res.status(201).json({status:'success', message: 'Bot Removed'})
             }
         })
     }
