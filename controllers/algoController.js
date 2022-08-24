@@ -8,20 +8,33 @@ const saveStrategy = asyncHandler(async (req, res) => {
     const { data,uid } = req.body
     let st = JSON.parse(data)  
     
+    let strategy = null
+    let newbots = [] 
     if(st.id.substring(0,2) == 'n-') //New Strategy
-    {   
-        let newbots = []  
-        const strategy = await StrategyModel.create({
+    {     
+        strategy = await StrategyModel.create({
             title: st.title,    
             description: st.description,       
             uid: mongoose.Types.ObjectId(uid)
-        })
+        })        
+    }
+    else 
+    {        
+        strategy = await StrategyModel.findOne({"_id": mongoose.Types.ObjectId(st.id), "uid": mongoose.Types.ObjectId(uid)})
+    }
 
-        if(strategy)
-        {   
-            for (const b of st.bots)
+    if(strategy)
+    {   
+        strategy.title = st.title 
+        strategy.description = st.description 
+        strategy.save() 
+        
+        for (const b of st.bots)
+        {
+            let bot = null
+            if(b.id.substring(0,2) == 'n-')
             {
-                const bot = await BotModel.create(
+                bot = await BotModel.create(
                     {
                         sid: mongoose.Types.ObjectId(strategy._id),
                         entry_code: b.entry_code,
@@ -36,21 +49,30 @@ const saveStrategy = asyncHandler(async (req, res) => {
                     newbots.push({oldid: b.id, newid: bot._id})
                 }
             }
-        }
+            else 
+            {
+                bot = await BotModel.findOne({_id: mongoose.Types.ObjectId(b.id) })
+            }
 
-        if (strategy) {            
-            res.status(201).json({ id: strategy._id, newbots: newbots })
-        } else {
-            res.status(400)
-            throw new Error('Strategy coundnt be created')
+            if(bot)
+            {
+                bot.entry_code= b.entry_code
+                bot.entry_xml= b.entry_xml
+                bot.exit_code= b.exit_code
+                bot.exit_xml= b.exit_xml
+
+                bot.save()
+            }
         }
     }
-    else //Update Existing Strategy
-    {
-        console.log("444")  
+
+    if (strategy) {            
+        res.status(201).json({ id: strategy._id, newbots: newbots })
+    } else {
         res.status(400)
-        throw new Error('Strategy coundnt be updated')
+        throw new Error('Strategy coundnt be saved')
     }
+
 })
 
 module.exports = {
