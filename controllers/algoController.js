@@ -19,7 +19,8 @@ const saveStrategy = asyncHandler(async (req, res) => {
 
         if(strategy)
         {   
-            st.bots.forEach(b => {
+            for (const b of st.bots)
+            {
                 const bot = await BotModel.create(
                     {
                         sid: mongoose.Types.ObjectId(strategy._id),
@@ -34,7 +35,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
                 {                    
                     newbots.push({oldid: b.id, newid: bot._id})
                 }
-            })
+            }
         }
 
         if (strategy) {            
