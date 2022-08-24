@@ -27,7 +27,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
     {   
         strategy.title = st.title 
         strategy.description = st.description 
-        strategy.save() 
+        await strategy.save() 
         
         for (const b of st.bots)
         {
@@ -61,7 +61,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
                 bot.exit_code= b.exit_code
                 bot.exit_xml= b.exit_xml
 
-                bot.save()
+                await bot.save()
             }
         }
     }
