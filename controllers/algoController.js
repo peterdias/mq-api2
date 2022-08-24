@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const StrategyModel = require('../models/strategy')
 const BotModel = require('../models/bot')
 const BotTransaction = require('../models/bottransaction')
+const bot = require('../models/bot')
 
 const saveStrategy = asyncHandler(async (req, res) => {
     const { data,uid } = req.body
@@ -151,11 +152,14 @@ const deleteStrategy = asyncHandler(async (req, res) => {
 
             await bot.remove().exec()
         }
+
+        await bot.remove().exec()
+
+        res.status(201).json({status:'success',message:'Strategy has been deleted'})
     }
     else 
     {
-        res.status(400)
-        throw new Error('Strategy not found')
+        res.status(201).json({status:'error',message:'Strategy Not Found'}) 
     }
 })
 
