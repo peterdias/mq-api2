@@ -83,7 +83,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
                 bot.exit_code= b.exit_code
                 bot.exit_xml= b.exit_xml                    
                 await bot.save()
-                for(var t of bot.entry_transactions)
+                for(var t of b.entry_transactions)
                 {
                     const et = await BotTransaction.findOne({_id: mongoose.Types.ObjectId(t._id) })
                     if(et)
