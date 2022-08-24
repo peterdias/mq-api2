@@ -145,15 +145,17 @@ const deleteStrategy = asyncHandler(async (req, res) => {
         bots = await BotModel.find({"sid": mongoose.Types.ObjectId(strategy._id)})
         for(const bot of bots)
         {
-            const entry_transactions = await BotTransaction.find({"bid": mongoose.Types.ObjectId(bot._id)})
+            // const entry_transactions = await BotTransaction.find({"bid": mongoose.Types.ObjectId(bot._id)})
 
-            if(entry_transactions)
-            {
-                for(const trans of entry_transactions)
-                {
-                    await BotTransaction.findOneAndRemove({"_id": mongoose.Types.ObjectId(trans._id)})
-                }
-            }
+            // if(entry_transactions)
+            // {
+            //     for(const trans of entry_transactions)
+            //     {
+            //         await BotTransaction.findOneAndRemove({"_id": mongoose.Types.ObjectId(trans._id)})
+            //     }
+            // }
+
+            await BotTransaction.remove({"bid": mongoose.Types.ObjectId(bot._id)})
 
             await bot.remove()
         }
