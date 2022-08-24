@@ -18,20 +18,20 @@ const saveStrategy = asyncHandler(async (req, res) => {
         })
 
         if(strategy)
-        {
+        {   
             st.bots.forEach(b => {
                 const bot = await BotModel.create(
                     {
                         sid: mongoose.Types.ObjectId(strategy._id),
                         entry_code: b.entry_code,
                         entry_xml: b.entry_xml,
-                        exit_code: st.exit_code,
-                        exit_xml: st.exit_xml
+                        exit_code: b.exit_code,
+                        exit_xml: b.exit_xml
                     }
                 )
-
+                
                 if(bot)
-                {
+                {                    
                     newbots.push({oldid: b.id, newid: bot._id})
                 }
             })

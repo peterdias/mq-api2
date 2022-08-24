@@ -8,7 +8,6 @@ const Bot = mongoose.Schema(
         entry_xml: {type: String }, 
         exit_code: {type: String }, 
         exit_xml: {type: String },  
-        uid: { type: mongoose.Schema.ObjectId, ref: 'users' }
     },
     {
       timestamps: true,
