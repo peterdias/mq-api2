@@ -155,10 +155,10 @@ const deleteStrategy = asyncHandler(async (req, res) => {
                 }
             }
 
-            await bot.remove().exec()
+            await bot.remove()
         }
 
-        await bot.remove().exec()
+        await strategy.remove()
 
         res.status(201).json({status:'success',message:'Strategy has been deleted'})
     }
