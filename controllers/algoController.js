@@ -201,10 +201,26 @@ const getStrategy = asyncHandler(async (req, res) => {
     }
 })
 
+const getTransactions = asyncHandler(async (req, res) => {
+    const { botid,block } = req.body
+
+    const trans = await BotTransaction.find({"bid": mongoose.Types.ObjectId(botid),"block": block})
+
+    if(trans)
+    {
+        res.status(201).json(trans)
+    }
+    else 
+    {
+        res.status(201).json([])
+    }
+})
+
 module.exports = {
     saveStrategy,
     deleteBot,
     getStrategies,
     getStrategy,
-    deleteStrategy
+    deleteStrategy,
+    getTransactions
 }
