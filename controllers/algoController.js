@@ -32,7 +32,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
         for (const b of st.bots)
         {
             let bot = null
-            if(b.id.substring(0,2) == 'n-')
+            if(b._id.substring(0,2) == 'n-')
             {
                 bot = await BotModel.create(
                     {
@@ -51,7 +51,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
             }
             else 
             {
-                bot = await BotModel.findOne({_id: mongoose.Types.ObjectId(b.id) })
+                bot = await BotModel.findOne({_id: mongoose.Types.ObjectId(b._id) })
             }
 
             if(bot)
@@ -67,12 +67,10 @@ const saveStrategy = asyncHandler(async (req, res) => {
     }
 
     if (strategy) {            
-        res.status(201).json({ id: strategy._id, newbots: newbots })
+        res.status(201).json({status: 'success',message:'', id: strategy._id, newbots: newbots })
     } else {
-        res.status(400)
-        throw new Error('Strategy coundnt be saved')
+        res.status(201).json({status:'error',message: 'Error saving strategy'})        
     }
-
 })
 
 const deleteBot = asyncHandler(async (req, res) => {
