@@ -115,13 +115,14 @@ const getStrategy = asyncHandler(async (req, res) => {
 
     let strategy = await StrategyModel.findOne({"_id":mongoose.Types.ObjectId(sid),"uid": mongoose.Types.ObjectId(uid)})
 
+    
     if(strategy)
     {
         let bots = []
         bots = await BotModel.find({"_id": mongoose.Types.ObjectId(strategy._id)})
-
-        strategy.bots = bots
-        res.status(201).json(strategy)
+        console.log("BOTS: ", bots.length)
+        let output = {_id: strategy._id, title: strategy.title, description: strategy.description, bots: bots}
+        res.status(201).json(output)
     }
     else 
     {
