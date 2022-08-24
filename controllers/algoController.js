@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 
 const StrategyModel = require('../models/strategy')
 const BotModel = require('../models/bot')
+const BotTransaction = require('../models/bottransaction')
 
 const saveStrategy = asyncHandler(async (req, res) => {
     const { data,uid } = req.body
@@ -10,6 +11,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
     
     let strategy = null
     let newbots = [] 
+    let newtransactions = []
     if(st.id.substring(0,2) == 'n-') //New Strategy
     {     
         strategy = await StrategyModel.create({
@@ -45,7 +47,26 @@ const saveStrategy = asyncHandler(async (req, res) => {
                 )
                 
                 if(bot)
-                {                    
+                {
+                    for(const t of b.entry_transactions)
+                    {
+                        const trans = await BotTransaction.create(
+                            {
+                                bid: mongoose.Types.ObjectId(bot._id),
+                                trans: t.trans,
+                                symbol: t.symbol,
+                                strike: t.strike,
+                                type: t.type,
+                                qty: t.qty,
+                                exchange: t.exchange,                
+                                product: t.product,
+                                expiry: t.expiry,
+                                tradingsymbol: t.tradingsymbol
+                            }
+                        )
+
+                        if(trans) newtransactions.push({oldid: t._id, newid: trans._id})
+                    }                   
                     newbots.push({oldid: b.id, newid: bot._id})
                 }
             }
@@ -59,15 +80,31 @@ const saveStrategy = asyncHandler(async (req, res) => {
                 bot.entry_code= b.entry_code
                 bot.entry_xml= b.entry_xml
                 bot.exit_code= b.exit_code
-                bot.exit_xml= b.exit_xml
-
+                bot.exit_xml= b.exit_xml                    
                 await bot.save()
+                for(var t of bot.entry_transactions)
+                {
+                    const et = await BotTransaction.findOne({_id: mongoose.Types.ObjectId(t._id) })
+                    if(et)
+                    {
+                        et.trans= t.trans
+                        et.symbol= t.symbol
+                        et.strike= t.strike
+                        et.type= t.type
+                        et.qty= t.qty
+                        et.exchange= t.exchange               
+                        et.product= t.product
+                        et.expiry= t.expiry
+                        et.tradingsymbol= t.tradingsymbol
+                        await et.save()
+                    }
+                }
             }
         }
     }
 
     if (strategy) {            
-        res.status(201).json({status: 'success',message:'', id: strategy._id, newbots: newbots })
+        res.status(201).json({status: 'success',message:'', id: strategy._id, newbots: newbots,newtransactions: newtransactions })
     } else {
         res.status(201).json({status:'error',message: 'Error saving strategy'})        
     }
@@ -88,6 +125,27 @@ const deleteBot = asyncHandler(async (req, res) => {
                 res.status(201).json({status:'success', message: 'Bot Removed'})
             }
         })
+    }
+    else 
+    {
+        res.status(400)
+        throw new Error('Strategy not found')
+    }
+})
+
+const deleteStrategy = asyncHandler(async (req, res) => {
+    const { sid,uid } = req.body
+
+    const strategy = await StrategyModel.findOne({"_id": mongoose.Types.ObjectId(sid), "uid": mongoose.Types.ObjectId(uid)})
+    
+    if(strategy)
+    {
+        let bots = []
+        bots = await BotModel.find({"sid": mongoose.Types.ObjectId(strategy._id)})
+        for(const bot of bots)
+        {
+
+        }
     }
     else 
     {
@@ -131,5 +189,6 @@ module.exports = {
     saveStrategy,
     deleteBot,
     getStrategies,
-    getStrategy
+    getStrategy,
+    deleteStrategy
 }
