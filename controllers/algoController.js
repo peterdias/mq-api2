@@ -7,18 +7,38 @@ const BotModel = require('../models/bot')
 const saveStrategy = asyncHandler(async (req, res) => {
     const { data,uid } = req.body
     let st = JSON.parse(data)  
-    console.log(st)  
+    
     if(st.id.substring(0,2) == 'n-') //New Strategy
-    {   console.log("222")  
+    {   
+        let newbots = []  
         const strategy = await StrategyModel.create({
             title: st.title,    
             description: st.description,       
             uid: mongoose.Types.ObjectId(uid)
         })
 
-        if (strategy) {
-            console.log("333")  
-            res.status(201).json({ id: strategy._id })
+        if(strategy)
+        {
+            st.bots.forEach(b => {
+                const bot = await BotModel.create(
+                    {
+                        sid: mongoose.Types.ObjectId(strategy._id),
+                        entry_code: b.entry_code,
+                        entry_xml: b.entry_xml,
+                        exit_code: st.exit_code,
+                        exit_xml: st.exit_xml
+                    }
+                )
+
+                if(bot)
+                {
+                    newbots.push({oldid: b.id, newid: bot._id})
+                }
+            })
+        }
+
+        if (strategy) {            
+            res.status(201).json({ id: strategy._id, newbots: newbots })
         } else {
             res.status(400)
             throw new Error('Strategy coundnt be created')
