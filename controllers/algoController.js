@@ -128,6 +128,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
                 }
             }            
         }
+        
     }
 
     if (strategy) {            
@@ -158,6 +159,20 @@ const deleteBot = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('Strategy not found')
     }
+})
+
+const deleteTransaction = asyncHandler(async (req, res) => {
+    const { id,uid } = req.body
+
+    BotTransaction.findByIdAndRemove({'_id': mongoose.Types.ObjectId(id)},function (err, docs) {
+        if (err){
+            res.status(201).json({status:'error',message:'Transaction Not found'})                
+        }
+        else{
+            res.status(201).json({status:'success', message: 'Transaction Removed'})
+        }
+    })
+   
 })
 
 const deleteStrategy = asyncHandler(async (req, res) => {
@@ -246,5 +261,6 @@ module.exports = {
     getStrategies,
     getStrategy,
     deleteStrategy,
-    getTransactions
+    getTransactions,
+    deleteTransaction
 }
