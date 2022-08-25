@@ -74,57 +74,55 @@ const saveStrategy = asyncHandler(async (req, res) => {
             else 
             {
                 bot = await BotModel.findOne({_id: mongoose.Types.ObjectId(b._id) })
-            }
-
-            if(bot)
-            {
-                bot.entry_code= b.entry_code
-                bot.entry_xml= b.entry_xml
-                bot.exit_code= b.exit_code
-                bot.exit_xml= b.exit_xml                    
-                await bot.save()
-                for(var t of st.transactions)
+                if(bot)
                 {
-                    if(t._id.substring(0,2)=='n-')//New Transaction
+                    bot.entry_code= b.entry_code
+                    bot.entry_xml= b.entry_xml
+                    bot.exit_code= b.exit_code
+                    bot.exit_xml= b.exit_xml                    
+                    await bot.save()
+                    for(var t of st.transactions)
                     {
-                        const trans = await BotTransaction.create(
-                            {
-                                botid: mongoose.Types.ObjectId(bot._id),
-                                block: t.block,
-                                trans: t.trans,
-                                symbol: t.symbol,
-                                strike: t.strike,
-                                type: t.type,
-                                qty: t.qty,
-                                exchange: t.exchange,                
-                                product: t.product,
-                                expiry: t.expiry,
-                                tradingsymbol: t.tradingsymbol
-                            }
-                        )
-
-                        if(trans) newtransactions.push({oldid: t._id, newid: trans._id})
-                    }
-                    else //Update Transaction
-                    {
-                        const et = await BotTransaction.findOne({_id: mongoose.Types.ObjectId(t._id) })
-                        if(et)
+                        if(t._id.substring(0,2)=='n-')//New Transaction
                         {
-                            et.trans= t.trans
-                            et.symbol= t.symbol
-                            et.strike= t.strike
-                            et.type= t.type
-                            et.qty= t.qty
-                            et.exchange= t.exchange               
-                            et.product= t.product
-                            et.expiry= t.expiry
-                            et.tradingsymbol= t.tradingsymbol
-                            await et.save()
+                            const trans = await BotTransaction.create(
+                                {
+                                    botid: mongoose.Types.ObjectId(bot._id),
+                                    block: t.block,
+                                    trans: t.trans,
+                                    symbol: t.symbol,
+                                    strike: t.strike,
+                                    type: t.type,
+                                    qty: t.qty,
+                                    exchange: t.exchange,                
+                                    product: t.product,
+                                    expiry: t.expiry,
+                                    tradingsymbol: t.tradingsymbol
+                                }
+                            )
+
+                            if(trans) newtransactions.push({oldid: t._id, newid: trans._id})
                         }
+                        else //Update Transaction
+                        {
+                            const et = await BotTransaction.findOne({_id: mongoose.Types.ObjectId(t._id) })
+                            if(et)
+                            {
+                                et.trans= t.trans
+                                et.symbol= t.symbol
+                                et.strike= t.strike
+                                et.type= t.type
+                                et.qty= t.qty
+                                et.exchange= t.exchange               
+                                et.product= t.product
+                                et.expiry= t.expiry
+                                et.tradingsymbol= t.tradingsymbol
+                                await et.save()
+                            }
+                        }                    
                     }
-                    
                 }
-            }
+            }            
         }
     }
 
