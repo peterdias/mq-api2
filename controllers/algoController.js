@@ -50,6 +50,8 @@ const saveStrategy = asyncHandler(async (req, res) => {
                 {
                     for(const t of st.transactions)
                     {
+                        if(t.botid!=bot._id) continue
+                        
                         const trans = await BotTransaction.create(
                             {
                                 botid: mongoose.Types.ObjectId(bot._id),
@@ -83,6 +85,8 @@ const saveStrategy = asyncHandler(async (req, res) => {
                     await bot.save()
                     for(var t of st.transactions)
                     {
+                        if(t.botid!=bot._id) continue
+
                         if(t._id.substring(0,2)=='n-')//New Transaction
                         {
                             const trans = await BotTransaction.create(
