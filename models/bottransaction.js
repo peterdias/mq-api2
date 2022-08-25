@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 
 const BotTransaction = mongoose.Schema(
     {
-        bid: { type: mongoose.Schema.ObjectId, ref: 'bots' },
+        botid: { type: mongoose.Schema.ObjectId, ref: 'bots' },
         block: {type: String },    
         trans: {type: String },     
         entry_xml: {type: String }, 
