@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler')
 const mongoose = require('mongoose')
 
 const StrategyModel = require('../models/strategy')
-const BotModel = require('../models/bot')
+const Sequence = require('../models/sequence')
 const BotTransaction = require('../models/bottransaction')
 
 const saveStrategy = asyncHandler(async (req, res) => {
@@ -33,10 +33,10 @@ const saveStrategy = asyncHandler(async (req, res) => {
         
         for (const b of st.bots)
         {
-            let bot = null
+            let sequence = null
             if(b._id.substring(0,2) == 'n-')
             {
-                bot = await BotModel.create(
+                sequence = await Sequence.create(
                     {
                         sid: mongoose.Types.ObjectId(strategy._id),
                         entry_code: b.entry_code,
@@ -46,85 +46,85 @@ const saveStrategy = asyncHandler(async (req, res) => {
                     }
                 )
                 
-                if(bot)
+                if(sequence)
                 {
-                    for(const t of st.transactions)
-                    {
-                        if(t.botid!=b._id) continue
+                    // for(const t of st.transactions)
+                    // {
+                    //     if(t.botid!=b._id) continue
 
-                        const trans = await BotTransaction.create(
-                            {
-                                botid: mongoose.Types.ObjectId(bot._id),
-                                block: t.block,
-                                trans: t.trans,
-                                symbol: t.symbol,
-                                strike: t.strike,
-                                type: t.type,
-                                qty: t.qty,
-                                exchange: t.exchange,                
-                                product: t.product,
-                                expiry: t.expiry,
-                                tradingsymbol: t.tradingsymbol
-                            }
-                        )
+                    //     const trans = await BotTransaction.create(
+                    //         {
+                    //             botid: mongoose.Types.ObjectId(bot._id),
+                    //             block: t.block,
+                    //             trans: t.trans,
+                    //             symbol: t.symbol,
+                    //             strike: t.strike,
+                    //             type: t.type,
+                    //             qty: t.qty,
+                    //             exchange: t.exchange,                
+                    //             product: t.product,
+                    //             expiry: t.expiry,
+                    //             tradingsymbol: t.tradingsymbol
+                    //         }
+                    //     )
 
-                        if(trans) newtransactions.push({oldid: t._id, newid: trans._id})
-                    }                   
+                    //     if(trans) newtransactions.push({oldid: t._id, newid: trans._id})
+                    // }                   
                     newbots.push({oldid: b.id, newid: bot._id})
                 }
             }
             else 
             {
-                bot = await BotModel.findOne({_id: mongoose.Types.ObjectId(b._id) })
-                if(bot)
+                sequence = await Sequence.findOne({_id: mongoose.Types.ObjectId(b._id) })
+                if(sequence)
                 {
-                    bot.entry_code= b.entry_code
-                    bot.entry_xml= b.entry_xml
-                    bot.exit_code= b.exit_code
-                    bot.exit_xml= b.exit_xml                    
-                    await bot.save()
-                    for(var t of st.transactions)
-                    {
-                        if(t.botid!= b._id) continue
+                    sequence.entry_code= b.entry_code
+                    sequence.entry_xml= b.entry_xml
+                    sequence.exit_code= b.exit_code
+                    sequence.exit_xml= b.exit_xml                    
+                    await sequence.save()
+                    // for(var t of st.transactions)
+                    // {
+                    //     if(t.botid!= b._id) continue
 
-                        if(t._id.substring(0,2)=='n-')//New Transaction
-                        {
-                            const trans = await BotTransaction.create(
-                                {
-                                    botid: mongoose.Types.ObjectId(bot._id),
-                                    block: t.block,
-                                    trans: t.trans,
-                                    symbol: t.symbol,
-                                    strike: t.strike,
-                                    type: t.type,
-                                    qty: t.qty,
-                                    exchange: t.exchange,                
-                                    product: t.product,
-                                    expiry: t.expiry,
-                                    tradingsymbol: t.tradingsymbol
-                                }
-                            )
+                    //     if(t._id.substring(0,2)=='n-')//New Transaction
+                    //     {
+                    //         const trans = await BotTransaction.create(
+                    //             {
+                    //                 botid: mongoose.Types.ObjectId(sequence._id),
+                    //                 block: t.block,
+                    //                 trans: t.trans,
+                    //                 symbol: t.symbol,
+                    //                 strike: t.strike,
+                    //                 type: t.type,
+                    //                 qty: t.qty,
+                    //                 exchange: t.exchange,                
+                    //                 product: t.product,
+                    //                 expiry: t.expiry,
+                    //                 tradingsymbol: t.tradingsymbol
+                    //             }
+                    //         )
 
-                            if(trans) newtransactions.push({oldid: t._id, newid: trans._id})
-                        }
-                        else //Update Transaction
-                        {
-                            const et = await BotTransaction.findOne({_id: mongoose.Types.ObjectId(t._id) })
-                            if(et)
-                            {
-                                et.trans= t.trans
-                                et.symbol= t.symbol
-                                et.strike= t.strike
-                                et.type= t.type
-                                et.qty= t.qty
-                                et.exchange= t.exchange               
-                                et.product= t.product
-                                et.expiry= t.expiry
-                                et.tradingsymbol= t.tradingsymbol
-                                await et.save()
-                            }
-                        }                    
-                    }
+                    //         if(trans) newtransactions.push({oldid: t._id, newid: trans._id})
+                    //     }
+                    //     else //Update Transaction
+                    //     {
+                    //         const et = await BotTransaction.findOne({_id: mongoose.Types.ObjectId(t._id) })
+                    //         if(et)
+                    //         {
+                    //             et.trans= t.trans
+                    //             et.symbol= t.symbol
+                    //             et.strike= t.strike
+                    //             et.type= t.type
+                    //             et.qty= t.qty
+                    //             et.exchange= t.exchange               
+                    //             et.product= t.product
+                    //             et.expiry= t.expiry
+                    //             et.tradingsymbol= t.tradingsymbol
+                    //             await et.save()
+                    //         }
+                    //     }                    
+                    // }
                 }
             }            
         }
@@ -138,19 +138,19 @@ const saveStrategy = asyncHandler(async (req, res) => {
     }
 })
 
-const deleteBot = asyncHandler(async (req, res) => {
+const deleteSequence = asyncHandler(async (req, res) => {
     const { sid,botid,uid } = req.body
 
     const strategy = await StrategyModel.findOne({"_id": mongoose.Types.ObjectId(sid), "uid": mongoose.Types.ObjectId(uid)})
 
     if(strategy)
     {
-        BotModel.findByIdAndRemove({'_id': mongoose.Types.ObjectId(botid)},function (err, docs) {
+        Sequence.findByIdAndRemove({'_id': mongoose.Types.ObjectId(botid)},function (err, docs) {
             if (err){
-                res.status(201).json({status:'error',message:'Bot Not found'})                
+                res.status(201).json({status:'error',message:'Sequence Not found'})                
             }
             else{
-                res.status(201).json({status:'success', message: 'Bot Removed'})
+                res.status(201).json({status:'success', message: 'Sequence Removed'})
             }
         })
     }
@@ -182,12 +182,12 @@ const deleteStrategy = asyncHandler(async (req, res) => {
     
     if(strategy)
     {
-        let bots = []
-        bots = await BotModel.find({"sid": mongoose.Types.ObjectId(strategy._id)})
-        for(const bot of bots)
+        let sequences = []
+        sequences = await Sequence.find({"sid": mongoose.Types.ObjectId(strategy._id)})
+        for(const sequence of sequences)
         {
-            await BotTransaction.remove({"botid": mongoose.Types.ObjectId(bot._id)})
-            await bot.remove()
+            //await BotTransaction.remove({"botid": mongoose.Types.ObjectId(bot._id)})
+            await sequence.remove()
         }
 
         await strategy.remove()
@@ -218,10 +218,10 @@ const getStrategy = asyncHandler(async (req, res) => {
     
     if(strategy)
     {
-        let bots = []
-        bots = await BotModel.find({"sid": mongoose.Types.ObjectId(strategy._id)})
+        let sequences = []
+        sequences = await Sequence.find({"sid": mongoose.Types.ObjectId(strategy._id)})
         let transactions = []
-        for(const bot of bots)
+        for(const bot of sequences)
         {
             const trans = await BotTransaction.find({botid: mongoose.Types.ObjectId(bot._id) })
             if(trans)
@@ -257,7 +257,7 @@ const getTransactions = asyncHandler(async (req, res) => {
 
 module.exports = {
     saveStrategy,
-    deleteBot,
+    deleteSequence,
     getStrategies,
     getStrategy,
     deleteStrategy,

@@ -4,7 +4,7 @@ const { protect } = require('../middleware/authMiddleware')
 
 const {
     saveStrategy,
-    deleteBot,
+    deleteSequence,
     getStrategies,
     getStrategy,
     deleteStrategy,
@@ -14,7 +14,7 @@ const {
 
   
 router.post('/savestrategy',protect,saveStrategy)
-router.post('/deletebot',protect,deleteBot)
+router.post('/deletesequence',protect,deleteSequence)
 router.post('/deletestrategy',protect,deleteStrategy)
 router.post('/deletetransaction',protect,deleteTransaction)
 router.post('/getstrategies',protect,getStrategies)

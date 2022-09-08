@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 //mongoose.set('debug', true);
 
-const Bot = mongoose.Schema(
+const Sequence = mongoose.Schema(
     {
         sid: { type: mongoose.Schema.ObjectId, ref: 'strategies' },
         entry_code: {type: String },     
@@ -14,4 +14,4 @@ const Bot = mongoose.Schema(
     }
 )
 
-module.exports = mongoose.model('bots', Bot)
+module.exports = mongoose.model('sequences', Sequence)
