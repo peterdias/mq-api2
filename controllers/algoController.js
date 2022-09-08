@@ -10,7 +10,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
     let st = JSON.parse(data)  
     
     let strategy = null
-    let newbots = [] 
+    let newsequences = [] 
     let newtransactions = []
     if(st.id.substring(0,2) == 'n-') //New Strategy
     {     
@@ -31,18 +31,18 @@ const saveStrategy = asyncHandler(async (req, res) => {
         strategy.description = st.description 
         await strategy.save() 
         
-        for (const b of st.bots)
+        for (const s of st.sequences)
         {
             let sequence = null
-            if(b._id.substring(0,2) == 'n-')
+            if(s._id.substring(0,2) == 'n-')
             {
                 sequence = await Sequence.create(
                     {
                         sid: mongoose.Types.ObjectId(strategy._id),
-                        entry_code: b.entry_code,
-                        entry_xml: b.entry_xml,
-                        exit_code: b.exit_code,
-                        exit_xml: b.exit_xml
+                        entry_code: s.entry_code,
+                        entry_xml: s.entry_xml,
+                        exit_code: s.exit_code,
+                        exit_xml: s.exit_xml
                     }
                 )
                 
@@ -70,18 +70,18 @@ const saveStrategy = asyncHandler(async (req, res) => {
 
                     //     if(trans) newtransactions.push({oldid: t._id, newid: trans._id})
                     // }                   
-                    newbots.push({oldid: b.id, newid: bot._id})
+                    newsequences.push({oldid: s.id, newid: sequence._id})
                 }
             }
             else 
             {
-                sequence = await Sequence.findOne({_id: mongoose.Types.ObjectId(b._id) })
+                sequence = await Sequence.findOne({_id: mongoose.Types.ObjectId(s._id) })
                 if(sequence)
                 {
-                    sequence.entry_code= b.entry_code
-                    sequence.entry_xml= b.entry_xml
-                    sequence.exit_code= b.exit_code
-                    sequence.exit_xml= b.exit_xml                    
+                    sequence.entry_code= s.entry_code
+                    sequence.entry_xml= s.entry_xml
+                    sequence.exit_code= s.exit_code
+                    sequence.exit_xml= s.exit_xml                    
                     await sequence.save()
                     // for(var t of st.transactions)
                     // {
@@ -132,7 +132,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
     }
 
     if (strategy) {            
-        res.status(201).json({status: 'success',message:'', id: strategy._id, newbots: newbots,newtransactions: newtransactions })
+        res.status(201).json({status: 'success',message:'', id: strategy._id, newsequences: newsequences,newtransactions: newtransactions })
     } else {
         res.status(201).json({status:'error',message: 'Error saving strategy'})        
     }
@@ -223,15 +223,15 @@ const getStrategy = asyncHandler(async (req, res) => {
         let transactions = []
         for(const bot of sequences)
         {
-            const trans = await BotTransaction.find({botid: mongoose.Types.ObjectId(bot._id) })
-            if(trans)
-            {
-                trans.forEach(t=>{
-                    transactions.push(t)
-                })
-            }
+            // const trans = await BotTransaction.find({botid: mongoose.Types.ObjectId(bot._id) })
+            // if(trans)
+            // {
+            //     trans.forEach(t=>{
+            //         transactions.push(t)
+            //     })
+            // }
         }
-        let output = {_id: strategy._id, title: strategy.title, description: strategy.description, bots: bots,transactions: transactions}
+        let output = {_id: strategy._id, title: strategy.title, description: strategy.description, sequences: sequences,transactions: transactions}
         res.status(201).json(output)
     }
     else 
