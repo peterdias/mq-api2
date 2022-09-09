@@ -223,6 +223,20 @@ const deleteTransaction = asyncHandler(async (req, res) => {
    
 })
 
+const deleteManageRule= asyncHandler(async (req, res) => {
+    const { id,uid } = req.body
+
+    Managerule.findByIdAndRemove({'_id': mongoose.Types.ObjectId(id)},function (err, docs) {
+        if (err){
+            res.status(201).json({status:'error',message:'Manage Rule Not found'})                
+        }
+        else{
+            res.status(201).json({status:'success', message: 'Manage Rule Removed'})
+        }
+    })
+   
+})
+
 const deleteStrategy = asyncHandler(async (req, res) => {
     const { sid,uid } = req.body
 
@@ -310,5 +324,6 @@ module.exports = {
     getStrategy,
     deleteStrategy,
     getTransactions,
-    deleteTransaction
+    deleteTransaction,
+    deleteManageRule
 }

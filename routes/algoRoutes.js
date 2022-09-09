@@ -9,12 +9,14 @@ const {
     getStrategy,
     deleteStrategy,
     getTransactions,
-    deleteTransaction
+    deleteTransaction,
+    deleteManageRule
   } = require('../controllers/algoController')
 
   
 router.post('/savestrategy',protect,saveStrategy)
 router.post('/deletesequence',protect,deleteSequence)
+router.post('/deletemanagerule',protect,deleteManageRule)
 router.post('/deletestrategy',protect,deleteStrategy)
 router.post('/deletetransaction',protect,deleteTransaction)
 router.post('/getstrategies',protect,getStrategies)
