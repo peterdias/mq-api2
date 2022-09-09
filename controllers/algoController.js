@@ -230,7 +230,7 @@ const deleteStrategy = asyncHandler(async (req, res) => {
         sequences = await Sequence.find({"sid": mongoose.Types.ObjectId(strategy._id)})
         for(const sequence of sequences)
         {
-            //await BotTransaction.remove({"botid": mongoose.Types.ObjectId(bot._id)})
+            await ManageRule.remove({"sqid": mongoose.Types.ObjectId(sequence._id)})
             await sequence.remove()
         }
 
