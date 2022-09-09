@@ -12,6 +12,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
     
     let strategy = null
     let newsequences = [] 
+    let newmanagerules = []
     let newtransactions = []
     if(st.id.substring(0,2) == 'n-') //New Strategy
     {     
@@ -49,6 +50,19 @@ const saveStrategy = asyncHandler(async (req, res) => {
                 
                 if(sequence)
                 {
+                    for(const rule of st.managerules)
+                    {
+                        if(rule.seqid!= sequence._id) continue
+
+                        const newrule = await ManageRule.create({
+                            sqid: mongoose.Types.ObjectId(sequence._id),
+                        })
+
+                        if(newrule)
+                        {
+                            newmanagerules.push({oldid: rule._id, newid: newrule._id})
+                        }
+                    }
                     // for(const t of st.transactions)
                     // {
                     //     if(t.botid!=b._id) continue
@@ -84,6 +98,30 @@ const saveStrategy = asyncHandler(async (req, res) => {
                     sequence.exit_code= s.exit_code
                     sequence.exit_xml= s.exit_xml                    
                     await sequence.save()
+                    for(var rule of st.managerules)
+                    {
+                        if(rule.seqid!= sequence._id) continue
+                        
+                        if(rule._id.substring(0,2)=='n-') //New Rule
+                        {
+                            const newrule = await ManageRule.create({
+                                sqid: mongoose.Types.ObjectId(sequence._id),
+                            })
+
+                            if(newrule) newmanagerules.push({oldid: rule._id, newid: newrule._id})
+                             
+                        } 
+                        else { //Update Rule
+                            const er = await ManageRule.findOne({_id: mongoose.Types.ObjectId(rule._id) })
+                            if(er)
+                            {
+                                er.code = rule.code 
+                                er.xml = rule.xml 
+                                await er.save()
+                            }
+                        }  
+                    }
+
                     // for(var t of st.transactions)
                     // {
                     //     if(t.botid!= b._id) continue
