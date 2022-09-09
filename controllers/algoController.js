@@ -102,7 +102,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
                     await sequence.save()
                     for(var rule of st.managerules)
                     {
-                        if(rule.seqid!= sequence._id) continue
+                        if(rule.sqid!= sequence._id) continue
                         
                         if(rule._id.substring(0,2)=='n-') //New Rule
                         {
