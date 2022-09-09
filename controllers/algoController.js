@@ -87,7 +87,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
 
                     //     if(trans) newtransactions.push({oldid: t._id, newid: trans._id})
                     // }                   
-                    newsequences.push({oldid: s.id, newid: sequence._id})
+                    newsequences.push({oldid: s._id, newid: sequence._id})
                 }
             }
             else 
