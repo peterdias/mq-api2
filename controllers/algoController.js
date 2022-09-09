@@ -52,9 +52,9 @@ const saveStrategy = asyncHandler(async (req, res) => {
                 {
                     for(const rule of st.managerules)
                     {
-                        console.log("1")
-                        if(rule.seqid!= s._id) continue
-                        console.log("2")
+                        //console.log("1")
+                        if(rule.sqid!= s._id) continue
+                        //console.log("2")
                         const newrule = await ManageRule.create({
                             sqid: mongoose.Types.ObjectId(sequence._id),
                         })
@@ -62,7 +62,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
                         if(newrule)
                         {
                             newmanagerules.push({oldid: rule._id, newid: newrule._id})
-                            console.log("3")
+                            //console.log("3")
                         }
                     }
                     // for(const t of st.transactions)
@@ -173,7 +173,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
     }
 
     if (strategy) {    
-        console.log(newmanagerules)        
+        //console.log(newmanagerules)        
         res.status(201).json({status: 'success',message:'', id: strategy._id, newsequences: newsequences,newmanagerules: newmanagerules })
     } else {
         res.status(201).json({status:'error',message: 'Error saving strategy'})        
