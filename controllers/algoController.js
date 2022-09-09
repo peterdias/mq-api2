@@ -57,6 +57,8 @@ const saveStrategy = asyncHandler(async (req, res) => {
                         //console.log("2")
                         const newrule = await ManageRule.create({
                             sqid: mongoose.Types.ObjectId(sequence._id),
+                            code: rule.code,
+                            xml: rule.xml
                         })
 
                         if(newrule)
@@ -108,6 +110,8 @@ const saveStrategy = asyncHandler(async (req, res) => {
                         {
                             const newrule = await ManageRule.create({
                                 sqid: mongoose.Types.ObjectId(sequence._id),
+                                code: rule.code,
+                                xml: rule.xml
                             })
 
                             if(newrule) newmanagerules.push({oldid: rule._id, newid: newrule._id})
