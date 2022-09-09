@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 
 const StrategyModel = require('../models/strategy')
 const Sequence = require('../models/sequence')
+const ManageRule = require('../models/managerule')
 const BotTransaction = require('../models/bottransaction')
 
 const saveStrategy = asyncHandler(async (req, res) => {
@@ -139,17 +140,19 @@ const saveStrategy = asyncHandler(async (req, res) => {
 })
 
 const deleteSequence = asyncHandler(async (req, res) => {
-    const { sid,botid,uid } = req.body
+    const { sid,sqid,uid } = req.body
 
     const strategy = await StrategyModel.findOne({"_id": mongoose.Types.ObjectId(sid), "uid": mongoose.Types.ObjectId(uid)})
 
     if(strategy)
-    {
-        Sequence.findByIdAndRemove({'_id': mongoose.Types.ObjectId(botid)},function (err, docs) {
+    {        
+        Sequence.findByIdAndRemove({'_id': mongoose.Types.ObjectId(sqid)},function (err, docs) {
             if (err){
                 res.status(201).json({status:'error',message:'Sequence Not found'})                
             }
             else{
+                ManageRule.findByIdAndRemove({'sqid': mongoose.Types.ObjectId(sqid)})
+                
                 res.status(201).json({status:'success', message: 'Sequence Removed'})
             }
         })
@@ -220,18 +223,18 @@ const getStrategy = asyncHandler(async (req, res) => {
     {
         let sequences = []
         sequences = await Sequence.find({"sid": mongoose.Types.ObjectId(strategy._id)})
-        let transactions = []
-        for(const bot of sequences)
+        let manage_rules = []
+        for(const sequence of sequences)
         {
-            // const trans = await BotTransaction.find({botid: mongoose.Types.ObjectId(bot._id) })
-            // if(trans)
-            // {
-            //     trans.forEach(t=>{
-            //         transactions.push(t)
-            //     })
-            // }
+            const rules = await ManageRule.find({sqid: mongoose.Types.ObjectId(sequence._id) })
+            if(rules.length > 0) 
+            {
+                rules.forEach(r => {
+                    manage_rules.push(r)
+                })
+            }            
         }
-        let output = {_id: strategy._id, title: strategy.title, description: strategy.description, sequences: sequences,transactions: transactions}
+        let output = {_id: strategy._id, title: strategy.title, description: strategy.description, sequences: sequences,managerules: manage_rules}
         res.status(201).json(output)
     }
     else 
