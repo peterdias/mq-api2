@@ -52,7 +52,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
                 {
                     for(const rule of st.managerules)
                     {
-                        if(rule.seqid!= sequence._id) continue
+                        if(rule.seqid!= s._id) continue
 
                         const newrule = await ManageRule.create({
                             sqid: mongoose.Types.ObjectId(sequence._id),
@@ -171,7 +171,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
     }
 
     if (strategy) {            
-        res.status(201).json({status: 'success',message:'', id: strategy._id, newsequences: newsequences,newtransactions: newtransactions })
+        res.status(201).json({status: 'success',message:'', id: strategy._id, newsequences: newsequences,newmanagerules: newmanagerules })
     } else {
         res.status(201).json({status:'error',message: 'Error saving strategy'})        
     }
