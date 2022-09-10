@@ -4,7 +4,84 @@ const mongoose = require('mongoose')
 const StrategyModel = require('../models/strategy')
 const Sequence = require('../models/sequence')
 const ManageRule = require('../models/managerule')
+const Bot = require('../models/bot')
 const BotTransaction = require('../models/bottransaction')
+
+const saveBot = asyncHandler(async (req, res) => {
+    const { sid,botid,data,uid } = req.body
+    
+    let bd = JSON.parse(data)  
+    let newtransactions = []
+
+    let bot = null
+    if(botid.substring(0,2)=='n-')
+    {
+        bot = await Bot.create({
+            sid: mongoose.Types.ObjectId(sid),
+            title: bd.title,
+            status: bd.status
+        })        
+    }
+    else 
+    {
+        bot = await Bot.findOne({"_id": mongoose.Types.ObjectId(botid)})
+        bot.title = bd.title
+        bot.status = bd.status
+        await bot.save()
+    }
+
+    if(bot)
+    {
+        for (const t of bd.transactions)
+        {
+            if(t._id.substring(0,2)=='n-')
+            {
+                const newtrans = await BotTransaction.create(
+                        {
+                            botid: mongoose.Types.ObjectId(bot._id),
+                            sqid:  mongoose.Types.ObjectId(t.sqid),
+                            mrid:  mongoose.Types.ObjectId(t.mrid),
+                            block: t.block,
+                            trans: t.trans,
+                            symbol: t.symbol,
+                            strike: t.strike,
+                            type: t.type,
+                            qty: t.qty,
+                            exchange: t.exchange,                
+                            product: t.product,
+                            expiry: t.expiry,
+                            tradingsymbol: t.tradingsymbol
+                        }
+                    )
+
+                if(newtrans) newtransactions.push({oldid: t._id, newid: newtrans._id})
+            }
+            else
+            {
+                const et = await BotTransaction.findOne({_id: mongoose.Types.ObjectId(t._id) })
+                if(et)
+                {
+                    et.trans= t.trans
+                    et.symbol= t.symbol
+                    et.strike= t.strike
+                    et.type= t.type
+                    et.qty= t.qty
+                    et.exchange= t.exchange               
+                    et.product= t.product
+                    et.expiry= t.expiry
+                    et.tradingsymbol= t.tradingsymbol
+                    await et.save()
+                }
+            }
+        }
+    }
+
+    if (bot) { 
+        res.status(201).json({status: 'success',message:'', id: bot._id, newtransactions: newtransactions })
+    } else {
+        res.status(201).json({status:'error',message: 'Error saving bot'})        
+    }
+})
 
 const saveStrategy = asyncHandler(async (req, res) => {
     const { data,uid } = req.body
@@ -325,5 +402,6 @@ module.exports = {
     deleteStrategy,
     getTransactions,
     deleteTransaction,
-    deleteManageRule
+    deleteManageRule,
+    saveBot
 }
