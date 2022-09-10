@@ -386,9 +386,9 @@ const getStrategy = asyncHandler(async (req, res) => {
 })
 
 const getTransactions = asyncHandler(async (req, res) => {
-    const { botid,block } = req.body
+    const { botid,uid } = req.body
 
-    const trans = await BotTransaction.find({"botid": mongoose.Types.ObjectId(botid),"block": block})
+    const trans = await BotTransaction.find({"botid": mongoose.Types.ObjectId(botid)})
 
     if(trans)
     {
