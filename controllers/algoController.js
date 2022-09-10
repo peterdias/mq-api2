@@ -36,7 +36,7 @@ const saveBot = asyncHandler(async (req, res) => {
         {
             if(t._id.substring(0,2)=='n-')
             {
-                const newtrans = null
+                let newtrans = null
                 if(t.mrid !='')
                 {
                    newtrans = await BotTransaction.create(
