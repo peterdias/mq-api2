@@ -40,7 +40,7 @@ const saveBot = asyncHandler(async (req, res) => {
                         {
                             botid: mongoose.Types.ObjectId(bot._id),
                             sqid:  mongoose.Types.ObjectId(t.sqid),
-                            mrid:  mongoose.Types.ObjectId(t.mrid),
+                            mrid:  t.mrid!='' ? mongoose.Types.ObjectId(t.mrid): '',
                             block: t.block,
                             trans: t.trans,
                             symbol: t.symbol,
