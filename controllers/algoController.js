@@ -14,7 +14,12 @@ const deleteBot = asyncHandler(async (req, res) => {
 
     if(bot)
     {
-        await BotTransaction.findByIdAndRemove({'botid': mongoose.Types.ObjectId(botid)})
+        let transactions = await BotTransaction.find({'botid': mongoose.Types.ObjectId(botid)})
+        for(let trans of transactions)
+        {
+            await trans.remove()
+        }
+
         await bot.remove()
         res.status(201).json({status:'success',message:'Bot has been deleted'})
     }

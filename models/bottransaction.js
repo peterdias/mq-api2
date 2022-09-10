@@ -5,7 +5,7 @@ const BotTransaction = mongoose.Schema(
     {
         block: {type: String },
         botid: { type: mongoose.Schema.ObjectId, ref: 'bots' },
-        sqid: { type: mongoose.Schema.ObjectId, ref: 'bots' },
+        sqid: { type: mongoose.Schema.ObjectId, ref: 'sequences' },
         mrid: { type: mongoose.Schema.ObjectId, ref: 'managerules' },    
         trans: {type: String },     
         entry_xml: {type: String }, 
