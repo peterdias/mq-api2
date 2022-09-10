@@ -36,11 +36,14 @@ const saveBot = asyncHandler(async (req, res) => {
         {
             if(t._id.substring(0,2)=='n-')
             {
-                const newtrans = await BotTransaction.create(
+                const newtrans = null
+                if(t.mrid !='')
+                {
+                   newtrans = await BotTransaction.create(
                         {
                             botid: mongoose.Types.ObjectId(bot._id),
                             sqid:  mongoose.Types.ObjectId(t.sqid),
-                            mrid:  t.mrid!='' ? mongoose.Types.ObjectId(t.mrid): '',
+                            mrid:  mongoose.Types.ObjectId(t.mrid),
                             block: t.block,
                             trans: t.trans,
                             symbol: t.symbol,
@@ -52,8 +55,27 @@ const saveBot = asyncHandler(async (req, res) => {
                             expiry: t.expiry,
                             tradingsymbol: t.tradingsymbol
                         }
-                    )
-
+                    )                
+                }
+                else 
+                {
+                    newtrans = await BotTransaction.create(
+                        {
+                            botid: mongoose.Types.ObjectId(bot._id),
+                            sqid:  mongoose.Types.ObjectId(t.sqid),                            
+                            block: t.block,
+                            trans: t.trans,
+                            symbol: t.symbol,
+                            strike: t.strike,
+                            type: t.type,
+                            qty: t.qty,
+                            exchange: t.exchange,                
+                            product: t.product,
+                            expiry: t.expiry,
+                            tradingsymbol: t.tradingsymbol
+                        }
+                    )     
+                }
                 if(newtrans) newtransactions.push({oldid: t._id, newid: newtrans._id})
             }
             else
