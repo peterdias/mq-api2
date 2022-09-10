@@ -7,6 +7,23 @@ const ManageRule = require('../models/managerule')
 const Bot = require('../models/bot')
 const BotTransaction = require('../models/bottransaction')
 
+const deleteBot = asyncHandler(async (req, res) => {
+    const { botid,uid } = req.body
+
+    let bot = await Bot.findOne({"_id": mongoose.Types.ObjectId(botid)})
+
+    if(bot)
+    {
+        await BotTransaction.findByIdAndRemove({'botid': mongoose.Types.ObjectId(botid)})
+        await bot.remove()
+        res.status(201).json({status:'success',message:'Bot has been deleted'})
+    }
+    else 
+    {
+        res.status(201).json({status:'error',message:'Bot Not Found'}) 
+    }
+})
+
 const saveBot = asyncHandler(async (req, res) => {
     const { sid,botid,data,uid } = req.body
     
@@ -150,10 +167,9 @@ const saveStrategy = asyncHandler(async (req, res) => {
                 if(sequence)
                 {
                     for(const rule of st.managerules)
-                    {
-                        //console.log("1")
+                    {                         
                         if(rule.sqid!= s._id) continue
-                        //console.log("2")
+                         
                         const newrule = await ManageRule.create({
                             sqid: mongoose.Types.ObjectId(sequence._id),
                             code: rule.code,
@@ -162,32 +178,10 @@ const saveStrategy = asyncHandler(async (req, res) => {
 
                         if(newrule)
                         {
-                            newmanagerules.push({oldid: rule._id, newid: newrule._id})
-                            //console.log("3")
+                            newmanagerules.push({oldid: rule._id, newid: newrule._id})                             
                         }
                     }
-                    // for(const t of st.transactions)
-                    // {
-                    //     if(t.botid!=b._id) continue
-
-                    //     const trans = await BotTransaction.create(
-                    //         {
-                    //             botid: mongoose.Types.ObjectId(bot._id),
-                    //             block: t.block,
-                    //             trans: t.trans,
-                    //             symbol: t.symbol,
-                    //             strike: t.strike,
-                    //             type: t.type,
-                    //             qty: t.qty,
-                    //             exchange: t.exchange,                
-                    //             product: t.product,
-                    //             expiry: t.expiry,
-                    //             tradingsymbol: t.tradingsymbol
-                    //         }
-                    //     )
-
-                    //     if(trans) newtransactions.push({oldid: t._id, newid: trans._id})
-                    // }                   
+                               
                     newsequences.push({oldid: s._id, newid: sequence._id})
                 }
             }
@@ -226,49 +220,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
                             }
                         }  
                     }
-
-                    // for(var t of st.transactions)
-                    // {
-                    //     if(t.botid!= b._id) continue
-
-                    //     if(t._id.substring(0,2)=='n-')//New Transaction
-                    //     {
-                    //         const trans = await BotTransaction.create(
-                    //             {
-                    //                 botid: mongoose.Types.ObjectId(sequence._id),
-                    //                 block: t.block,
-                    //                 trans: t.trans,
-                    //                 symbol: t.symbol,
-                    //                 strike: t.strike,
-                    //                 type: t.type,
-                    //                 qty: t.qty,
-                    //                 exchange: t.exchange,                
-                    //                 product: t.product,
-                    //                 expiry: t.expiry,
-                    //                 tradingsymbol: t.tradingsymbol
-                    //             }
-                    //         )
-
-                    //         if(trans) newtransactions.push({oldid: t._id, newid: trans._id})
-                    //     }
-                    //     else //Update Transaction
-                    //     {
-                    //         const et = await BotTransaction.findOne({_id: mongoose.Types.ObjectId(t._id) })
-                    //         if(et)
-                    //         {
-                    //             et.trans= t.trans
-                    //             et.symbol= t.symbol
-                    //             et.strike= t.strike
-                    //             et.type= t.type
-                    //             et.qty= t.qty
-                    //             et.exchange= t.exchange               
-                    //             et.product= t.product
-                    //             et.expiry= t.expiry
-                    //             et.tradingsymbol= t.tradingsymbol
-                    //             await et.save()
-                    //         }
-                    //     }                    
-                    // }
+                     
                 }
             }            
         }
@@ -425,5 +377,6 @@ module.exports = {
     getTransactions,
     deleteTransaction,
     deleteManageRule,
-    saveBot
+    saveBot,
+    deleteBot
 }
