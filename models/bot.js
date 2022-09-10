@@ -6,6 +6,7 @@ const Bot = mongoose.Schema(
         sid: { type: mongoose.Schema.ObjectId, ref: 'strategies' },           
         title: {type: String },     
         status: {type: String }, 
+        uid: { type: mongoose.Schema.ObjectId, ref: 'users' },  
     },
     {
       timestamps: true,

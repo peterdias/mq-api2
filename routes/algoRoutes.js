@@ -11,7 +11,7 @@ const {
     getTransactions,
     deleteTransaction,
     deleteManageRule,
-    saveBot,deleteBot
+    saveBot,deleteBot,getBots
   } = require('../controllers/algoController')
 
   
@@ -25,4 +25,5 @@ router.post('/getstrategy',protect,getStrategy)
 router.post('/gettransactions',protect,getTransactions)
 router.post('/savebot',protect,saveBot)
 router.post('/deletebot',protect,deleteBot)
+router.post('/getbots',protect,getBots)
 module.exports = router

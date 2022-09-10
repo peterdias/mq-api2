@@ -41,7 +41,8 @@ const saveBot = asyncHandler(async (req, res) => {
         bot = await Bot.create({
             sid: mongoose.Types.ObjectId(sid),
             title: bd.title,
-            status: bd.status
+            status: bd.status,
+            uid: mongoose.Types.ObjectId(uid)
         })        
     }
     else 
@@ -328,6 +329,17 @@ const getStrategies = asyncHandler(async (req, res) => {
     }
 })
 
+const getBots = asyncHandler(async (req, res) => {
+    const {uid } = req.body
+
+    let bots = await Bot.find({"uid": mongoose.Types.ObjectId(uid)})
+
+    if(bots)
+    {
+        res.status(201).json(bots) 
+    }
+})
+
 const getStrategy = asyncHandler(async (req, res) => {
     const { sid,uid } = req.body
 
@@ -383,5 +395,5 @@ module.exports = {
     deleteTransaction,
     deleteManageRule,
     saveBot,
-    deleteBot
+    deleteBot,getBots
 }
