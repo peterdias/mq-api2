@@ -37,6 +37,21 @@ const getInstrumentTypes= asyncHandler(async (req, res) => {
 
 })
 
+const getTradingSymbols= asyncHandler(async (req, res) => {
+  const { exchange, segment,instrument_type } = req.body
+
+  const tradingsymbols = await Instrument.find({'exchange':exchange,'segment':segment,'instrument_type':instrument_type}).select("tradingsymbol")
+
+  if (tradingsymbols) {
+    res.status(201).json(tradingsymbols)
+} else {
+    res.status(400)
+    throw new Error('Error fetching trading symbols')
+}
+
+
+})
+
 const getExpiryDates= asyncHandler(async (req, res) => {
   const { exchange, segment,instrument_type } = req.body
 
@@ -100,4 +115,4 @@ const getInstruments = asyncHandler(async (req, res) => {
 })
 
 
-module.exports = { getInstruments,getExchanges,getSegments,getInstrumentTypes,getStrikes, getExpiryDates}
+module.exports = { getInstruments,getExchanges,getSegments,getInstrumentTypes,getTradingSymbols,getStrikes, getExpiryDates}
