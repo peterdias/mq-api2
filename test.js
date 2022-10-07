@@ -9,7 +9,7 @@ const Instrument = require('./models/instrument')
 
 
 const getExchanges = asyncHandler(async (req, res) => {
-    const instruments = await Instrument.find({'exchange':'NFO','segment':'NFO-FUT','instrument_type':'FUT'}).distinct("expiry")
+    const instruments = await Instrument.find({'exchange':'NFO','segment':'NFO-FUT','instrument_type':'FUT'}).distinct("tradingsymbol")
       
     console.log(instruments)
 })

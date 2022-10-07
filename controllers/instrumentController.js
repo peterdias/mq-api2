@@ -40,7 +40,7 @@ const getInstrumentTypes= asyncHandler(async (req, res) => {
 const getTradingSymbols= asyncHandler(async (req, res) => {
   const { exchange, segment,instrument_type } = req.body
 
-  const tradingsymbols = await Instrument.find({'exchange':exchange,'segment':segment,'instrument_type':instrument_type}).select("tradingsymbol")
+  const tradingsymbols = await Instrument.find({'exchange':exchange,'segment':segment,'instrument_type':instrument_type}).distinct("tradingsymbol")
 
   if (tradingsymbols) {
     res.status(201).json(tradingsymbols)
