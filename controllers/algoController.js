@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const mongoose = require('mongoose')
-
+const amqp = require("amqplib")
 const StrategyModel = require('../models/strategy')
 const Sequence = require('../models/sequence')
 const ManageRule = require('../models/managerule')
@@ -8,6 +8,51 @@ const Bot = require('../models/bot')
 const BotTransaction = require('../models/bottransaction')
 const MarketOrder = require('../models/market_order')
 const MarketTrade = require('../models/market_trade')
+
+const pauseBot = asyncHandler(async (req, res) => {
+    const { botid,uid } = req.body
+
+    var connection, channel 
+    try {
+        connection = await amqp.connect("amqp://ts:windows2020@64.227.173.41:5672");
+        //exchange = await connection.exchange('oms',{type: 'direct', passive: true})
+        channel    = await connection.createChannel()  
+        channel.assertExchange('ts','direct',{durable: false}) 
+        await channel.assertQueue('BOT-'+botid)
+        
+    } catch (error) {
+        console.log(error);
+    }
+
+    let bot = await Bot.findOne({"_id": mongoose.Types.ObjectId(botid)})
+
+    if(bot)
+    {
+        if(bot.status == 1)
+        {
+            let c = {action: 'PAUSE'}
+            channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
+                    
+            bot.status = 2
+            await bot.save()
+            res.status(201).json({status:'success',message:'Bot has been Paused'})
+        }
+        else if(bot.status == 2)
+        {
+            let c = {action: 'RESUME'}
+            channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
+
+            bot.status = 1
+            await bot.save()
+            res.status(201).json({status:'success',message:'Bot has been Resumed'})
+        }
+        
+    }
+    else 
+    {
+        res.status(201).json({status:'error',message:'Bot Not Found'}) 
+    }
+})
 
 const deleteBot = asyncHandler(async (req, res) => {
     const { botid,uid } = req.body
@@ -445,6 +490,6 @@ module.exports = {
     deleteTransaction,
     deleteManageRule,
     saveBot,
-    deleteBot,getBots,getBot,
+    deleteBot,getBots,getBot,pauseBot,
     getMarketOrders,getMarketTrades
 }
