@@ -41,8 +41,8 @@ const saveBot = asyncHandler(async (req, res) => {
         bot = await Bot.create({
             sid: mongoose.Types.ObjectId(sid),
             title: bd.title,
-            transaction_type: bd.transaction_type,
-            trading_account: bd.trading_account,
+            execution_type: bd.execution_type,
+            //trading_account: bd.trading_account,
             status: bd.status,
             uid: mongoose.Types.ObjectId(uid)
         })        
@@ -51,7 +51,7 @@ const saveBot = asyncHandler(async (req, res) => {
     {
         bot = await Bot.findOne({"_id": mongoose.Types.ObjectId(botid)})
         bot.title = bd.title
-        bot.transaction_type = bd.transaction_type
+        bot.execution_type = bd.execution_type
         bot.status = bd.status
         await bot.save()
     }
