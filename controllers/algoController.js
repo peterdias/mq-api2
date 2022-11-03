@@ -6,6 +6,8 @@ const Sequence = require('../models/sequence')
 const ManageRule = require('../models/managerule')
 const Bot = require('../models/bot')
 const BotTransaction = require('../models/bottransaction')
+const MarketOrder = require('../models/market_order')
+const MarketTrade = require('../models/market_trade')
 
 const deleteBot = asyncHandler(async (req, res) => {
     const { botid,uid } = req.body
@@ -403,6 +405,36 @@ const getTransactions = asyncHandler(async (req, res) => {
     }
 })
 
+const getMarketOrders = asyncHandler(async (req, res) => {
+    const {uid } = req.body
+
+    let data = await MarketOrder.find()
+
+    if(data)
+    {
+        res.status(201).json(data) 
+    }
+    else 
+    {
+        res.status(201).json([])
+    }
+})
+
+const getMarketTrades = asyncHandler(async (req, res) => {
+    const {uid } = req.body
+
+    let data = await MarketTrade.find()
+
+    if(data)
+    {
+        res.status(201).json(data) 
+    }
+    else 
+    {
+        res.status(201).json([])
+    }
+})
+
 module.exports = {
     saveStrategy,
     deleteSequence,
@@ -413,5 +445,6 @@ module.exports = {
     deleteTransaction,
     deleteManageRule,
     saveBot,
-    deleteBot,getBots,getBot
+    deleteBot,getBots,getBot,
+    getMarketOrders,getMarketTrades
 }
