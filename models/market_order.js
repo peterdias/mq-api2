@@ -6,9 +6,9 @@ const MarketOrder = mongoose.Schema(
         tradingsymbol: {type: String},     
         exchange: { type: String}, 
         instrument_type: { type: String},  
-        price: { type: String},   
+        price: { type: Number},   
         order_status: { type: String}, 
-        qty: { type: String}, 
+        qty: { type: Number}, 
         product: { type: String}, 
         trans: { type: String}, 
         bid: { type: mongoose.Schema.ObjectId, ref: 'bots' }

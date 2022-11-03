@@ -6,8 +6,8 @@ const MarketTrade = mongoose.Schema(
         tradingsymbol: {type: String},     
         exchange: { type: String}, 
         instrument_type: { type: String},  
-        price: { type: String},  
-        qty: { type: String},  
+        price: { type: Number},  
+        qty: { type: Number},  
         trans: { type: String}, 
         bid: { type: mongoose.Schema.ObjectId, ref: 'bots' }
     },
