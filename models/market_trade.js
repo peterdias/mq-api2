@@ -9,7 +9,9 @@ const MarketTrade = mongoose.Schema(
         price: { type: Number},  
         qty: { type: Number},  
         trans: { type: String}, 
-        bid: { type: mongoose.Schema.ObjectId, ref: 'bots' }
+        source: { type: String},
+        bid: { type: mongoose.Schema.ObjectId, ref: 'bots' },
+        uid: { type: mongoose.Schema.ObjectId, ref: 'users' }
     },
     {
       timestamps: true,

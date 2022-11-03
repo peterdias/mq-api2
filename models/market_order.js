@@ -11,7 +11,9 @@ const MarketOrder = mongoose.Schema(
         qty: { type: Number}, 
         product: { type: String}, 
         trans: { type: String}, 
-        bid: { type: mongoose.Schema.ObjectId, ref: 'bots' }
+        source: { type: String},
+        bid: { type: mongoose.Schema.ObjectId, ref: 'bots' },
+        uid: { type: mongoose.Schema.ObjectId, ref: 'users' }
     },
     {
       timestamps: true,
