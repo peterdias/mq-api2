@@ -14,14 +14,14 @@ const pauseBot = asyncHandler(async (req, res) => {
 
     var connection, channel 
     try {
-        connection = await amqp.connect("amqp://ts:windows2020@64.227.173.41:5672");
-        //exchange = await connection.exchange('oms',{type: 'direct', passive: true})
+        connection = await amqp.connect("amqp://ts:windows2020@64.227.173.41:5672");        
         channel    = await connection.createChannel()  
         channel.assertExchange('ts','direct',{durable: false}) 
-        await channel.assertQueue('BOT-'+botid)
+        //await channel.assertQueue('BOT-'+botid)
         
     } catch (error) {
         console.log(error);
+        res.status(201).json(error) 
     }
 
     let bot = await Bot.findOne({"_id": mongoose.Types.ObjectId(botid)})
