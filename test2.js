@@ -6,23 +6,23 @@ async function main () {
 
     const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
    
-    const pcontainer = new k8s.V1Container();
-    pcontainer.name = 'ts'
-    pcontainer.image= 'registry.digitalocean.com/metaquest/ts:6967d69'
-    pcontainer.env =[{name: 'BID', value : '6363668a5026731f4e001fb5'}]
+    // const pcontainer = new k8s.V1Container();
+    // pcontainer.name = 'ts'
+    // pcontainer.image= 'registry.digitalocean.com/metaquest/ts:6967d69'
+    // pcontainer.env =[{name: 'BID', value : '6363668a5026731f4e001fb5'}]
 
-    const podSpec = new k8s.V1PodSpec
-    podSpec.containers = [pcontainer]
+    // const podSpec = new k8s.V1PodSpec
+    // podSpec.containers = [pcontainer]
 
-    const meta = new k8s.V1ObjectMeta
-    meta.name =  "bot-6363668a5026731f4e001fb5"
-    meta.namespace = 'default'
+    // const meta = new k8s.V1ObjectMeta
+    // meta.name =  "bot-6363668a5026731f4e001fb5"
+    // meta.namespace = 'default'
 
-    const podBody = new k8s.V1Pod
-    podBody.kind = 'Pod'
-    podBody.metadata= meta
+    // const podBody = new k8s.V1Pod
+    // podBody.kind = 'Pod'
+    // podBody.metadata= meta
 
-    podBody.spec = podSpec
+    // podBody.spec = podSpec
     
     //k8sApi.createNamespacedPod('default',podBody)
 
