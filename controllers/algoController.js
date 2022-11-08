@@ -95,11 +95,11 @@ const saveBot = asyncHandler(async (req, res) => {
     let bd = JSON.parse(data)  
     let newtransactions = []
 
-    const res = await k8sApi.listNamespacedPod('default')
+    const bres = await k8sApi.listNamespacedPod('default')
     let pods = []
-    if(res)
+    if(bres)
     {
-        pods = res.body.items         
+        pods = bres.body.items         
     }
 
     let bot = null
