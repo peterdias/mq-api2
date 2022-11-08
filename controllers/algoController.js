@@ -97,7 +97,7 @@ const saveBot = asyncHandler(async (req, res) => {
     let newtransactions = []
 
     const kc = new k8s.KubeConfig();
-    kc.loadFromFile('../config/kconfig');
+    kc.loadFromFile('./kconfig');
     const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
     const bres = await k8sApi.listNamespacedPod('default')
     let pods = []
