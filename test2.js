@@ -2,7 +2,7 @@ const k8s = require('@kubernetes/client-node');
 
 async function main () {
     const kc = new k8s.KubeConfig();
-    kc.loadFromFile('./kconfig');
+    kc.loadFromFile('./config/kconfig.yaml');
 
     const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
    

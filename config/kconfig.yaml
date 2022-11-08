@@ -15,4 +15,4 @@ preferences: {}
 users:
 - name: do-blr1-ts-cluster-admin
   user:
-    token: dop_v1_52952f5dbe71fae193663cde6e35deb09257acf63543aab67ebe435380ad93ec
+    token: dop_v1_56f7834162df1524f4fb3627d9a1c6341b8592e0be67dd891ba99d96aa7ee441
