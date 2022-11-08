@@ -9,9 +9,7 @@ const BotTransaction = require('../models/bottransaction')
 const MarketOrder = require('../models/market_order')
 const MarketTrade = require('../models/market_trade')
 const k8s = require('@kubernetes/client-node');
-const kc = new k8s.KubeConfig();
-kc.loadFromFile('./kconfig');
-const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
+
 
 const pauseBot = asyncHandler(async (req, res) => {
     const { botid,uid } = req.body
@@ -67,6 +65,9 @@ const deleteBot = asyncHandler(async (req, res) => {
     {
         try 
         {
+            const kc = new k8s.KubeConfig();
+            kc.loadFromFile('/kconfig');
+            const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
             k8sApi.deleteNamespacedPod('bot-'+bot.id,'default')
         }
         catch(e)
@@ -95,6 +96,9 @@ const saveBot = asyncHandler(async (req, res) => {
     let bd = JSON.parse(data)  
     let newtransactions = []
 
+    const kc = new k8s.KubeConfig();
+    kc.loadFromFile('/kconfig');
+    const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
     const bres = await k8sApi.listNamespacedPod('default')
     let pods = []
     if(bres)
