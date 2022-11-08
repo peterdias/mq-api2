@@ -19,7 +19,7 @@ const cluster = {
 
 const user = {
     name: 'do-blr1-ts-cluster-admin',
-    token: CryptoJS.enc.Base64.parse(process.env.K8T).toString(CryptoJS.enc.Utf8)
+    token: process.env.K8T    //CryptoJS.enc.Base64.parse(process.env.K8T).toString(CryptoJS.enc.Utf8)
 };
 
 const pauseBot = asyncHandler(async (req, res) => {

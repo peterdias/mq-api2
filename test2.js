@@ -2,6 +2,7 @@ const dotenv = require('dotenv').config()
 const k8s = require('@kubernetes/client-node');
 const CryptoJS = require('crypto-js');
 
+//
 async function main () {
     const kc = new k8s.KubeConfig();
     
