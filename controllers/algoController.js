@@ -8,6 +8,10 @@ const Bot = require('../models/bot')
 const BotTransaction = require('../models/bottransaction')
 const MarketOrder = require('../models/market_order')
 const MarketTrade = require('../models/market_trade')
+const k8s = require('@kubernetes/client-node');
+const kc = new k8s.KubeConfig();
+kc.loadFromFile('./kconfig');
+const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 
 const pauseBot = asyncHandler(async (req, res) => {
     const { botid,uid } = req.body
@@ -56,11 +60,20 @@ const pauseBot = asyncHandler(async (req, res) => {
 
 const deleteBot = asyncHandler(async (req, res) => {
     const { botid,uid } = req.body
-
+   
     let bot = await Bot.findOne({"_id": mongoose.Types.ObjectId(botid)})
 
     if(bot)
     {
+        try 
+        {
+            k8sApi.deleteNamespacedPod('bot-'+bot.id,'default')
+        }
+        catch(e)
+        {
+
+        }    
+
         let transactions = await BotTransaction.find({'botid': mongoose.Types.ObjectId(botid)})
         for(let trans of transactions)
         {
@@ -82,6 +95,13 @@ const saveBot = asyncHandler(async (req, res) => {
     let bd = JSON.parse(data)  
     let newtransactions = []
 
+    const res = await k8sApi.listNamespacedPod('default')
+    let pods = []
+    if(res)
+    {
+        pods = res.body.items         
+    }
+
     let bot = null
     if(botid.substring(0,2)=='n-')
     {
@@ -92,7 +112,8 @@ const saveBot = asyncHandler(async (req, res) => {
             //trading_account: bd.trading_account,
             status: bd.status,
             uid: mongoose.Types.ObjectId(uid)
-        })        
+        })
+         
     }
     else 
     {
@@ -105,6 +126,37 @@ const saveBot = asyncHandler(async (req, res) => {
 
     if(bot)
     {
+        let botfound = false
+        for(const pod of pods)
+        {
+            if(pod.metadata.name == 'BOT-'+bot.id){
+                botfound = true 
+                break;
+            }
+        };
+
+        if(botfound == false)
+        {
+            const pcontainer = new k8s.V1Container();
+            pcontainer.name = 'ts'
+            pcontainer.image= 'registry.digitalocean.com/metaquest/ts:6967d69'
+            pcontainer.env =[{name: 'BID', value : '6363668a5026731f4e001fb5'}]
+
+            const podSpec = new k8s.V1PodSpec
+            podSpec.containers = [pcontainer]
+
+            const meta = new k8s.V1ObjectMeta
+            meta.name =  "bot-"+bot.id
+            meta.namespace = 'default'
+
+            const podBody = new k8s.V1Pod
+            podBody.kind = 'Pod'
+            podBody.metadata= meta
+            podBody.spec = podSpec
+            
+            k8sApi.createNamespacedPod('default',podBody)
+        }
+
         for (const t of bd.transactions)
         {
             if(t._id.substring(0,2)=='n-')

@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@kubernetes/client-node": "^0.17.1",
     "amqplib": "^0.10.3",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
