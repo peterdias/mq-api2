@@ -66,7 +66,7 @@ const deleteBot = asyncHandler(async (req, res) => {
         try 
         {
             const kc = new k8s.KubeConfig();
-            kc.loadFromFile('/kconfig');
+            kc.loadFromFile('../config/kconfig');
             const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
             k8sApi.deleteNamespacedPod('bot-'+bot.id,'default')
         }
@@ -97,7 +97,7 @@ const saveBot = asyncHandler(async (req, res) => {
     let newtransactions = []
 
     const kc = new k8s.KubeConfig();
-    kc.loadFromFile('/kconfig');
+    kc.loadFromFile('../config/kconfig');
     const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
     const bres = await k8sApi.listNamespacedPod('default')
     let pods = []
