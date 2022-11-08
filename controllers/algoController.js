@@ -150,9 +150,10 @@ const saveBot = asyncHandler(async (req, res) => {
     if(bot)
     {
         let botfound = false
+        console.log(pods.length)
         for(const pod of pods)
         {
-            if(pod.metadata.name == 'BOT-'+bot.id){
+            if(pod.metadata.name == 'bot-'+bot.id){
                 botfound = true 
                 break;
             }
