@@ -72,7 +72,7 @@ const deleteBot = asyncHandler(async (req, res) => {
         }
         catch(e)
         {
-
+            console.log(e)
         }    
 
         let transactions = await BotTransaction.find({'botid': mongoose.Types.ObjectId(botid)})
@@ -96,14 +96,22 @@ const saveBot = asyncHandler(async (req, res) => {
     let bd = JSON.parse(data)  
     let newtransactions = []
 
+    let pods = []
     const kc = new k8s.KubeConfig();
     kc.loadFromFile('/workspace/config/kconfig.yaml');
     const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
-    const bres = await k8sApi.listNamespacedPod('default')
-    let pods = []
-    if(bres)
+
+    try
     {
-        pods = bres.body.items         
+        const bres = await k8sApi.listNamespacedPod('default')    
+        if(bres)
+        {
+            pods = bres.body.items         
+        }
+    }
+    catch(e)
+    {
+        console.log(e)
     }
 
     let bot = null
