@@ -9,6 +9,7 @@ const BotTransaction = require('../models/bottransaction')
 const MarketOrder = require('../models/market_order')
 const MarketTrade = require('../models/market_trade')
 const k8s = require('@kubernetes/client-node');
+const CryptoJS = require('crypto-js');
 
 const cluster = {
     name: 'do-blr1-ts-cluster',
@@ -18,9 +19,8 @@ const cluster = {
 
 const user = {
     name: 'do-blr1-ts-cluster-admin',
-    token: process.env.K8T
+    token: CryptoJS.enc.Base64.parse(process.env.K8T).toString(CryptoJS.enc.Utf8)
 };
-
 
 const pauseBot = asyncHandler(async (req, res) => {
     const { botid,uid } = req.body

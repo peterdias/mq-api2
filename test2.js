@@ -1,5 +1,6 @@
 const dotenv = require('dotenv').config()
 const k8s = require('@kubernetes/client-node');
+const CryptoJS = require('crypto-js');
 
 async function main () {
     const kc = new k8s.KubeConfig();
@@ -7,7 +8,8 @@ async function main () {
     //const config = YAML.safeLoad((`fs.load my .kube/config file ...`)
     
     //kc.loadFromFile('./config/kconfig.yaml');
-        
+    //console.log(encrypt('dop_v1_871a224b71d9b3bb7bc855d3f8174efa9fc7173ec25a53af5bfd67c96f47e8f9')) 
+    //console.log(decrypt('ZG9wX3YxXzg3MWEyMjRiNzFkOWIzYmI3YmM4NTVkM2Y4MTc0ZWZhOWZjNzE3M2VjMjVhNTNhZjViZmQ2N2M5NmY0N2U4Zjk='))   
     const cluster = {
         name: 'do-blr1-ts-cluster',
         server: 'https://7eec650e-e675-4f03-bfe8-a0838f2c60d6.k8s.ondigitalocean.com',      
@@ -16,7 +18,7 @@ async function main () {
     
     const user = {
         name: 'do-blr1-ts-cluster-admin',
-        token: process.env.K8T
+        token: CryptoJS.enc.Base64.parse(process.env.K8T).toString(CryptoJS.enc.Utf8)
     };
 
     kc.loadFromClusterAndUser(cluster,user)
