@@ -165,8 +165,8 @@ const saveBot = asyncHandler(async (req, res) => {
             pcontainer.env =[{name: 'BID', value : '6363668a5026731f4e001fb5'}]
             
             const podRequirements = new k8s.V1ResourceRequirements
-            podRequirements.requests = [{memory: '250Mi'}]
-            podRequirements.limits = [{memory: '250Mi'}]
+            podRequirements.requests = {memory: '250Mi'}
+            podRequirements.limits = {memory: '250Mi'}
             pcontainer.resources = [podRequirements]
 
             const podSpec = new k8s.V1PodSpec
