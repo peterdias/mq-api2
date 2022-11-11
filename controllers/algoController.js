@@ -130,6 +130,7 @@ const saveBot = asyncHandler(async (req, res) => {
             sid: mongoose.Types.ObjectId(sid),
             title: bd.title,
             execution_type: bd.execution_type,
+            execution_frequency: bd.execution_frequency,
             //trading_account: bd.trading_account,
             status: bd.status,
             uid: mongoose.Types.ObjectId(uid)
@@ -141,6 +142,7 @@ const saveBot = asyncHandler(async (req, res) => {
         bot = await Bot.findOne({"_id": mongoose.Types.ObjectId(botid)})
         bot.title = bd.title
         bot.execution_type = bd.execution_type
+        bot.execution_frequency = bd.execution_frequency
         bot.status = bd.status
         await bot.save()
     }
@@ -164,10 +166,10 @@ const saveBot = asyncHandler(async (req, res) => {
             pcontainer.image= 'registry.digitalocean.com/metaquest/ts:6967d69'
             pcontainer.env =[{name: 'BID', value : '6363668a5026731f4e001fb5'}]
             
-            const podRequirements = new k8s.V1ResourceRequirements
-            podRequirements.requests = {memory: '250Mi'}
-            podRequirements.limits = {memory: '250Mi'}
-            pcontainer.resources = podRequirements
+            const resourceRequirements = new k8s.V1ResourceRequirements
+            resourceRequirements.requests = {memory: '250Mi'}
+            resourceRequirements.limits = {memory: '250Mi'}
+            pcontainer.resources = resourceRequirements
 
             const podSpec = new k8s.V1PodSpec
             podSpec.containers = [pcontainer]
