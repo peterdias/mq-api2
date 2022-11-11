@@ -9,7 +9,6 @@ const BotTransaction = require('../models/bottransaction')
 const MarketOrder = require('../models/market_order')
 const MarketTrade = require('../models/market_trade')
 const k8s = require('@kubernetes/client-node');
-const CryptoJS = require('crypto-js');
 
 const cluster = {
     name: 'do-blr1-ts-cluster',
@@ -19,7 +18,7 @@ const cluster = {
 
 const user = {
     name: 'do-blr1-ts-cluster-admin',
-    token: process.env.K8T    //CryptoJS.enc.Base64.parse(process.env.K8T).toString(CryptoJS.enc.Utf8)
+    token: process.env.K8T 
 };
 
 const pauseBot = asyncHandler(async (req, res) => {
@@ -165,6 +164,11 @@ const saveBot = asyncHandler(async (req, res) => {
             pcontainer.name = 'ts'
             pcontainer.image= 'registry.digitalocean.com/metaquest/ts:6967d69'
             pcontainer.env =[{name: 'BID', value : '6363668a5026731f4e001fb5'}]
+            
+            const podRequirements = new k8s.V1ResourceRequirements
+            podRequirements.requests = [{memory: '250Mi'}]
+            podRequirements.limits = [{memory: '250Mi'}]
+            pcontainer.resources = [podRequirements]
 
             const podSpec = new k8s.V1PodSpec
             podSpec.containers = [pcontainer]
