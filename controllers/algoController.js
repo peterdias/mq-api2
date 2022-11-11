@@ -10,10 +10,6 @@ const MarketOrder = require('../models/market_order')
 const MarketTrade = require('../models/market_trade')
 const k8s = require('@kubernetes/client-node');
 
-const kc = new k8s.KubeConfig();
-kc.loadFromClusterAndUser(cluster,user) 
-const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
-
 const cluster = {
     name: 'do-blr1-ts-cluster',
     server: 'https://7eec650e-e675-4f03-bfe8-a0838f2c60d6.k8s.ondigitalocean.com',      
@@ -24,6 +20,11 @@ const user = {
     name: 'do-blr1-ts-cluster-admin',
     token: process.env.K8T 
 };
+
+
+const kc = new k8s.KubeConfig();
+kc.loadFromClusterAndUser(cluster,user) 
+const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 
 const pauseBot = asyncHandler(async (req, res) => {
     const { botid,uid } = req.body
