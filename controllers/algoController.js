@@ -164,7 +164,7 @@ const saveBot = asyncHandler(async (req, res) => {
             const pcontainer = new k8s.V1Container();
             pcontainer.name = 'ts'
             pcontainer.image= process.env.DO_IMAGE  
-            pcontainer.env =[{name: 'BID', value : '6363668a5026731f4e001fb5'}]
+            pcontainer.env =[{name: 'BID', value : bot.id}]
             
             const resourceRequirements = new k8s.V1ResourceRequirements
             resourceRequirements.requests = {memory: '250Mi'}
