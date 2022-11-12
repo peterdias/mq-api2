@@ -163,7 +163,7 @@ const saveBot = asyncHandler(async (req, res) => {
         {
             const pcontainer = new k8s.V1Container();
             pcontainer.name = 'ts'
-            pcontainer.image= 'registry.digitalocean.com/metaquest/ts:6967d69'
+            pcontainer.image= process.env.DO_IMAGE  
             pcontainer.env =[{name: 'BID', value : '6363668a5026731f4e001fb5'}]
             
             const resourceRequirements = new k8s.V1ResourceRequirements
