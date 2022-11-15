@@ -534,7 +534,7 @@ const getTransactions = asyncHandler(async (req, res) => {
 const getMarketOrders = asyncHandler(async (req, res) => {
     const {uid } = req.body
 
-    let data = await MarketOrder.find()
+    let data = await MarketOrder.find({"uid": mongoose.Types.ObjectId(uid)})
 
     if(data)
     {
@@ -549,7 +549,7 @@ const getMarketOrders = asyncHandler(async (req, res) => {
 const getMarketTrades = asyncHandler(async (req, res) => {
     const {uid } = req.body
 
-    let data = await MarketTrade.find()
+    let data = await MarketTrade.find({"uid": mongoose.Types.ObjectId(uid)})
 
     if(data)
     {
@@ -561,6 +561,50 @@ const getMarketTrades = asyncHandler(async (req, res) => {
     }
 })
 
+const getNetPositions = asyncHandler(async (req, res) => {
+    const {uid } = req.body
+
+    const start = new Date().toDateString();
+    const trades  = await MarketTrade.find({"uid": mongoose.Types.ObjectId(uid), createdAt: {$gte : start }})
+
+    const symbols = [...new Set(trades.map(item => item.tradingsymbol))];
+    
+    let positions = []
+    symbols.forEach(symbol => {
+        
+        let buy_count = 0
+        let sell_count = 0
+        let buy_qty = 0
+        let sell_qty = 0
+        let buy_avg_price = 0
+        let sell_avg_price = 0
+
+        for(const trade of trades)
+        {
+
+            if(trade.tradingsymbol== symbol)
+            {
+                if(trade.trans =='BUY'){
+                     buy_qty+= trade.qty
+                     buy_avg_price+= trade.price 
+                     buy_count++
+                }    
+                else if(trade.trans =='SELL') {
+                    sell_qty+= trade.qty
+                    sell_avg_price+= trade.price 
+                    sell_count++
+                }
+            }
+        }
+
+        if(buy_count >0) buy_avg_price= buy_avg_price / buy_count
+        if(sell_count>0) sell_avg_price = sell_avg_price / sell_count
+        let net_qty = buy_qty +  sell_qty
+        positions.push({tradingsymbol: symbol, buy_avg_price:buy_avg_price,sell_avg_price: sell_avg_price, buy_qty: buy_qty, sell_qty: sell_qty, net_qty: net_qty})
+    })
+     
+    res.status(201).json(positions)    
+})
 module.exports = {
     saveStrategy,
     deleteSequence,
@@ -572,5 +616,5 @@ module.exports = {
     deleteManageRule,
     saveBot,
     deleteBot,getBots,getBot,pauseBot,
-    getMarketOrders,getMarketTrades
+    getMarketOrders,getMarketTrades,getNetPositions
 }
