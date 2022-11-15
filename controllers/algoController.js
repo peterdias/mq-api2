@@ -35,8 +35,7 @@ const pauseBot = asyncHandler(async (req, res) => {
         connection = await amqp.connect("amqp://ts:windows2020@64.227.173.41:5672");        
         channel    = await connection.createChannel()  
         channel.assertExchange('ts','direct',{durable: false}) 
-        //await channel.assertQueue('BOT-'+botid)
-        
+                
     } catch (error) {
         console.log(error);
         res.status(201).json(error) 
@@ -565,6 +564,14 @@ const getMarketTrades = asyncHandler(async (req, res) => {
 const getNetPositions = asyncHandler(async (req, res) => {
     const {uid } = req.body
 
+    const Influx = require('influx');
+
+    const influx = new Influx.InfluxDB({
+        host: process.env.IDB_HOST,
+        database: process.env.IDB_DATABASE2   
+    });
+
+        
     const start = new Date().toDateString();
     const trades  = await MarketTrade.find({"uid": mongoose.Types.ObjectId(uid), createdAt: {$gte : start }})
 
@@ -573,13 +580,22 @@ const getNetPositions = asyncHandler(async (req, res) => {
     let positions = []
     for(const symbol of symbols) {
         let instrument = await Instrument.findOne({'tradingsymbol': symbol})
+        
+        let ltp = 0
+        query = "select * from ticks where tradingsymbol='"+symbol+"' order by time desc limit 1"
+        
+        const rows =  await influx.query(query)
+        rows.forEach(row => {
+            ltp = row.ltp
+        })
+
         let buy_count = 0
         let sell_count = 0
         let buy_qty = 0
         let sell_qty = 0
         let buy_avg_price = 0
         let sell_avg_price = 0
-
+       
         for(const trade of trades)
         {
 
@@ -601,7 +617,13 @@ const getNetPositions = asyncHandler(async (req, res) => {
         if(buy_count >0) buy_avg_price= buy_avg_price / buy_count
         if(sell_count>0) sell_avg_price = sell_avg_price / sell_count
         let net_qty = buy_qty +  sell_qty
-        let mtm = net_qty * instrument.tick_size
+
+        //let mtm = 0
+        
+        let buy_mtm = (ltp - buy_avg_price) * buy_qty * instrument.tick_size 
+        let sell_mtm =(sell_avg_price - ltp) * sell_qty * instrument.tick_size 
+
+        let mtm = buy_mtm+ sell_mtm
 
         positions.push({tradingsymbol: symbol, mtm: mtm,buy_avg_price:buy_avg_price,sell_avg_price: sell_avg_price, buy_qty: buy_qty, sell_qty: sell_qty, net_qty: net_qty})
     }

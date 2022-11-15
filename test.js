@@ -32,7 +32,7 @@ async function getPositions()
         let sell_qty = 0
         let buy_avg_price = 0
         let sell_avg_price = 0
-        console.log(instrument)
+         
         for(const trade of trades)
         {
 
@@ -55,7 +55,7 @@ async function getPositions()
         if(sell_count>0) sell_avg_price = sell_avg_price / sell_count
         let net_qty = buy_qty +  sell_qty
 
-        let mtm = net_qty * instrument.tick_size
+        let mtm = net_qty * instrument.tick_size * (buy_avg_price - sell_avg_price)
         positions.push({tradingsymbol: symbol, mtm: mtm,buy_avg_price:buy_avg_price,sell_avg_price: sell_avg_price, buy_qty: buy_qty, sell_qty: sell_qty, net_qty: net_qty})
     }
 
