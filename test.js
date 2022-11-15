@@ -7,7 +7,7 @@ connectDB()
 
 //const Instrument = require('./models/instrument')
 const MarketTrade = require('./models/market_trade')
-
+const Instrument = require('./models/instrument')
 // const getExchanges = asyncHandler(async (req, res) => {
 //     const instruments = await Instrument.find({'exchange':'NFO','segment':'NFO-FUT','instrument_type':'FUT'}).distinct("tradingsymbol")
       
@@ -24,15 +24,15 @@ async function getPositions()
     const symbols = [...new Set(trades.map(item => item.tradingsymbol))];
     
     let positions = []
-    symbols.forEach(symbol => {
-        
+    for(const symbol of symbols) {
+        let instrument = await Instrument.findOne({'tradingsymbol': symbol})
         let buy_count = 0
         let sell_count = 0
         let buy_qty = 0
         let sell_qty = 0
         let buy_avg_price = 0
         let sell_avg_price = 0
-
+        console.log(instrument)
         for(const trade of trades)
         {
 
@@ -54,8 +54,10 @@ async function getPositions()
         if(buy_count >0) buy_avg_price= buy_avg_price / buy_count
         if(sell_count>0) sell_avg_price = sell_avg_price / sell_count
         let net_qty = buy_qty +  sell_qty
-        positions.push({tradingsymbol: symbol, buy_avg_price:buy_avg_price,sell_avg_price: sell_avg_price, buy_qty: buy_qty, sell_qty: sell_qty, net_qty: net_qty})
-    })
+
+        let mtm = net_qty * instrument.tick_size
+        positions.push({tradingsymbol: symbol, mtm: mtm,buy_avg_price:buy_avg_price,sell_avg_price: sell_avg_price, buy_qty: buy_qty, sell_qty: sell_qty, net_qty: net_qty})
+    }
 
     console.log(positions)
 }

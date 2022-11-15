@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler')
 const mongoose = require('mongoose')
 const amqp = require("amqplib")
+const Instrument = require('./models/instrument')
 const StrategyModel = require('../models/strategy')
 const Sequence = require('../models/sequence')
 const ManageRule = require('../models/managerule')
@@ -570,8 +571,8 @@ const getNetPositions = asyncHandler(async (req, res) => {
     const symbols = [...new Set(trades.map(item => item.tradingsymbol))];
     
     let positions = []
-    symbols.forEach(symbol => {
-        
+    for(const symbol of symbols) {
+        let instrument = await Instrument.findOne({'tradingsymbol': symbol})
         let buy_count = 0
         let sell_count = 0
         let buy_qty = 0
@@ -600,8 +601,10 @@ const getNetPositions = asyncHandler(async (req, res) => {
         if(buy_count >0) buy_avg_price= buy_avg_price / buy_count
         if(sell_count>0) sell_avg_price = sell_avg_price / sell_count
         let net_qty = buy_qty +  sell_qty
-        positions.push({tradingsymbol: symbol, buy_avg_price:buy_avg_price,sell_avg_price: sell_avg_price, buy_qty: buy_qty, sell_qty: sell_qty, net_qty: net_qty})
-    })
+        let mtm = net_qty * instrument.tick_size
+
+        positions.push({tradingsymbol: symbol, mtm: mtm,buy_avg_price:buy_avg_price,sell_avg_price: sell_avg_price, buy_qty: buy_qty, sell_qty: sell_qty, net_qty: net_qty})
+    }
      
     res.status(201).json(positions)    
 })
