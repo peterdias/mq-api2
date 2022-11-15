@@ -617,15 +617,13 @@ const getNetPositions = asyncHandler(async (req, res) => {
         if(buy_count >0) buy_avg_price= buy_avg_price / buy_count
         if(sell_count>0) sell_avg_price = sell_avg_price / sell_count
         let net_qty = buy_qty +  sell_qty
-
-        //let mtm = 0
         
         let buy_mtm = (ltp - buy_avg_price) * buy_qty * instrument.tick_size 
         let sell_mtm =(sell_avg_price - ltp) * sell_qty * instrument.tick_size 
 
         let mtm = buy_mtm+ sell_mtm
 
-        positions.push({tradingsymbol: symbol, mtm: mtm,buy_avg_price:buy_avg_price,sell_avg_price: sell_avg_price, buy_qty: buy_qty, sell_qty: sell_qty, net_qty: net_qty})
+        positions.push({tradingsymbol: symbol, ltp:ltp , mtm: mtm,buy_avg_price:buy_avg_price,sell_avg_price: sell_avg_price, buy_qty: buy_qty, sell_qty: sell_qty, net_qty: net_qty})
     }
      
     res.status(201).json(positions)    
