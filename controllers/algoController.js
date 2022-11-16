@@ -565,7 +565,7 @@ const getMarketTrades = asyncHandler(async (req, res) => {
 const getBotLogs = asyncHandler(async (req, res) => {
     const {bid } = req.body
 
-    let data = await LogBot.find({"bid": mongoose.Types.ObjectId(bid)})
+    let data = await LogBot.find({"bid": mongoose.Types.ObjectId(bid)}).sort({createdAt:-1})
 
     if(data)
     {
