@@ -535,7 +535,7 @@ const getTransactions = asyncHandler(async (req, res) => {
 const getMarketOrders = asyncHandler(async (req, res) => {
     const {uid } = req.body
 
-    let data = await MarketOrder.find({"uid": mongoose.Types.ObjectId(uid)})
+    let data = await MarketOrder.find({"uid": mongoose.Types.ObjectId(uid)}).sort({createdAt:-1})
 
     if(data)
     {
@@ -550,7 +550,7 @@ const getMarketOrders = asyncHandler(async (req, res) => {
 const getMarketTrades = asyncHandler(async (req, res) => {
     const {uid } = req.body
 
-    let data = await MarketTrade.find({"uid": mongoose.Types.ObjectId(uid)})
+    let data = await MarketTrade.find({"uid": mongoose.Types.ObjectId(uid)}).sort({createdAt:-1})
 
     if(data)
     {
