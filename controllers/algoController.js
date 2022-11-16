@@ -6,6 +6,7 @@ const StrategyModel = require('../models/strategy')
 const Sequence = require('../models/sequence')
 const ManageRule = require('../models/managerule')
 const Bot = require('../models/bot')
+const LogBot = require('../models/log_bot')
 const BotTransaction = require('../models/bottransaction')
 const MarketOrder = require('../models/market_order')
 const MarketTrade = require('../models/market_trade')
@@ -561,6 +562,21 @@ const getMarketTrades = asyncHandler(async (req, res) => {
     }
 })
 
+const getBotLogs = asyncHandler(async (req, res) => {
+    const {bid } = req.body
+
+    let data = await LogBot.find({"bid": mongoose.Types.ObjectId(bid)})
+
+    if(data)
+    {
+        res.status(201).json(data) 
+    }
+    else 
+    {
+        res.status(201).json([])
+    }
+})
+
 const getNetPositions = asyncHandler(async (req, res) => {
     const {uid } = req.body
 
@@ -639,5 +655,5 @@ module.exports = {
     deleteManageRule,
     saveBot,
     deleteBot,getBots,getBot,pauseBot,
-    getMarketOrders,getMarketTrades,getNetPositions
+    getMarketOrders,getMarketTrades,getNetPositions,getBotLogs
 }

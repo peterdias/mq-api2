@@ -11,7 +11,7 @@ const {
     getTransactions,
     deleteTransaction,
     deleteManageRule,
-    saveBot,deleteBot,getBots,getBot,pauseBot,getMarketOrders,getMarketTrades,getNetPositions
+    saveBot,deleteBot,getBots,getBot,pauseBot,getMarketOrders,getMarketTrades,getNetPositions,getBotLogs
   } = require('../controllers/algoController')
 
   
@@ -31,5 +31,5 @@ router.post('/pausebot',protect,pauseBot)
 router.post('/getmarketorders',protect,getMarketOrders)
 router.post('/getmarkettrades',protect,getMarketTrades)
 router.post('/getnetpositions',protect,getNetPositions)
-
+router.post('/getbotlogs',protect,getBotLogs)
 module.exports = router
