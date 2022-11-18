@@ -150,8 +150,7 @@ const saveBot = asyncHandler(async (req, res) => {
 
     if(bot)
     {
-        let botfound = false
-        console.log(pods.length)
+        let botfound = false         
         for(const pod of pods)
         {
             if(pod.metadata.name == 'bot-'+bot.id){
@@ -186,6 +185,11 @@ const saveBot = asyncHandler(async (req, res) => {
             
             k8sApi.createNamespacedPod('default',podBody)
         }
+        else
+        {
+            let c = {action: 'UPDATE_BOT'}
+            channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
+        } 
 
         for (const t of bd.transactions)
         {
@@ -362,11 +366,11 @@ const saveStrategy = asyncHandler(async (req, res) => {
                 }
             }            
         }
-        
+        let c = {action: 'UPDATE_STRATEGY'}
+        channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
     }
 
-    if (strategy) {    
-        //console.log(newmanagerules)        
+    if (strategy) { 
         res.status(201).json({status: 'success',message:'', id: strategy._id, newsequences: newsequences,newmanagerules: newmanagerules })
     } else {
         res.status(201).json({status:'error',message: 'Error saving strategy'})        
