@@ -20,6 +20,9 @@ const BotTransaction = mongoose.Schema(
         product: {type: String },  
         expiry: {type: String },  
         tradingsymbol: {type: String },  
+        stoploss: {type: Number }, 
+        takeprofit: {type: Number }, 
+        tsl: {type: Number }, 
     },
     {
       timestamps: true,

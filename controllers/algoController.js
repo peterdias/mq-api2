@@ -210,7 +210,10 @@ const saveBot = asyncHandler(async (req, res) => {
                             exchange: t.exchange,                
                             product: t.product,
                             expiry: t.expiry,
-                            tradingsymbol: t.tradingsymbol
+                            tradingsymbol: t.tradingsymbol,
+                            stoploss: t.stoploss,
+                            takeprofit: t.takeprofit,
+                            tsl: t.tsl
                         }
                     )                
                 }
@@ -229,7 +232,10 @@ const saveBot = asyncHandler(async (req, res) => {
                             exchange: t.exchange,                
                             product: t.product,
                             expiry: t.expiry,
-                            tradingsymbol: t.tradingsymbol
+                            tradingsymbol: t.tradingsymbol,
+                            stoploss: t.stoploss,
+                            takeprofit: t.takeprofit,
+                            tsl: t.tsl
                         }
                     )     
                 }
@@ -249,6 +255,9 @@ const saveBot = asyncHandler(async (req, res) => {
                     et.product= t.product
                     et.expiry= t.expiry
                     et.tradingsymbol= t.tradingsymbol
+                    et.stoploss= t.stoploss
+                    et.takeprofit= t.takeprofit
+                    et.tsl= t.tsl
                     await et.save()
                 }
             }
