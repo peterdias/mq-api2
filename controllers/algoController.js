@@ -28,39 +28,41 @@ const kc = new k8s.KubeConfig();
 kc.loadFromClusterAndUser(cluster,user) 
 const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 
-var connection, channel 
-try {
-    connection = await amqp.connect("amqp://ts:windows2020@64.227.173.41:5672");        
-    channel    = await connection.createChannel()  
-    channel.assertExchange('ts','direct',{durable: false}) 
-            
-} catch (error) {
-    console.log(error);
-    res.status(201).json(error) 
+async function sendMessageToMQ(to,msg)
+{
+    var connection, channel 
+    try {
+        connection = await amqp.connect("amqp://ts:windows2020@64.227.173.41:5672");        
+        channel    = await connection.createChannel()  
+        channel.assertExchange('ts','direct',{durable: false}) 
+        channel.sendToQueue(to, Buffer.from(JSON.stringify(msg)));        
+    } catch (error) {
+        console.log(error);
+        //res.status(201).json(error) 
+    }
 }
-
-
 const pauseBot = asyncHandler(async (req, res) => {
     const { botid,uid } = req.body
 
-    
     let bot = await Bot.findOne({"_id": mongoose.Types.ObjectId(botid)})
 
     if(bot)
     {
         if(bot.status == 1)
         {
-            let c = {action: 'PAUSE'}
-            channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
-                    
+            //let c = {action: 'PAUSE'}
+            //channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
+            sendMessageToMQ('BOT-'+botid, {action: 'PAUSE'})
+
             bot.status = 2
             await bot.save()
             res.status(201).json({status:'success',message:'Bot has been Paused'})
         }
         else if(bot.status == 2)
         {
-            let c = {action: 'RESUME'}
-            channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
+            //let c = {action: 'RESUME'}
+            //channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
+            sendMessageToMQ('BOT-'+botid, {action: 'RESUME'})
 
             bot.status = 1
             await bot.save()
@@ -189,8 +191,9 @@ const saveBot = asyncHandler(async (req, res) => {
         }
         else
         {
-            let c = {action: 'UPDATE'}
-            channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
+            //let c = {action: 'UPDATE'}
+            //channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
+            sendMessageToMQ('BOT-'+botid, {action: 'UPDATE'})
         } 
 
         for (const t of bd.transactions)
@@ -368,8 +371,9 @@ const saveStrategy = asyncHandler(async (req, res) => {
                 }
             }            
         }
-        let c = {action: 'UPDATE'}
-        channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
+        //let c = {action: 'UPDATE'}
+        //channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
+        sendMessageToMQ('BOT-'+botid, {action: 'UPDATE'})
     }
 
     if (strategy) { 
