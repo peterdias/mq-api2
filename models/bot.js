@@ -8,7 +8,7 @@ const Bot = mongoose.Schema(
         execution_type: {type: String }, 
         execution_frequency: {type: String}, 
         trading_account: {type: String },   
-        status: {type: String }, 
+        status: {type: Number }, 
         uid: { type: mongoose.Schema.ObjectId, ref: 'users' },  
     },
     {
