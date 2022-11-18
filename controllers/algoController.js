@@ -28,20 +28,22 @@ const kc = new k8s.KubeConfig();
 kc.loadFromClusterAndUser(cluster,user) 
 const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 
+var connection, channel 
+try {
+    connection = await amqp.connect("amqp://ts:windows2020@64.227.173.41:5672");        
+    channel    = await connection.createChannel()  
+    channel.assertExchange('ts','direct',{durable: false}) 
+            
+} catch (error) {
+    console.log(error);
+    res.status(201).json(error) 
+}
+
+
 const pauseBot = asyncHandler(async (req, res) => {
     const { botid,uid } = req.body
 
-    var connection, channel 
-    try {
-        connection = await amqp.connect("amqp://ts:windows2020@64.227.173.41:5672");        
-        channel    = await connection.createChannel()  
-        channel.assertExchange('ts','direct',{durable: false}) 
-                
-    } catch (error) {
-        console.log(error);
-        res.status(201).json(error) 
-    }
-
+    
     let bot = await Bot.findOne({"_id": mongoose.Types.ObjectId(botid)})
 
     if(bot)
