@@ -49,9 +49,7 @@ const pauseBot = asyncHandler(async (req, res) => {
     if(bot)
     {
         if(bot.status == 1)
-        {
-            //let c = {action: 'PAUSE'}
-            //channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
+        {             
             sendMessageToMQ('BOT-'+botid, {action: 'PAUSE'})
 
             bot.status = 2
@@ -59,9 +57,7 @@ const pauseBot = asyncHandler(async (req, res) => {
             res.status(201).json({status:'success',message:'Bot has been Paused'})
         }
         else if(bot.status == 2)
-        {
-            //let c = {action: 'RESUME'}
-            //channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
+        {            
             sendMessageToMQ('BOT-'+botid, {action: 'RESUME'})
 
             bot.status = 1
@@ -137,7 +133,7 @@ const saveBot = asyncHandler(async (req, res) => {
             execution_type: bd.execution_type,
             execution_frequency: bd.execution_frequency,
             //trading_account: bd.trading_account,
-            status: bd.status,
+            status: '0',
             uid: mongoose.Types.ObjectId(uid)
         })
          
@@ -148,7 +144,7 @@ const saveBot = asyncHandler(async (req, res) => {
         bot.title = bd.title
         bot.execution_type = bd.execution_type
         bot.execution_frequency = bd.execution_frequency
-        bot.status = bd.status
+        //bot.status = bd.status
         await bot.save()
     }
 
@@ -190,9 +186,7 @@ const saveBot = asyncHandler(async (req, res) => {
             k8sApi.createNamespacedPod('default',podBody)
         }
         else
-        {
-            //let c = {action: 'UPDATE'}
-            //channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
+        {             
             sendMessageToMQ('BOT-'+botid, {action: 'UPDATE'})
         } 
 
@@ -371,8 +365,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
                 }
             }            
         }
-        //let c = {action: 'UPDATE'}
-        //channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
+         
         sendMessageToMQ('BOT-'+botid, {action: 'UPDATE'})
     }
 
