@@ -187,7 +187,7 @@ const saveBot = asyncHandler(async (req, res) => {
         }
         else
         {
-            let c = {action: 'UPDATE_BOT'}
+            let c = {action: 'UPDATE'}
             channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
         } 
 
@@ -366,7 +366,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
                 }
             }            
         }
-        let c = {action: 'UPDATE_STRATEGY'}
+        let c = {action: 'UPDATE'}
         channel.sendToQueue('BOT-'+botid, Buffer.from(JSON.stringify(c)));
     }
 
