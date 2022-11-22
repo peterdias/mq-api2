@@ -208,8 +208,7 @@ const saveBot = asyncHandler(async (req, res) => {
                             sqid:  mongoose.Types.ObjectId(t.sqid),
                             mrid:  mongoose.Types.ObjectId(t.mrid),
                             block: t.block,
-                            trans: t.trans,
-                            symbol: t.symbol,
+                            trans: t.trans,                             
                             strike: t.strike,
                             type: t.type,
                             qty: t.qty,
@@ -230,8 +229,7 @@ const saveBot = asyncHandler(async (req, res) => {
                             botid: mongoose.Types.ObjectId(bot._id),
                             sqid:  mongoose.Types.ObjectId(t.sqid),                            
                             block: t.block,
-                            trans: t.trans,
-                            symbol: t.symbol,
+                            trans: t.trans,                             
                             strike: t.strike,
                             type: t.type,
                             qty: t.qty,
@@ -252,8 +250,7 @@ const saveBot = asyncHandler(async (req, res) => {
                 const et = await BotTransaction.findOne({_id: mongoose.Types.ObjectId(t._id) })
                 if(et)
                 {
-                    et.trans= t.trans
-                    et.symbol= t.symbol
+                    et.trans= t.trans                     
                     et.strike= t.strike
                     et.type= t.type
                     et.qty= t.qty
