@@ -132,6 +132,9 @@ const saveBot = asyncHandler(async (req, res) => {
             title: bd.title,
             execution_type: bd.execution_type,
             execution_frequency: bd.execution_frequency,
+            stoploss: bd.stoploss,
+            takeprofit: bd.takeprofit,
+            sltp_type: bd.sltp_type,
             //trading_account: bd.trading_account,
             status: 0,
             uid: mongoose.Types.ObjectId(uid)
@@ -143,7 +146,10 @@ const saveBot = asyncHandler(async (req, res) => {
         bot = await Bot.findOne({"_id": mongoose.Types.ObjectId(botid)})
         bot.title = bd.title
         bot.execution_type = bd.execution_type
-        bot.execution_frequency = bd.execution_frequency        
+        bot.execution_frequency = bd.execution_frequency 
+        bot.stoploss= bd.stoploss
+        bot.takeprofit= bd.takeprofit
+        bot.sltp_type= bd.sltp_type      
         await bot.save()
     }
 
