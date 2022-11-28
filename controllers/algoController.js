@@ -377,7 +377,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
             }            
         }
          
-        sendMessageToMQ('BOT-'+botid, {action: 'UPDATE'})
+        //sendMessageToMQ('BOT-'+botid, {action: 'UPDATE'})
     }
 
     if (strategy) { 
