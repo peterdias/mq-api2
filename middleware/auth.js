@@ -1,4 +1,5 @@
- const asyncHandler = require('express-async-handler')
+const admin = require('../config/firebase');
+const asyncHandler = require('express-async-handler')
 
 const protect = asyncHandler(async (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
