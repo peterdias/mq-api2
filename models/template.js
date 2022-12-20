@@ -12,7 +12,7 @@ const templateSchema = mongoose.Schema(
     offchart: {
       type: String       
     },
-    uid: { type: mongoose.Schema.ObjectId, ref: 'users' }
+    uid: { type: String }
   },
   {
     timestamps: true,

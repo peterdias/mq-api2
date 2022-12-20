@@ -12,7 +12,7 @@ const Bot = mongoose.Schema(
         takeprofit: {type: Number }, 
         sltp_type: {type: String }, 
         status: {type: Number }, 
-        uid: { type: mongoose.Schema.ObjectId, ref: 'users' },  
+        uid: { type: String }
     },
     {
       timestamps: true,

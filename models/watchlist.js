@@ -7,7 +7,7 @@ const WatchList = mongoose.Schema(
             type: String,
             required: [true, 'Please set name'],      
         },        
-        uid: { type: mongoose.Schema.ObjectId, ref: 'users' }
+        uid: { type: String }
     },
     {
       timestamps: true,

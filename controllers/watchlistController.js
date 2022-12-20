@@ -6,7 +6,7 @@ const WatchListItem = require('../models/watchlistitem')
 const getList = asyncHandler(async (req, res) => {
     const { uid } = req.body
 
-    let list = await WatchList.find({"uid": mongoose.Types.ObjectId(uid)})
+    let list = await WatchList.find({"uid": uid})
     
     const promises = list.map(async l => {
         let items = await WatchListItem.find({"lid": mongoose.Types.ObjectId(l._id)})        
@@ -30,7 +30,7 @@ const getList = asyncHandler(async (req, res) => {
         {
             const watchlist = await WatchList.create({
                 name: 'Default',           
-                uid: mongoose.Types.ObjectId(uid)
+                uid: uid
             })
 
             if(watchlist)
@@ -56,7 +56,7 @@ const saveList = asyncHandler(async (req, res) => {
     {
         const watchlist = await WatchList.create({
             name: name,           
-            uid: mongoose.Types.ObjectId(uid)
+            uid: uid
         })
         
         if (watchlist) {

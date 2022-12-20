@@ -292,7 +292,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
     }
     else 
     {        
-        strategy = await StrategyModel.findOne({"_id": mongoose.Types.ObjectId(st.id), "uid": mongoose.Types.ObjectId(uid)})
+        strategy = await StrategyModel.findOne({"_id": mongoose.Types.ObjectId(st.id), "uid": uid})
     }
 
     if(strategy)
@@ -390,7 +390,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
 const deleteSequence = asyncHandler(async (req, res) => {
     const { sid,sqid,uid } = req.body
 
-    const strategy = await StrategyModel.findOne({"_id": mongoose.Types.ObjectId(sid), "uid": mongoose.Types.ObjectId(uid)})
+    const strategy = await StrategyModel.findOne({"_id": mongoose.Types.ObjectId(sid), "uid": uid})
 
     if(strategy)
     {        
@@ -443,7 +443,7 @@ const deleteManageRule= asyncHandler(async (req, res) => {
 const deleteStrategy = asyncHandler(async (req, res) => {
     const { sid,uid } = req.body
 
-    const strategy = await StrategyModel.findOne({"_id": mongoose.Types.ObjectId(sid), "uid": mongoose.Types.ObjectId(uid)})
+    const strategy = await StrategyModel.findOne({"_id": mongoose.Types.ObjectId(sid), "uid": uid})
     
     if(strategy)
     {
@@ -467,7 +467,7 @@ const deleteStrategy = asyncHandler(async (req, res) => {
 const getStrategies = asyncHandler(async (req, res) => {
     const {uid } = req.body
 
-    let strategies = await StrategyModel.find({"uid": mongoose.Types.ObjectId(uid)})
+    let strategies = await StrategyModel.find({"uid": uid})
 
     if(strategies)
     {
@@ -478,7 +478,7 @@ const getStrategies = asyncHandler(async (req, res) => {
 const getBots = asyncHandler(async (req, res) => {
     const {uid } = req.body
 
-    let bots = await Bot.find({"uid": mongoose.Types.ObjectId(uid)})
+    let bots = await Bot.find({"uid": uid})
 
     if(bots)
     {
@@ -489,7 +489,7 @@ const getBots = asyncHandler(async (req, res) => {
 const getBot = asyncHandler(async (req, res) => {
     const {uid , botid} = req.body
 
-    let bot = await Bot.findOne({"_id":mongoose.Types.ObjectId(botid),"uid": mongoose.Types.ObjectId(uid)})
+    let bot = await Bot.findOne({"_id":mongoose.Types.ObjectId(botid),"uid": uid})
 
     if(bot)
     {
@@ -504,7 +504,7 @@ const getBot = asyncHandler(async (req, res) => {
 const getStrategy = asyncHandler(async (req, res) => {
     const { sid,uid } = req.body
 
-    let strategy = await StrategyModel.findOne({"_id":mongoose.Types.ObjectId(sid),"uid": mongoose.Types.ObjectId(uid)})
+    let strategy = await StrategyModel.findOne({"_id":mongoose.Types.ObjectId(sid),"uid": uid})
 
     
     if(strategy)
@@ -549,7 +549,7 @@ const getTransactions = asyncHandler(async (req, res) => {
 const getMarketOrders = asyncHandler(async (req, res) => {
     const {uid } = req.body
 
-    let data = await MarketOrder.find({"uid": mongoose.Types.ObjectId(uid)}).sort({createdAt:-1})
+    let data = await MarketOrder.find({"uid": uid}).sort({createdAt:-1})
 
     if(data)
     {
@@ -564,7 +564,7 @@ const getMarketOrders = asyncHandler(async (req, res) => {
 const getMarketTrades = asyncHandler(async (req, res) => {
     const {uid } = req.body
 
-    let data = await MarketTrade.find({"uid": mongoose.Types.ObjectId(uid)}).sort({createdAt:-1})
+    let data = await MarketTrade.find({"uid": uid}).sort({createdAt:-1})
 
     if(data)
     {
@@ -603,7 +603,7 @@ const getNetPositions = asyncHandler(async (req, res) => {
 
         
     const start = new Date().toDateString();
-    const trades  = await MarketTrade.find({"uid": mongoose.Types.ObjectId(uid), createdAt: {$gte : start }})
+    const trades  = await MarketTrade.find({"uid": uid, createdAt: {$gte : start }})
 
     const symbols = [...new Set(trades.map(item => item.tradingsymbol))];
     

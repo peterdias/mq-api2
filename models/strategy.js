@@ -10,7 +10,7 @@ const Strategy = mongoose.Schema(
         description: {
             type: String,                 
         },    
-        uid: { type: mongoose.Schema.ObjectId, ref: 'users' }
+        uid: { type: String }
     },
     {
       timestamps: true,
