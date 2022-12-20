@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { protect } = require('../middleware/authMiddleware')
+const authMiddleware = require('../middleware/authMiddleware');
 
 const {
     getList,
@@ -10,11 +10,12 @@ const {
     removeItem
   } = require('../controllers/watchlistController')
 
-  
-router.post('/list',protect,getList)
-router.post('/items',protect,getItems)
-router.post('/savelist',protect,saveList)
-router.post('/addItem',protect,addItem)
-router.post('/removeItem',protect,removeItem)
+app.use(authMiddleware.decodeToken);
+
+router.post('/list',getList)
+router.post('/items',getItems)
+router.post('/savelist',saveList)
+router.post('/addItem',addItem)
+router.post('/removeItem',removeItem)
 
 module.exports = router
