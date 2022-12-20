@@ -8,7 +8,7 @@ const protect = asyncHandler(async (req, res, next) => {
         if (decodeValue) {
             req.user = decodeValue;
             console.log(decodeValue)
-            next();
+            return next();
         }              
 
     } catch (e) {
