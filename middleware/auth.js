@@ -4,12 +4,12 @@ const asyncHandler = require('express-async-handler')
 const protect = asyncHandler(async (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     try {
-        console.log(token)
+        //console.log(token)
         const decodeValue = await admin.auth().verifyIdToken(token);
-        console.log(decodeValue)
+        //console.log(decodeValue)
         if (decodeValue) {
             req.user = decodeValue;
-            return next();
+            next();
         }
         return res.json({ message: 'Un authorized' });
     } catch (e) {
