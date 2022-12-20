@@ -9,7 +9,10 @@ const protect = asyncHandler(async (req, res, next) => {
             req.user = decodeValue;
             next();
         }
-        return res.json({ message: 'Un authorized' });
+        //return res.json({ message: 'Un authorized' });
+        res.status(401)
+        throw new Error('Not authorized')
+
     } catch (e) {
         return res.json({ message: 'Internal Error' });
     }
