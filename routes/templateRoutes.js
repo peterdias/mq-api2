@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const authMiddleware = require('../middleware/authMiddleware');
+const { protect }  = require('../middleware/authMiddleware');
 
 const {
     getTemplate, 
@@ -9,10 +9,8 @@ const {
     saveTemplate  
   } = require('../controllers/templateController')
 
-app.use(authMiddleware.decodeToken);
-
-router.post('/get',getTemplate)
-router.post('/save',saveTemplate)
-router.post('/all',getTemplates)
+router.post('/get',protect,getTemplate)
+router.post('/save',protect,saveTemplate)
+router.post('/all',protect,getTemplates)
 
 module.exports = router

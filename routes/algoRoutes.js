@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 //const { protect } = require('../middleware/authMiddleware')
-const authMiddleware = require('../middleware/authMiddleware');
+const { protect }  = require('../middleware/authMiddleware');
 
 const {
     saveStrategy,
@@ -15,23 +15,23 @@ const {
     saveBot,deleteBot,getBots,getBot,pauseBot,getMarketOrders,getMarketTrades,getNetPositions,getBotLogs
   } = require('../controllers/algoController')
 
-app.use(authMiddleware.decodeToken);
+//app.use(authMiddleware.decodeToken);
 
 router.post('/savestrategy',protect,saveStrategy)
-router.post('/deletesequence',deleteSequence)
-router.post('/deletemanagerule',deleteManageRule)
-router.post('/deletestrategy',deleteStrategy)
-router.post('/deletetransaction',deleteTransaction)
-router.post('/getstrategies',getStrategies)
-router.post('/getstrategy',getStrategy)
-router.post('/gettransactions',getTransactions)
-router.post('/savebot',saveBot)
-router.post('/deletebot',deleteBot)
-router.post('/getbots',getBots)
-router.post('/getbot',getBot)
-router.post('/pausebot',pauseBot)
-router.post('/getmarketorders',getMarketOrders)
-router.post('/getmarkettrades',getMarketTrades)
-router.post('/getnetpositions',getNetPositions)
-router.post('/getbotlogs',getBotLogs)
+router.post('/deletesequence',protect,deleteSequence)
+router.post('/deletemanagerule',protect,deleteManageRule)
+router.post('/deletestrategy',protect,deleteStrategy)
+router.post('/deletetransaction',protect,deleteTransaction)
+router.post('/getstrategies',protect,getStrategies)
+router.post('/getstrategy',protect,getStrategy)
+router.post('/gettransactions',protect,getTransactions)
+router.post('/savebot',protect,saveBot)
+router.post('/deletebot',protect,deleteBot)
+router.post('/getbots',protect,getBots)
+router.post('/getbot',protect,getBot)
+router.post('/pausebot',protect,pauseBot)
+router.post('/getmarketorders',protect,getMarketOrders)
+router.post('/getmarkettrades',protect,getMarketTrades)
+router.post('/getnetpositions',protect,getNetPositions)
+router.post('/getbotlogs',protect,getBotLogs)
 module.exports = router
