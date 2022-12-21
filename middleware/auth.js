@@ -6,9 +6,8 @@ const protect = asyncHandler(async (req, res, next) => {
     try {         
         const decodeValue = await admin.auth().verifyIdToken(token);         
         if (decodeValue) {
-            req.user = decodeValue;
-            console.log(decodeValue)
-            return next();
+            req.user = decodeValue;            
+            next()
         }              
 
     } catch (e) {
