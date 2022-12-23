@@ -287,7 +287,7 @@ const saveStrategy = asyncHandler(async (req, res) => {
         strategy = await StrategyModel.create({
             title: st.title,    
             description: st.description,       
-            uid: mongoose.Types.ObjectId(uid)
+            uid: uid
         })        
     }
     else 
