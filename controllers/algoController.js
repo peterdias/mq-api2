@@ -137,9 +137,8 @@ const saveBot = asyncHandler(async (req, res) => {
             sltp_type: bd.sltp_type,
             //trading_account: bd.trading_account,
             status: 0,
-            uid: mongoose.Types.ObjectId(uid)
-        })
-         
+            uid: uid
+        })         
     }
     else 
     {
