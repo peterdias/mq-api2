@@ -33,20 +33,26 @@ const getPlans = asyncHandler(async (req, res) => {
 })
 
 const savePlan = asyncHandler(async (req, res) => {
-    const { id,title,description,
-        monthly,quaterly,halfyearly,yearly ,
-        trial_price,trial_days, create_strategies,public_strategies,
-        deploy_strategies, live_execution, status
-    } = req.body
-     
+    const { id,data} = req.body
+    
+    let bd = JSON.parse(data)  
+
     if(id ==0)
     {
         // Create Template
         const plan = await Plan.create({
-            title,description,
-            monthly,quaterly,halfyearly,yearly ,
-            trial_price,trial_days, create_strategies,public_strategies,
-            deploy_strategies, live_execution, status
+            title: bd.title,
+            description: bd.description,
+            monthly:bd.monthly,
+            quaterly:bd.quaterly,
+            halfyearly: bd.halfyearly,
+            yearly: bd.yearly ,
+            trial_price: bd.trial_price,
+            trial_days: bd.trial_price, 
+            create_strategies: bd.create_strategies,
+            public_strategies: bd.public_strategies,
+            deploy_strategies: bd.deploy_strategies, 
+            live_execution: bd.live_execution, status: bd.status
         })
         
         if (plan) {
@@ -59,10 +65,18 @@ const savePlan = asyncHandler(async (req, res) => {
     else 
     {
         Plan.findByIdAndUpdate(id, {
-            title,description,
-            monthly,quaterly,halfyearly,yearly ,
-            trial_price,trial_days, create_strategies,public_strategies,
-            deploy_strategies, live_execution, status
+            title: bd.title,
+            description: bd.description,
+            monthly:bd.monthly,
+            quaterly:bd.quaterly,
+            halfyearly: bd.halfyearly,
+            yearly: bd.yearly ,
+            trial_price: bd.trial_price,
+            trial_days: bd.trial_price, 
+            create_strategies: bd.create_strategies,
+            public_strategies: bd.public_strategies,
+            deploy_strategies: bd.deploy_strategies, 
+            live_execution: bd.live_execution, status: bd.status
         },
             function (err, docs) {
                 if (err){
