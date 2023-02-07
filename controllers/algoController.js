@@ -504,7 +504,6 @@ const getStrategy = asyncHandler(async (req, res) => {
     const { sid,uid } = req.body
 
     let strategy = await StrategyModel.findOne({"_id":mongoose.Types.ObjectId(sid),"uid": uid})
-
     
     if(strategy)
     {
