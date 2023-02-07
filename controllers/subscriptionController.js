@@ -56,7 +56,7 @@ const savePlan = asyncHandler(async (req, res) => {
         })
         
         if (plan) {
-            res.status(201).json({ id: plan._id })
+            res.status(201).json({ id: plan._id , status: 'success'})
         } else {
             res.status(400)
             throw new Error('Subscription Plan coundnt be saved.')
