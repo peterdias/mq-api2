@@ -44,7 +44,7 @@ const savePlan = asyncHandler(async (req, res) => {
             title: bd.title,
             description: bd.description,
             monthly:bd.monthly,
-            quaterly:bd.quaterly,
+            quarterly:bd.quarterly,
             halfyearly: bd.halfyearly,
             yearly: bd.yearly ,
             trial_price: bd.trial_price,

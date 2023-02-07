@@ -6,7 +6,7 @@ const SubscriptionPlan = mongoose.Schema(
         title: {type: String}, 
         description: {type: String}, 
         monthly: {type: Number }, 
-        quaterly: {type: Number }, 
+        quarterly: {type: Number }, 
         halfyearly: {type: Number }, 
         yearly: {type: Number }, 
         trial_price: {type: Number }, 
