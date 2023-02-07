@@ -18,10 +18,9 @@ const getPlan = asyncHandler(async (req, res) => {
 })
 
 const getPlans = asyncHandler(async (req, res) => {
-    const { uid } = req.body
-    //
+    const { uid } = req.body     
     const plans = await Template.find({})
-    //console.log(templates)
+     
     if (plans) {
         res.status(201).json(plans)
     }

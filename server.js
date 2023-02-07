@@ -25,6 +25,7 @@ app.use('/api/instruments', require('./routes/instrumentRoutes'))
 app.use('/api/templates', require('./routes/templateRoutes'))
 app.use('/api/options', require('./routes/optionsRoutes'))
 app.use('/api/algo', require('./routes/algoRoutes'))
+app.use('/api/plans', require('./routes/subscriptionRoutes'))
 // Serve frontend
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/build')))
