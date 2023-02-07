@@ -19,7 +19,7 @@ const getPlan = asyncHandler(async (req, res) => {
 
 const getPlans = asyncHandler(async (req, res) => {
     const { uid } = req.body     
-    const plans = await Template.find({})
+    const plans = await Plan.find({})
      
     if (plans) {
         res.status(201).json(plans)
@@ -42,7 +42,7 @@ const savePlan = asyncHandler(async (req, res) => {
     if(id ==0)
     {
         // Create Template
-        const plan = await Template.create({
+        const plan = await Plan.create({
             title,description,
             monthly,quaterly,halfyearly,yearly ,
             trial_price,trial_days, create_strategies,public_strategies,
