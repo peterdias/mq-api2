@@ -1,5 +1,22 @@
 const asyncHandler = require('express-async-handler')
 const Plan = require('../models/subscription_plan')
+const Order = require('../models/order')
+
+const getCurrentPlan = asyncHandler(async (req, res) => {
+    const { uid } = req.body
+    
+    const doc = await Order.findOne({"uid": id}).populate('planid')
+
+    if (doc) {
+        res.status(201).json({data: doc, id:doc._id, plan: '', amount:doc.amount,expirydate: '', frequency: ''})
+    }
+    else 
+    {
+        res.status(400)
+        throw new Error('Current Plan not found')
+    }
+    
+})
 
 const getPlan = asyncHandler(async (req, res) => {
     const { id } = req.body
@@ -95,5 +112,6 @@ const savePlan = asyncHandler(async (req, res) => {
 module.exports = {
     getPlan,
     getPlans,
-    savePlan
+    savePlan,
+    getCurrentPlan
 }
