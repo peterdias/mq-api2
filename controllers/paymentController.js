@@ -60,8 +60,12 @@ const paymentVerification  = asyncHandler(async (req, res) => {
     
 })
  
+const getkey  = asyncHandler(async (req, res) => {
+  res.status(200).json({ key: process.env.RAZORPAY_API_KEY });
+})
 
 module.exports = {
     checkout,
-    paymentVerification
+    paymentVerification,
+    getkey
 }
