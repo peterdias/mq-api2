@@ -5,7 +5,7 @@ const Order = require('../models/order')
 const getCurrentPlan = asyncHandler(async (req, res) => {
     const { uid } = req.body
     
-    const doc = await Order.findOne({"uid": id}).populate('planid')
+    const doc = await Order.findOne({"uid": uid}).populate('planid')
 
     if (doc) {
         res.status(201).json({data: doc, id:doc._id, plan: '', amount:doc.amount,expirydate: '', frequency: ''})
