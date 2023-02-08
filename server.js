@@ -14,9 +14,7 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.use(cors({
-  origin: '*'
-}));
+app.use(cors({ origin: '*' }));
 
 app.use('/api/user', require('./routes/userRoutes'))
 app.use('/api/data', require('./routes/dataRoutes'))
@@ -27,6 +25,8 @@ app.use('/api/options', require('./routes/optionsRoutes'))
 app.use('/api/algo', require('./routes/algoRoutes'))
 app.use('/api/plans', require('./routes/subscriptionRoutes'))
 app.use('/api/billing', require('./routes/billingRoutes'))
+app.use('/api/payment', require('./routes/paymentRoutes'))
+
 // Serve frontend
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/build')))

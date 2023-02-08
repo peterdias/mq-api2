@@ -23,7 +23,8 @@
     "influx": "^5.9.3",
     "jsonwebtoken": "^8.5.1",
     "kiteconnect": "^4.0.1",
-    "mongoose": "^6.3.4"
+    "mongoose": "^6.3.4",
+    "razorpay": "^2.8.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.16"

@@ -3,12 +3,18 @@ const mongoose = require('mongoose')
 
 const Payment = mongoose.Schema(
     {
-        invoiceid: { type: mongoose.Schema.ObjectId, ref: 'billing_invoices' },
-        remarks: {type: String}, 
-        amount: {type: Number }, 
-        payment_mode: { type: String }, 
-        uid: { type: String }, 
-        status: { type: String}, 
+        razorpay_order_id: {
+            type: String,
+            required: true,
+          },
+          razorpay_payment_id: {
+            type: String,
+            required: true,
+          },
+          razorpay_signature: {
+            type: String,
+            required: true,
+          },
     },
     { timestamps: true, }
 )
