@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler')
 const dotenv = require('dotenv').config()
-import crypto from "crypto";
-import Razorpay from "razorpay";
+const crypto = require("crypto");
+const Razorpay = require("razorpay");
 const Payment = require('../models/payment')
 
 const razor = new Razorpay({
