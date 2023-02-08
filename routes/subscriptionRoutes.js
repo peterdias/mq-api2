@@ -11,6 +11,6 @@ const {
 
 router.post('/get',protect,getPlan)
 router.post('/save',protect,savePlan)
-router.post('/all',protect,getPlans)
+router.post('/all',getPlans)
 
 module.exports = router
