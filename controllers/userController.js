@@ -94,12 +94,13 @@ const generateToken = (id) => {
 const checkFreePlan = asyncHandler(async (req, res) => {
   const { uid } = req.body
 
-  const order = await Order.findOne({ uid: uid, monthly:0 })
+  const planid = '63e25f9fc2886301860c8ebf'
+  const order = await Order.findOne({ 'uid': uid, "planid": mongoose.Types.ObjectId(planid) })
 
   if(!order)
   {
-    const doc = await Order.create({
-        planid: mongoose.Types.ObjectId('63e25f9fc2886301860c8ebf'),
+    await Order.create({
+        planid: mongoose.Types.ObjectId(planid),
         remarks: 'Free Plan',
         amount: 0,
         frequency: 365,            
