@@ -109,6 +109,7 @@ const checkFreePlan = asyncHandler(async (req, res) => {
     })
   }
 
+  res.status(201)
 })
 
 module.exports = {
