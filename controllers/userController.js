@@ -97,6 +97,7 @@ const checkFreePlan = asyncHandler(async (req, res) => {
   const planid = '63e25f9fc2886301860c8ebf'
   const order = await Order.findOne({ 'uid': uid})
   console.log("1")
+  console.log(order)
   if(!order)
   {
     console.log("2")
@@ -110,7 +111,7 @@ const checkFreePlan = asyncHandler(async (req, res) => {
     })
   }
 
-  res.status(201)
+  res.status(201).json({status:'error',message:'Check Done'}) 
 })
 
 module.exports = {
