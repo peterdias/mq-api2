@@ -10,7 +10,7 @@ const getCurrentPlan = asyncHandler(async (req, res) => {
     if (doc) {
         let expiry = ''
         if(doc.amount > 0) {
-            console.log(doc.startdate)
+            console.log(typeof(doc.startdate))
             //expiry = doc.startdate.addDays(doc.frequency)
         }
         
