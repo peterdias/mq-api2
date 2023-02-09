@@ -96,11 +96,9 @@ const checkFreePlan = asyncHandler(async (req, res) => {
 
   const planid = '63e25f9fc2886301860c8ebf'
   const order = await Order.findOne({ 'uid': uid})
-  console.log("1")
-  console.log(order)
+   
   if(!order)
-  {
-    console.log("2")
+  {     
     await Order.create({
         planid: mongoose.Types.ObjectId(planid),
         remarks: 'Free Plan',
@@ -109,9 +107,11 @@ const checkFreePlan = asyncHandler(async (req, res) => {
         uid: uid,
         status: 'ACTIVE'
     })
+
+    res.status(201).json({status:'success',message:'Check Done'}) 
   }
 
-  res.status(201).json({status:'error',message:'Check Done'}) 
+  res.status(201).json({status:'error',message:'Check Failed'}) 
 })
 
 module.exports = {
