@@ -40,10 +40,12 @@ const saveOrder = asyncHandler(async (req, res) => {
     {
         // Create Template
         const doc = await Order.create({
-            name: name,
-            onchart: onchart,
-            offchart: offchart,
-            uid: mongoose.Types.ObjectId(uid)
+            planid: mongoose.Types.ObjectId(data.planid),
+            remarks: data.remarks,
+            amount: data.amount,
+            frequency: data.frequency,            
+            uid: uid,
+            status: data.status
         })
         
         if (doc) {
@@ -55,7 +57,7 @@ const saveOrder = asyncHandler(async (req, res) => {
     }
     else 
     {
-        Order.findByIdAndUpdate(id, { name: name, onchart: onchart,offchart: offchart },
+        Order.findByIdAndUpdate(id, { remarks: data.remarks,amount: data.amount,frequency:data.frequency,status: data.status },
         function (err, docs) {
             if (err){
                 res.status(400)

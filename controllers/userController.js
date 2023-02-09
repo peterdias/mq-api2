@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
 const User = require('../models/user')
 const UserSettings = require('../models/user_settings')
-
+const Order = require('../models/order')
 // @desc    Register new user
 // @route   POST /api/users
 // @access  Public
@@ -90,8 +90,28 @@ const generateToken = (id) => {
   })
 }
 
+const checkFreePlan = asyncHandler(async (req, res) => {
+  const { uid } = req.body
+
+  const order = await Order.findOne({ uid: uid, monthly:0 })
+
+  if(!order)
+  {
+    const doc = await Order.create({
+        planid: mongoose.Types.ObjectId('63e25f9fc2886301860c8ebf'),
+        remarks: 'Free Plan',
+        amount: 0,
+        frequency: 365,            
+        uid: uid,
+        status: 'ACTIVE'
+    })
+  }
+
+})
+
 module.exports = {
   registerUser,
   loginUser,
   getMe,
+  checkFreePlan
 }
