@@ -8,7 +8,11 @@ const getCurrentPlan = asyncHandler(async (req, res) => {
     const doc = await Order.findOne({"uid": uid}).populate('planid')
 
     if (doc) {
-        res.status(201).json({data: doc, id:doc._id, plan: '', amount:doc.amount,expirydate: '', frequency: ''})
+        res.status(201).json({id:doc._id, 
+                            plan: doc.planid.title, 
+                            amount:doc.amount,
+                            expirydate: '', 
+                            frequency: doc.frequency})
     }
     else 
     {
