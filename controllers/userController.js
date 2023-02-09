@@ -95,10 +95,11 @@ const checkFreePlan = asyncHandler(async (req, res) => {
   const { uid } = req.body
 
   const planid = '63e25f9fc2886301860c8ebf'
-  const order = await Order.findOne({ 'uid': uid, "planid": mongoose.Types.ObjectId(planid) })
-
+  const order = await Order.findOne({ 'uid': uid})
+  console.log("1")
   if(!order)
   {
+    console.log("2")
     await Order.create({
         planid: mongoose.Types.ObjectId(planid),
         remarks: 'Free Plan',
