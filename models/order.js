@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const Order = mongoose.Schema(
     {
         planid: { type: mongoose.Schema.ObjectId, ref: 'subscription_plans' },
+        startdate: {type: Date, default: Date.now},
         remarks: {type: String}, 
         amount: {type: Number }, 
         frequency: {type: Number }, 
