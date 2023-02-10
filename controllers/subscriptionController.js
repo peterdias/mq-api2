@@ -17,19 +17,23 @@ const getCurrentPlan = asyncHandler(async (req, res) => {
     
     if (doc) {
         let expiry = ''
-        if(doc.amount > 0) {
-             
-            let dt = new Date(doc.startdate.toString())
-            //console.log(dt)
+        let frequency  = ''
+        if(doc.amount > 0) {             
+            let dt = new Date(doc.startdate.toString())             
             let ms = (dt.getTime() + (86400000 * + doc.frequency))
             expiry = formatDate(new Date(ms))
+
+            if(doc.frequence == 30) frequency = 'Monthly'
+            else if(doc.frequence == 90) frequency = 'Quaterly'
+            else if(doc.frequence == 180) frequency = 'Half Yearly'
+            else if(doc.frequence == 365) frequency = 'Yearly'
         }
         
         res.status(201).json({id:doc._id, 
                             plan: doc.planid.title, 
                             amount:doc.amount,
                             expirydate: expiry, 
-                            frequency: doc.frequency})
+                            frequency: frequency})
     }
     else 
     {
