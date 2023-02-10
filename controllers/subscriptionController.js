@@ -2,6 +2,14 @@ const asyncHandler = require('express-async-handler')
 const Plan = require('../models/subscription_plan')
 const Order = require('../models/order')
 
+function formatDate(date) {
+    //let date = new Date(value);
+    const day = date.toLocaleString('default', { day: '2-digit' });
+    const month = date.toLocaleString('default', { month: 'short' });
+    const year = date.toLocaleString('default', { year: 'numeric' });
+    return day + '-' + month + '-' + year;
+}
+
 const getCurrentPlan = asyncHandler(async (req, res) => {
     const { uid } = req.body
     
@@ -14,7 +22,7 @@ const getCurrentPlan = asyncHandler(async (req, res) => {
             let dt = new Date(doc.startdate.toString())
             //console.log(dt)
             let ms = (dt.getTime() + (86400000 * + doc.frequency))
-            expiry = new Date(ms)
+            expiry = formatDate(new Date(ms))
         }
         
         res.status(201).json({id:doc._id, 
