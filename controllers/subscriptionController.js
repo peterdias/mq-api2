@@ -13,7 +13,7 @@ const getCurrentPlan = asyncHandler(async (req, res) => {
              
             let dt = new Date(doc.startdate.toString())
             //console.log(dt)
-            expiry = dt.getDate() + doc.frequency;
+            expiry = dt.getTime() + (86400000 * + doc.frequency)
         }
         
         res.status(201).json({id:doc._id, 
