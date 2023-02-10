@@ -29,7 +29,7 @@ const getCurrentPlan = asyncHandler(async (req, res) => {
             else if(doc.frequence == 365) frequency = 'Yearly'
         }
         
-        res.status(201).json({id:doc._id, 
+        res.status(201).json({id:doc.planid._id, 
                             plan: doc.planid.title, 
                             amount:doc.amount,
                             expirydate: expiry, 
