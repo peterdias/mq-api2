@@ -13,7 +13,7 @@ function formatDate(date) {
 const getCurrentPlan = asyncHandler(async (req, res) => {
     const { uid } = req.body
     
-    const doc = await Order.findOne({"uid": uid}).populate('planid')
+    const doc = await Order.findOne({"uid": uid, 'status':'ACTIVE'}).populate('planid')
     
     if (doc) {
         let expiry = ''
