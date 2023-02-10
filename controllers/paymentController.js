@@ -36,21 +36,21 @@ const paymentVerification  = asyncHandler(async (req, res) => {
     .update(body.toString())
     .digest("hex");
 
-  const isAuthentic = expectedSignature === razorpay_signature;
+  const isAuthentic = expectedSignature === payment.razorpay_signature;
 
   if (isAuthentic) {
     // Database comes here
 
     await Payment.create({
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
+      razorpay_order_id:payment.razorpay_order_id,
+      razorpay_payment_id: payment.razorpay_payment_id,
+      razorpay_signature: payment.razorpay_signature,
     });
  
 
     res.status(200).json({
         success: true,
-        payment_id: razorpay_payment_id,
+        payment_id: payment.checkoutrazorpay_payment_id,
         });
 
   } else {
