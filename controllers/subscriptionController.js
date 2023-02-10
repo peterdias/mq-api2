@@ -12,8 +12,8 @@ const getCurrentPlan = asyncHandler(async (req, res) => {
         if(doc.amount > 0) {
              
             let dt = new Date(doc.startdate.toString())
-            console.log(dt)
-            expiry = dt + doc.frequency;
+            //console.log(dt)
+            expiry = dt.getDate() + doc.frequency;
         }
         
         res.status(201).json({id:doc._id, 
