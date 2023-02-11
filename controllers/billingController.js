@@ -23,7 +23,7 @@ const getOrder = asyncHandler(async (req, res) => {
 const getOrders = asyncHandler(async (req, res) => {
     const { uid } = req.body
      
-    const docs = await Order.find({"uid": mongoose.Types.ObjectId(uid)})     
+    const docs = await Order.find({"uid": uid})     
     if (docs) { res.status(201).json(docs) }
     else 
     {
@@ -103,7 +103,7 @@ const getInvoice = asyncHandler(async (req, res) => {
 const getInvoices = asyncHandler(async (req, res) => {
     const { uid } = req.body
      
-    const docs = await Invoice.find({"uid": mongoose.Types.ObjectId(uid)})     
+    const docs = await Invoice.find({"uid":uid})     
     if (docs) { res.status(201).json(docs) }
     else 
     {
