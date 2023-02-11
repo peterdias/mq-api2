@@ -117,18 +117,16 @@ const checkFreePlan = asyncHandler(async (req, res) => {
 })
 
 const getAllUsers = asyncHandler(async (req, res) => {
-  firebaseadmin.auth().listUsers(1000)  
-  .then((listUsersResult) => { 
+  firebaseadmin.auth().listUsers(1000).then((listUsersResult) => { 
       let users = []
-      listUsersResult.users.forEach(user => {
-        //console.log(user)
+      listUsersResult.users.forEach(user => {        
         users.push({
           'id': user.uid,
           'email': user.email,
           'displayName': user.displayName,
           'creationTime' : user.metadata.creationTime,
           'lastSignInTime': user.metadata.lastSignInTime,
-          'providerId' : user.providerData[0].UserInfo.providerId
+          //'providerId' : user.providerData[0].UserInfo.providerId
         })
       });      
       res.status(201).json(users) 
