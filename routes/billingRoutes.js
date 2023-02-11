@@ -15,8 +15,10 @@ const {
 router.post('/getorder',protect,getOrder)
 router.post('/saveorder',protect,saveOrder)
 router.post('/getorders',protect,getOrders)
+router.post('/getallorders',protect,getOrders)
 router.post('/getinvoice',protect,getInvoice)
 router.post('/saveinvoice',protect,saveInvoice)
 router.post('/getinvoices',protect,getInvoices)
+router.post('/getallinvoices',protect,getInvoices)
 
 module.exports = router

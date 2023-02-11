@@ -28,7 +28,20 @@ const getOrders = asyncHandler(async (req, res) => {
     else 
     {
         res.status(400)
-        throw new Error('Templates not found for user')
+        throw new Error('Orders not found for user')
+    }
+    
+})
+
+
+const getAllOrders = asyncHandler(async (req, res) => {
+        
+    const docs = await Order.find({})     
+    if (docs) { res.status(201).json(docs) }
+    else 
+    {
+        res.status(400)
+        throw new Error('Orders not found')
     }
     
 })
@@ -100,6 +113,18 @@ const getInvoices = asyncHandler(async (req, res) => {
     
 })
 
+const getAllInvoices = asyncHandler(async (req, res) => {
+     
+    const docs = await Invoice.find({})     
+    if (docs) { res.status(201).json(docs) }
+    else 
+    {
+        res.status(400)
+        throw new Error('Invoices not found for user')
+    }
+    
+})
+
 const saveInvoice = asyncHandler(async (req, res) => {
     const { id, data ,uid} = req.body
      
@@ -140,8 +165,10 @@ const saveInvoice = asyncHandler(async (req, res) => {
 module.exports = {
     getOrder,
     getOrders,
+    getAllOrders,
     saveOrder,
     getInvoice,
     getInvoices,
+    getAllInvoices,
     saveInvoice
 }
