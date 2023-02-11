@@ -121,7 +121,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
   .then((listUsersResult) => {
 
       let users = JSON.stringify(listUsersResult);
-      res.status(201).json({success:true,users}) 
+      res.status(201).json(users) 
   })
   .catch(function (error) {
       console.log('Oh no! Firebase listUsers Error:', error);
