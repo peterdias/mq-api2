@@ -120,7 +120,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
   firebaseadmin.auth().listUsers(1000) // lists up to 1000 users
   .then((listUsersResult) => { 
       let users = []
-      listUsersResult.forEach(user => {
+      listUsersResult.users.forEach(user => {
         users.push({
           'id': user.uid,
           'email': user.email,
