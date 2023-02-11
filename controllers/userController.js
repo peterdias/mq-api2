@@ -5,6 +5,8 @@ const mongoose = require('mongoose')
 const User = require('../models/user')
 const UserSettings = require('../models/user_settings')
 const Order = require('../models/order')
+const firebaseadmin = require('../config/firebase')
+
 // @desc    Register new user
 // @route   POST /api/users
 // @access  Public
@@ -114,9 +116,22 @@ const checkFreePlan = asyncHandler(async (req, res) => {
   res.status(201).json({status:'error',message:'Check Failed'}) 
 })
 
+const getAllUsers = asyncHandler(async (req, res) => {
+  firebaseadmin.auth().listUsers(1000) // lists up to 1000 users
+  .then((listUsersResult) => {
+
+      let users = JSON.stringify(listUsersResult);
+      res.status(201).json({success:true,users}) 
+  })
+  .catch(function (error) {
+      console.log('Oh no! Firebase listUsers Error:', error);
+  });
+})
+
 module.exports = {
   registerUser,
   loginUser,
   getMe,
-  checkFreePlan
+  checkFreePlan,
+  getAllUsers
 }
