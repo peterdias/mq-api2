@@ -117,7 +117,7 @@ const checkFreePlan = asyncHandler(async (req, res) => {
 })
 
 const getAllUsers = asyncHandler(async (req, res) => {
-  firebaseadmin.auth().listUsers(1000) // lists up to 1000 users
+  firebaseadmin.auth().listUsers(1000)  
   .then((listUsersResult) => { 
       let users = []
       listUsersResult.users.forEach(user => {
