@@ -36,7 +36,7 @@ const getOrders = asyncHandler(async (req, res) => {
 
 const getAllOrders = asyncHandler(async (req, res) => {
         
-    const docs = await Order.find({})     
+    const docs = await Order.find({}).populate('uid')     
     if (docs) { res.status(201).json(docs) }
     else 
     {
