@@ -118,10 +118,8 @@ const checkFreePlan = asyncHandler(async (req, res) => {
 
 const getAllUsers = asyncHandler(async (req, res) => {
   firebaseadmin.auth().listUsers(1000) // lists up to 1000 users
-  .then((listUsersResult) => {
-
-      let users = JSON.stringify(listUsersResult);
-      res.status(201).json(users) 
+  .then((listUsersResult) => {       
+      res.status(201).json(listUsersResult) 
   })
   .catch(function (error) {
       console.log('Oh no! Firebase listUsers Error:', error);
