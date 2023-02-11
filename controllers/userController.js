@@ -121,14 +121,14 @@ const getAllUsers = asyncHandler(async (req, res) => {
   .then((listUsersResult) => { 
       let users = []
       listUsersResult.users.forEach(user => {
-        console.log(user)
+        //console.log(user)
         users.push({
           'id': user.uid,
           'email': user.email,
           'displayName': user.displayName,
           'creationTime' : user.metadata.creationTime,
           'lastSignInTime': user.metadata.lastSignInTime,
-          'providerId' : user.providerData.providerId
+          'providerId' : user.providerData[0].UserInfo.providerId
         })
       });      
       res.status(201).json(users) 
