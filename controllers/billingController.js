@@ -36,7 +36,7 @@ const getOrders = asyncHandler(async (req, res) => {
 
 const getAllOrders = asyncHandler(async (req, res) => {
         
-    const docs = await Order.find({}).populate('uid')     
+    const docs = await Order.find({})    
     if (docs) { res.status(201).json(docs) }
     else 
     {
@@ -162,6 +162,18 @@ const saveInvoice = asyncHandler(async (req, res) => {
     return 
 })
 
+const getAllPayments = asyncHandler(async (req, res) => {
+     
+    const docs = await Payment.find({})     
+    if (docs) { res.status(201).json(docs) }
+    else 
+    {
+        res.status(400)
+        throw new Error('Payments not found for user')
+    }
+    
+})
+
 module.exports = {
     getOrder,
     getOrders,
@@ -170,5 +182,6 @@ module.exports = {
     getInvoice,
     getInvoices,
     getAllInvoices,
-    saveInvoice
+    saveInvoice,
+    getAllPayments
 }

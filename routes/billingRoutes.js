@@ -9,7 +9,8 @@ const {
     saveOrder, 
     getInvoice,
     getInvoices,
-    saveInvoice  
+    saveInvoice ,
+    getAllPayments 
   } = require('../controllers/billingController')
 
 router.post('/getorder',protect,getOrder)
@@ -20,5 +21,5 @@ router.post('/getinvoice',protect,getInvoice)
 router.post('/saveinvoice',protect,saveInvoice)
 router.post('/getinvoices',protect,getInvoices)
 router.post('/getallinvoices',protect,getInvoices)
-
+router.post('/getallpayments',protect,getAllPayments)
 module.exports = router
