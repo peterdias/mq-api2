@@ -3,6 +3,9 @@ const dotenv = require('dotenv').config()
 const crypto = require("crypto");
 const Razorpay = require("razorpay");
 const Payment = require('../models/payment')
+const Order = require('../models/order')
+const Invoice = require('../models/invoice')
+const Plan = require('../models/subscription_plan')
 
 const razor = new Razorpay({
     key_id: process.env.RAZORPAY_API_KEY,
@@ -27,7 +30,7 @@ const checkout = asyncHandler(async (req, res) => {
 })
 
 const paymentVerification  = asyncHandler(async (req, res) => {
-  const { payment } = req.body; //razorpay_order_id, razorpay_payment_id, razorpay_signature
+  const { payment,uid,planid,amount,frequency } = req.body;  
 
   const body = payment.razorpay_order_id + "|" + payment.razorpay_payment_id;
 
@@ -38,12 +41,44 @@ const paymentVerification  = asyncHandler(async (req, res) => {
 
   if (isAuthentic) {
     
-    await Payment.create({razorpay_order_id:payment.razorpay_order_id, 
-      razorpay_payment_id: payment.razorpay_payment_id,
-      razorpay_signature: payment.razorpay_signature,
-    }); 
+    let plan  = Plan.findOne({"_id": mongoose.Types.ObjectId(planid)})
+    let order = Order.findOne({'uid': uid, 'status':'ACTIVE'})
+    if(order && plan)
+    {
+      order.status = 'INACTIVE'
+      await order.save()
+      if(order.amount == 0) //Free Plan
+      {
+          let neworder = await Order.create({
+            uid,
+            planid,
+            frequency,
+            amount,
+            remarks: plan.title,
+            startdate: Date.now(),
+            'status': 'ACTIVE'
+          })  
 
-    res.status(200).json({success: true});
+          if(neworder){
+              let newinvoice = await Invoice.create({
+                  oid: neworder._id,
+                  amount: amount, 
+                  frequency: frequency,
+                  remarks: plan.title,
+              })
+
+              if(newinvoice)
+              {
+                await Payment.create({razorpay_order_id:payment.razorpay_order_id, 
+                  razorpay_payment_id: payment.razorpay_payment_id,
+                  razorpay_signature: payment.razorpay_signature,
+                }); 
+            
+                res.status(200).json({success: true});
+              }
+          }
+      }
+    }    
 
   } else {
     res.status(400).json({success: false,});
