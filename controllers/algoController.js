@@ -530,10 +530,31 @@ const getStrategy = asyncHandler(async (req, res) => {
     }
 })
 
+const getAllUsers = async () => {
+	firebaseadmin.auth().listUsers(1000).then((listUsersResult) => { 
+		let users = []
+		listUsersResult.users.forEach(user => {        
+		  users.push({
+			'id': user.uid,
+			'email': user.email,
+			'displayName': user.displayName,
+			'creationTime' : user.metadata.creationTime,
+			'lastSignInTime': user.metadata.lastSignInTime,
+			//'providerId' : user.providerData[0].UserInfo.providerId
+		  })
+		});      
+		
+		return users 
+	})
+	.catch(function (error) {
+		return []
+	});
+  }
+
 const getAllStrategies = asyncHandler(async (req, res) => {
     let docs = await StrategyModel.find({})
     if (docs) {
-        let users = await firebaseadmin.getAllUsers()        
+        let users = await getAllUsers()        
         console.log(users)
         res.status(201).json(docs) 
     }
