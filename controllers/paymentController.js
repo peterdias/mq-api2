@@ -48,8 +48,8 @@ const paymentVerification  = asyncHandler(async (req, res) => {
     {       
       order.status = 'INACTIVE'
       await order.save()
-      if(order.amount == 0) //Free Plan
-      {
+      //if(order.amount == 0) //Free Plan
+      //{
           let neworder = await Order.create({
             uid,
             planid,
@@ -78,7 +78,7 @@ const paymentVerification  = asyncHandler(async (req, res) => {
                 res.status(200).json({success: true});
               }
           }
-      }
+      //}
     }    
 
   } else {
