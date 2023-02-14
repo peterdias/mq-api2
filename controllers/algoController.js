@@ -559,12 +559,12 @@ const getAllStrategies = asyncHandler(async (req, res) => {
     if (docs) {
         let users = await getAllUsers()        
         
-        let strategies = docs.map((strategy) => {
-            let user = users.find(u => {u.id === strategy.uid})
-            if(user) strategy.username = user.displayName
-            else strategy.username = ''
-        })
-        res.status(201).json(strategies) 
+        // let strategies = docs.map((strategy) => {
+        //     let user = users.find(u => {u.id === strategy.uid})
+        //     if(user) strategy.username = user.displayName
+        //     else strategy.username = ''
+        // })
+        res.status(201).json(users) 
     }
     else 
     {
