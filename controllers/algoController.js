@@ -11,6 +11,7 @@ const BotTransaction = require('../models/bottransaction')
 const MarketOrder = require('../models/market_order')
 const MarketTrade = require('../models/market_trade')
 const k8s = require('@kubernetes/client-node');
+const firebaseadmin = require('../config/firebase')
 
 const cluster = {
     name: 'do-blr1-ts-cluster',
@@ -531,7 +532,11 @@ const getStrategy = asyncHandler(async (req, res) => {
 
 const getAllStrategies = asyncHandler(async (req, res) => {
     let docs = await StrategyModel.find({})
-    if (docs) { res.status(201).json(docs) }
+    if (docs) {
+        let users = await firebaseadmin.getAllUsers()        
+        console.log(users)
+        res.status(201).json(docs) 
+    }
     else 
     {
         res.status(400)
