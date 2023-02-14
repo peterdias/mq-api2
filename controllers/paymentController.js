@@ -70,7 +70,7 @@ const paymentVerification  = asyncHandler(async (req, res) => {
 
               if(newinvoice)
               {
-                await Payment.create({razorpay_order_id:payment.razorpay_order_id, 
+                await Payment.create({invoiceid:newinvoice._id,razorpay_order_id:payment.razorpay_order_id, 
                   razorpay_payment_id: payment.razorpay_payment_id,
                   razorpay_signature: payment.razorpay_signature,
                 }); 
