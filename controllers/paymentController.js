@@ -46,6 +46,7 @@ const paymentVerification  = asyncHandler(async (req, res) => {
     let order = Order.findOne({'uid': uid, 'status':'ACTIVE'})
     if(order && plan)
     {
+      console.log(order)
       order.status = 'INACTIVE'
       await order.save()
       if(order.amount == 0) //Free Plan
