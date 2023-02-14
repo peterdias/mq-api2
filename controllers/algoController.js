@@ -543,7 +543,7 @@ const getAllUsers = async () => {
 			//'providerId' : user.providerData[0].UserInfo.providerId
 		  })
 		});      
-		
+		console.log("Users:",users)
 		return users 
 	})
 	.catch(function (error) {
