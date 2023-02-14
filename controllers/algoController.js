@@ -529,6 +529,26 @@ const getStrategy = asyncHandler(async (req, res) => {
     }
 })
 
+const getAllStrategies = asyncHandler(async (req, res) => {
+    let docs = await StrategyModel.find({})
+    if (docs) { res.status(201).json(docs) }
+    else 
+    {
+        res.status(400)
+        throw new Error('Strategies not found')
+    }
+})
+
+const getAllBots = asyncHandler(async (req, res) => {
+    let docs = await Bot.find({})
+    if (docs) { res.status(201).json(docs) }
+    else 
+    {
+        res.status(400)
+        throw new Error('Bots not found')
+    }
+})
+
 const getTransactions = asyncHandler(async (req, res) => {
     const { botid,uid } = req.body
 
@@ -667,5 +687,6 @@ module.exports = {
     deleteManageRule,
     saveBot,
     deleteBot,getBots,getBot,pauseBot,
-    getMarketOrders,getMarketTrades,getNetPositions,getBotLogs
+    getMarketOrders,getMarketTrades,getNetPositions,getBotLogs,
+    getAllStrategies, getAllBots
 }
