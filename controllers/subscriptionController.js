@@ -16,6 +16,7 @@ const getCurrentPlan = asyncHandler(async (req, res) => {
     const doc = await Order.findOne({"uid": uid, 'status':'ACTIVE'}).populate('planid')
     
     if (doc) {
+        console.log(doc)
         let expiry = ''
         let frequency  = ''
         if(doc.amount > 0) {             
