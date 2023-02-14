@@ -42,11 +42,10 @@ const paymentVerification  = asyncHandler(async (req, res) => {
 
   if (isAuthentic) {
     
-    let plan  = Plan.findOne({"_id": mongoose.Types.ObjectId(planid)})
-    let order = Order.findOne({'uid': uid, 'status':'ACTIVE'})
+    let plan  = await Plan.findOne({"_id": mongoose.Types.ObjectId(planid)})
+    let order = await Order.findOne({'uid': uid, 'status':'ACTIVE'})
     if(order && plan)
-    {
-      console.log(order)
+    {       
       order.status = 'INACTIVE'
       await order.save()
       if(order.amount == 0) //Free Plan
