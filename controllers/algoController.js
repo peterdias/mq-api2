@@ -739,6 +739,30 @@ const getTradingAccounts = asyncHandler(async (req, res) => {
     }
 })
 
+const getTradingAccount = asyncHandler(async (req, res) => {
+    const {uid,accountid } = req.body
+
+    let doc = await TradingAccount.find({'uid': uid,'accountid': accountid}).populate('brokerid')
+    if (doc) { res.status(201).json(doc) }
+    else 
+    {
+        res.status(400)
+        throw new Error('Trading Account not found')
+    }
+})
+
+const saveTradingAccount = asyncHandler(async (req, res) => {
+    const {uid,accountid } = req.body
+
+    let doc = await TradingAccount.find({'uid': uid,'accountid': accountid}).populate('brokerid')
+    if (doc) { res.status(201).json(doc) }
+    else 
+    {
+        res.status(400)
+        throw new Error('Trading Account not found')
+    }
+})
+
 module.exports = {
     saveStrategy,
     deleteSequence,
@@ -752,5 +776,5 @@ module.exports = {
     deleteBot,getBots,getBot,pauseBot,
     getMarketOrders,getMarketTrades,getNetPositions,getBotLogs,
     getAllStrategies, getAllBots,
-    getTradingAccounts
+    getTradingAccounts,getTradingAccount,saveTradingAccount
 }

@@ -13,7 +13,7 @@ const {
     deleteTransaction,
     deleteManageRule,
     saveBot,deleteBot,getBots,getBot,pauseBot,getMarketOrders,getMarketTrades,getNetPositions,getBotLogs,
-    getAllStrategies, getAllBots, getTradingAccounts
+    getAllStrategies, getAllBots, getTradingAccounts,getTradingAccount,saveTradingAccount
   } = require('../controllers/algoController')
 
 //app.use(authMiddleware.decodeToken);
@@ -38,4 +38,6 @@ router.post('/getmarkettrades',protect,getMarketTrades)
 router.post('/getnetpositions',protect,getNetPositions)
 router.post('/getbotlogs',protect,getBotLogs)
 router.post('/gettradingaccounts',protect,getTradingAccounts)
+router.post('/gettradingaccounts',protect,getTradingAccount)
+router.post('/gettradingaccounts',protect,saveTradingAccount)
 module.exports = router
