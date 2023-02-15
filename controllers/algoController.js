@@ -561,7 +561,12 @@ const getAllStrategies = asyncHandler(async (req, res) => {
         console.log(users)      
         let strategies = []
         docs.forEach(doc => {
-            let user = users.find(u => {u.id === doc.uid})
+            let user = users.find(u => {
+                console.log(u.id, doc.uid)
+                if(u.id === doc.uid) return true
+
+                return false
+            })
             console.log(user)
             let username = ''
             if(user) username = user.displayName
