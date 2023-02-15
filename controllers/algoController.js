@@ -1,6 +1,9 @@
 const asyncHandler = require('express-async-handler')
 const mongoose = require('mongoose')
 const amqp = require("amqplib")
+const k8s = require('@kubernetes/client-node');
+const firebaseadmin = require('../config/firebase')
+
 const Instrument = require('../models/instrument')
 const StrategyModel = require('../models/strategy')
 const Sequence = require('../models/sequence')
@@ -10,8 +13,7 @@ const LogBot = require('../models/log_bot')
 const BotTransaction = require('../models/bottransaction')
 const MarketOrder = require('../models/market_order')
 const MarketTrade = require('../models/market_trade')
-const k8s = require('@kubernetes/client-node');
-const firebaseadmin = require('../config/firebase')
+const TradingAccount = require('../models/tradingaccount')
 
 const cluster = {
     name: 'do-blr1-ts-cluster',
@@ -723,6 +725,20 @@ const getNetPositions = asyncHandler(async (req, res) => {
      
     res.status(201).json(positions)    
 })
+
+
+const getTradingAccounts = asyncHandler(async (req, res) => {
+    const {uid } = req.body
+
+    let docs = await TradingAccount.find({'uid': uid}).populate('brokerid')
+    if (docs) { res.status(201).json(docs) }
+    else 
+    {
+        res.status(400)
+        throw new Error('Trading Accounts not found')
+    }
+})
+
 module.exports = {
     saveStrategy,
     deleteSequence,
@@ -735,5 +751,6 @@ module.exports = {
     saveBot,
     deleteBot,getBots,getBot,pauseBot,
     getMarketOrders,getMarketTrades,getNetPositions,getBotLogs,
-    getAllStrategies, getAllBots
+    getAllStrategies, getAllBots,
+    getTradingAccounts
 }
