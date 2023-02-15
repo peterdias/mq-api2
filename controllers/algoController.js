@@ -558,20 +558,24 @@ const getAllStrategies = asyncHandler(async (req, res) => {
     let docs = await StrategyModel.find({})
     if (docs) {
         let users = await getAllUsers()  
-        console.log(users)      
+             
         let strategies = []
         docs.forEach(doc => {
-            let user = users.find(u => {
-                console.log(u.id, doc.uid)
+            let user = users.find(u => {                 
                 if(u.id === doc.uid) return true
-
                 return false
             })
-            console.log(user)
+             
             let username = ''
             if(user) username = user.displayName
             
-            strategies.push({...doc,username})
+
+            strategies.push({
+                'title':doc.title,
+                'description': doc.description,
+                'createdAt' : doc.createdAt,
+                'id' : doc._id,
+                username})
         })
          
         res.status(201).json(strategies) 
