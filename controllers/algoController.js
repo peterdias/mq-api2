@@ -569,7 +569,6 @@ const getAllStrategies = asyncHandler(async (req, res) => {
             let username = ''
             if(user) username = user.displayName
             
-
             strategies.push({
                 'title':doc.title,
                 'description': doc.description,
@@ -588,7 +587,7 @@ const getAllStrategies = asyncHandler(async (req, res) => {
 })
 
 const getAllBots = asyncHandler(async (req, res) => {
-    let docs = await Bot.find({})
+    let docs = await Bot.find({}).populate('sid')
     if (docs) { res.status(201).json(docs) }
     else 
     {
