@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const User = require('../models/user')
 const UserSettings = require('../models/user_settings')
 const Order = require('../models/order')
+const TradingAccount = require('../models/tradingaccount')
 const firebaseadmin = require('../config/firebase')
 
 // @desc    Register new user
@@ -108,6 +109,15 @@ const checkFreePlan = asyncHandler(async (req, res) => {
         frequency: 365,            
         uid: uid,
         status: 'ACTIVE'
+    })
+
+    await TradingAccount.create({
+      accountid: 'VIRTUAL',
+      virtual: true,
+      virtual_balance: 100000,
+      start_date: Date.now(),
+      active: true, 
+      uid: uid
     })
 
     res.status(201).json({status:'success',message:'Check Done'}) 
