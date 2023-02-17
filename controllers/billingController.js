@@ -164,7 +164,7 @@ const saveInvoice = asyncHandler(async (req, res) => {
 
 const getAllPayments = asyncHandler(async (req, res) => {
      
-    const docs = await Payment.find({})     
+    const docs = await Payment.find({}).populate('invoiceid')     
     if (docs) { res.status(201).json(docs) }
     else 
     {
