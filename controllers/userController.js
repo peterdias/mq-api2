@@ -113,6 +113,7 @@ const checkFreePlan = asyncHandler(async (req, res) => {
     })
 
     await TradingAccount.create({
+      brokerid: mongoose.Types.ObjectId('63ef64628cad72a7c931218c'),
       accountid: 'VIRTUAL',
       virtual: true,
       virtual_balance: 100000,

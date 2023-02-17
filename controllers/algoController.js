@@ -14,6 +14,7 @@ const BotTransaction = require('../models/bottransaction')
 const MarketOrder = require('../models/market_order')
 const MarketTrade = require('../models/market_trade')
 const TradingAccount = require('../models/tradingaccount')
+const Broker = require('../models/broker')
 
 const cluster = {
     name: 'do-blr1-ts-cluster',
@@ -753,15 +754,15 @@ const getTradingAccount = asyncHandler(async (req, res) => {
 
 const saveTradingAccount = asyncHandler(async (req, res) => {
     const {uid,id,brokerid,api_key,api_secret,token } = req.body
-    
+        
     if (id == 0) { 
 
         let account = TradingAccount.create({
             uid: uid,
-            brokerid: mongoose.Types.ObjectId(brokerid),
+            brokerid: mongoose.Types.ObjectId(brokerid),            
             api_key,
             api_secret, 
-            token
+            token            
         })
         res.status(201).json({status:'success', id: account._id}) 
     }
