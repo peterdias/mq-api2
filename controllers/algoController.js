@@ -753,11 +753,11 @@ const getTradingAccount = asyncHandler(async (req, res) => {
 
 const saveTradingAccount = asyncHandler(async (req, res) => {
     const {uid,id,brokerid,api_key,api_secret,token } = req.body
-
     
     if (id == 0) { 
 
         let account = TradingAccount.create({
+            uid: uid,
             brokerid: mongoose.Types.ObjectId(brokerid),
             api_key,
             api_secret, 
