@@ -51,7 +51,7 @@ const saveBroker = asyncHandler(async (req, res) => {
         })
         
         if (broker) {
-            res.status(201).json({ id: broker._id })
+            res.status(201).json({ id: broker._id, status: 'success' })
         } else {
             res.status(400)
             throw new Error('Broker coundnt be saved.')
