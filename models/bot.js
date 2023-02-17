@@ -19,4 +19,4 @@ const Bot = mongoose.Schema(
     }
 )
 
-module.exports = mongoose.model('bots', Bot)
+module.exports = mongoose.model('trading_bots', Bot)

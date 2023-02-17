@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 
 const LogBot = mongoose.Schema(
     {         
-        botid: { type: mongoose.Schema.ObjectId, ref: 'bots' },         
+        botid: { type: mongoose.Schema.ObjectId, ref: 'trading_bots' },         
         title: {type: String }, 
     },
     {

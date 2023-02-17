@@ -10,7 +10,7 @@ const MarketTrade = mongoose.Schema(
         qty: { type: Number},  
         trans: { type: String}, 
         source: { type: String},
-        bid: { type: mongoose.Schema.ObjectId, ref: 'bots' },
+        bid: { type: mongoose.Schema.ObjectId, ref: 'trading_bots' },
         uid: { type: String }
     },
     {
