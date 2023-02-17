@@ -753,7 +753,7 @@ const getTradingAccount = asyncHandler(async (req, res) => {
 })
 
 const saveTradingAccount = asyncHandler(async (req, res) => {
-    const {uid,id,brokerid,api_key,api_secret,token } = req.body
+    const {uid,id,brokerid,api_key,api_secret,token,active } = req.body
         
     if (id == 0) { 
 
@@ -768,17 +768,17 @@ const saveTradingAccount = asyncHandler(async (req, res) => {
     }
     else 
     {
-        let account = await TradingAccount.find({'uid': uid,'_id': mongoose.Types.ObjectId(id)})
-        if(account)
-        {
-            account.brokerid = brokerid
-            account.api_key = api_key
-            account.api_secret = api_secret
-            account.token = token 
-
-            await account.save()
-            res.status(201).json({status:'updated', id: account._id}) 
-        }
+        
+        TradingAccount.findByIdAndUpdate(id, {brokerid,api_key,api_secret,token,active},
+            function (err, docs) {
+                if (err){
+                    res.status(400)
+                    throw new Error('Account not Found')
+                }
+                else{
+                    res.status(201).json({status: 'updated'})
+                }
+            });
     }
 })
 
