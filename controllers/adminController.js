@@ -47,7 +47,7 @@ const saveBroker = asyncHandler(async (req, res) => {
             description,
             website_url,
             active,
-            uid: mongoose.Types.ObjectId(uid)
+            uid: uid
         })
         
         if (broker) {
