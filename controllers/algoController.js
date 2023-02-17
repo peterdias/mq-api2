@@ -193,7 +193,7 @@ const saveBot = asyncHandler(async (req, res) => {
             podBody.metadata= meta
             podBody.spec = podSpec
             
-            //k8sApi.createNamespacedPod('default',podBody)   ///// Remove Comment Later
+            k8sApi.createNamespacedPod('default',podBody)
         }
         else
         {             
