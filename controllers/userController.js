@@ -121,7 +121,7 @@ const checkFreePlan = asyncHandler(async (req, res) => {
       uid: uid
     })
 
-    const p = await Plan.findOne('_id',mongoose.Types.ObjectId(planid))
+    const p = await Plan.findOne({'_id':mongoose.Types.ObjectId(planid)})
     res.status(201).json({status:'success',message:'Check Done',plan: p}) 
   }
   else 
