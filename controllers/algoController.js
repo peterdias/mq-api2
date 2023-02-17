@@ -753,7 +753,7 @@ const getTradingAccount = asyncHandler(async (req, res) => {
 })
 
 const saveTradingAccount = asyncHandler(async (req, res) => {
-    const {uid,id,brokerid,api_key,api_secret,token,active } = req.body
+    const {uid,id,brokerid,api_key,api_secret,token,active,virtual_balance } = req.body
         
     if (id == 0) { 
 
@@ -762,14 +762,14 @@ const saveTradingAccount = asyncHandler(async (req, res) => {
             brokerid: mongoose.Types.ObjectId(brokerid),            
             api_key,
             api_secret, 
-            token            
+            token ,
+            virtual_balance           
         })
         res.status(201).json({status:'success', id: account._id}) 
     }
     else 
-    {
-        
-        TradingAccount.findByIdAndUpdate(id, {brokerid,api_key,api_secret,token,active},
+    {        
+        TradingAccount.findByIdAndUpdate(id, {brokerid,api_key,api_secret,token,active,virtual_balance},
             function (err, docs) {
                 if (err){
                     res.status(400)
