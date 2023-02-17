@@ -26,7 +26,7 @@ app.use('/api/algo', require('./routes/algoRoutes'))
 app.use('/api/plans', require('./routes/subscriptionRoutes'))
 app.use('/api/billing', require('./routes/billingRoutes'))
 app.use('/api/payment', require('./routes/paymentRoutes'))
-
+app.use('/api/admin', require('./routes/adminRoutes'))
 // Serve frontend
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/build')))
