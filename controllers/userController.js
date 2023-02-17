@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const User = require('../models/user')
 const UserSettings = require('../models/user_settings')
 const Order = require('../models/order')
+const Plan = require('../models/subscription_plan')
 const TradingAccount = require('../models/tradingaccount')
 const firebaseadmin = require('../config/firebase')
 
@@ -120,7 +121,13 @@ const checkFreePlan = asyncHandler(async (req, res) => {
       uid: uid
     })
 
-    res.status(201).json({status:'success',message:'Check Done'}) 
+    const p = await Plan.findOne('_id',mongoose.Types.ObjectId(planid))
+    res.status(201).json({status:'success',message:'Check Done',plan: p}) 
+  }
+  else 
+  {
+    const plan = await Order.findOne({"uid": uid, 'status':'ACTIVE'}).populate('planid')
+    res.status(201).json({status:'success',message:'Check Done',plan: plan.planid})
   }
 
   res.status(201).json({status:'error',message:'Check Failed'}) 
