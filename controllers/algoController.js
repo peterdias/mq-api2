@@ -139,7 +139,7 @@ const saveBot = asyncHandler(async (req, res) => {
             stoploss: bd.stoploss,
             takeprofit: bd.takeprofit,
             sltp_type: bd.sltp_type,
-            //trading_account: bd.trading_account,
+            trading_account: mongoose.Types.ObjectId(bd.trading_account),
             status: 0,
             uid: uid
         })         
@@ -152,7 +152,9 @@ const saveBot = asyncHandler(async (req, res) => {
         bot.execution_frequency = bd.execution_frequency 
         bot.stoploss= bd.stoploss
         bot.takeprofit= bd.takeprofit
-        bot.sltp_type= bd.sltp_type      
+        bot.sltp_type= bd.sltp_type 
+        bot.trading_account = mongoose.Types.ObjectId(bd.trading_account)
+            
         await bot.save()
     }
 

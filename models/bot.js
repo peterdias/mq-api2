@@ -7,7 +7,7 @@ const Bot = mongoose.Schema(
         title: {type: String },    
         execution_type: {type: String }, 
         execution_frequency: {type: String}, 
-        trading_account: {type: String },   
+        trading_account: { type: mongoose.Schema.ObjectId, ref: 'trading_accounts' },   
         stoploss: {type: Number }, 
         takeprofit: {type: Number }, 
         sltp_type: {type: String }, 
