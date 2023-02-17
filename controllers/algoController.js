@@ -752,14 +752,32 @@ const getTradingAccount = asyncHandler(async (req, res) => {
 })
 
 const saveTradingAccount = asyncHandler(async (req, res) => {
-    const {uid,accountid } = req.body
+    const {uid,id,brokerid,api_key,api_secret,token } = req.body
 
-    let doc = await TradingAccount.find({'uid': uid,'accountid': accountid}).populate('brokerid')
-    if (doc) { res.status(201).json(doc) }
+    
+    if (id == 0) { 
+
+        let account = TradingAccount.create({
+            brokerid: mongoose.Types.ObjectId(brokerid),
+            api_key,
+            api_secret, 
+            token
+        })
+        res.status(201).json({status:'success', id: account._id}) 
+    }
     else 
     {
-        res.status(400)
-        throw new Error('Trading Account not found')
+        let account = await TradingAccount.find({'uid': uid,'_id': mongoose.Types.ObjectId(id)})
+        if(account)
+        {
+            account.brokerid = brokerid
+            account.api_key = api_key
+            account.api_secret = api_secret
+            account.token = token 
+
+            await account.save()
+            res.status(201).json({status:'updated', id: account._id}) 
+        }
     }
 })
 
