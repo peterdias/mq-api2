@@ -745,7 +745,7 @@ const getTradingAccounts = asyncHandler(async (req, res) => {
 const getTradingAccount = asyncHandler(async (req, res) => {
     const {uid,accountid } = req.body
 
-    let doc = await TradingAccount.find({'uid': uid,'_id': mongoose.Types.ObjectId(accountid)}).populate('brokerid')
+    let doc = await TradingAccount.findOne({'uid': uid,'_id': mongoose.Types.ObjectId(accountid)}).populate('brokerid')
     if (doc) { res.status(201).json(doc) }
     else 
     {
