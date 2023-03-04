@@ -38,6 +38,6 @@ router.post('/getmarkettrades',protect,getMarketTrades)
 router.post('/getnetpositions',protect,getNetPositions)
 router.post('/getbotlogs',protect,getBotLogs)
 router.post('/gettradingaccounts',protect,getTradingAccounts)
-router.post('/gettradingaccounts',protect,getTradingAccount)
+router.post('/gettradingaccount',protect,getTradingAccount)
 router.post('/savetradingaccount',protect,saveTradingAccount)
 module.exports = router
